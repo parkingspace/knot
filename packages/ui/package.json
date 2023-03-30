@@ -4,8 +4,12 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "lint": "npx eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "format": "npx prettier --write ."
+  },
   "devDependencies": {
+    "eslint-config-custom": "workspace:*",
     "@suid/vite-plugin": "^0.1.2",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2",

@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "start": "vite start"
+    "start": "vite start",
+    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "solid-js": "^1.6.16",
@@ -13,6 +15,7 @@
     "editor": "workspace:*"
   },
   "devDependencies": {
+    "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.3",
     "vite": "^4.2.1",

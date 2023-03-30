@@ -4,8 +4,12 @@
   "main": "./index.tsx",
   "types": "./index.tsx",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write ."
+  },
   "devDependencies": {
+    "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2",
     "vite": "^4.2.1",

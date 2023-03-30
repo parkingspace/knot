@@ -1,0 +1,9 @@
+# .prettierignore
+
+node_modules/
+pnpm-lock.yaml
+
+# ignore patterns
+.build/
+.dist/
+.coverage/

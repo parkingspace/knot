@@ -1,15 +1,15 @@
-import "prosemirror-view/style/prosemirror.css";
+import 'prosemirror-view/style/prosemirror.css';
 
-import { Accessor, Component, mergeProps, onMount } from "solid-js";
-import { createEffect, createSignal } from "solid-js";
+import { Accessor, Component, onMount } from 'solid-js';
+import { createSignal } from 'solid-js';
 
-import { baseKeymap } from "prosemirror-commands";
-import { keymap } from "prosemirror-keymap";
-import { MarkdownParser, schema } from "prosemirror-markdown";
-import { Fragment, Node, Schema } from "prosemirror-model";
-import { EditorState, Selection, Transaction } from "prosemirror-state";
-import { Plugin } from "prosemirror-state";
-import { EditorView } from "prosemirror-view";
+import { baseKeymap } from 'prosemirror-commands';
+import { keymap } from 'prosemirror-keymap';
+import { schema } from 'prosemirror-markdown';
+import { Fragment, Node, Schema } from 'prosemirror-model';
+import { EditorState, Selection, Transaction } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 function setupPlugins(): Plugin[] {
   const plugins = [keymap(baseKeymap)];
@@ -21,10 +21,9 @@ declare global {
 }
 globalThis.v = undefined;
 
-
 const ContentCounter = (props: { contentSize: Accessor<number> }) => {
   return (
-    <div class="absolute top-5 right-5 bg-black/50 text-white px-2 py-1 text-xs rounded">
+    <div class='absolute top-5 right-5 bg-black/50 text-white px-2 py-1 text-xs rounded'>
       {props.contentSize()}
     </div>
   );
@@ -36,7 +35,7 @@ interface IEditorProps {
 
 const View: Component<IEditorProps> = (props) => {
   const [contentSize, setContentSize] = createSignal(0);
-  const untitled = "Untitled";
+  const untitled = 'Untitled';
 
   function setCursorAtEnd() {
     if (!v) return;
@@ -52,7 +51,7 @@ const View: Component<IEditorProps> = (props) => {
 
   function createTitleNode(schema: Schema) {
     const title = props.docName ?? untitled;
-    const titleJSON = [{ type: "text", text: title }];
+    const titleJSON = [{ type: 'text', text: title }];
     return schema.nodes.heading.create(
       { level: 1 },
       Fragment.fromJSON(schema, titleJSON),
@@ -61,7 +60,7 @@ const View: Component<IEditorProps> = (props) => {
 
   function setFileView(doc: Node) {
     v?.destroy();
-    v = new EditorView(document.getElementById("editor"), {
+    v = new EditorView(document.getElementById('editor'), {
       state: EditorState.create({
         doc: doc,
         plugins: setupPlugins(),
@@ -81,14 +80,18 @@ const View: Component<IEditorProps> = (props) => {
   }
 
   onMount(() => {
-    setFileView(schema.nodeFromJSON({ type: "doc", content: [] }));
-    })
+    setFileView(schema.nodeFromJSON({ type: 'doc', content: [] }));
+  });
 
   return (
     <div>
       <ContentCounter contentSize={contentSize} />
-      <div id="editor" />
-      <div onclick={() => { if (v) setCursorAtEnd() }} />
+      <div id='editor' />
+      <div
+        onClick={() => {
+          if (v) setCursorAtEnd();
+        }}
+      />
     </div>
   );
 };

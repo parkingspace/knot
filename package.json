@@ -10,14 +10,19 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "turbo run format"
   },
   "devDependencies": {
-    "dprint": "latest",
-    "turbo": "latest"
+    "eslint": "latest",
+    "prettier": "latest",
+    "turbo": "latest",
+    "eslint-config-custom": "workspace:*",
+    "@krapjost/prettier-config": "^1.0.0"
   },
+  "prettier": "@krapjost/prettier-config",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=14.0.0",
+    "pnpm": ">=8"
   },
   "packageManager": "pnpm@8.0.0"
 }

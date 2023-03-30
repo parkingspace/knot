@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
-import solidPlugin from "vite-plugin-solid";
+import { defineConfig } from 'vite';
+import solidPlugin from 'vite-plugin-solid';
 
 export default defineConfig({
   plugins: [solidPlugin()],
@@ -10,7 +10,7 @@ export default defineConfig({
   },
   // envPrefix: ["VITE_", "TAURI_"],
   build: {
-    outDir: "../dist/web",
+    outDir: '../dist/web',
     // target: process.env.TAURI_PLATFORM == "windows" ? "chrome105" : "safari13",
     // minify: process.env.TAURI_DEBUG ? false : "esbuild",
     // sourcemap: !!process.env.TAURI_DEBUG,
