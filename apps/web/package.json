@@ -1,0 +1,21 @@
+{
+  "name": "web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "vite start"
+  },
+  "dependencies": {
+    "solid-js": "^1.6.16",
+    "ui": "workspace:*",
+    "editor": "workspace:*"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "typescript": "^4.5.3",
+    "vite": "^4.2.1",
+    "vite-plugin-solid": "^2.6.1"
+  }
+}
