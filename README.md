@@ -1,3 +1,83 @@
 # Fabres
 
     Text editor for minimalists.
+    
+## Todo
+
+- Editor
+    - Core
+        - Keybinding
+        - Input-rules
+        - history (undo, redo)
+    - User Interface
+        - Theme
+            - Dark
+            - Light
+            - Sepia
+            - etc …
+        - Dumb Components
+            - Breadcrumbs
+            - Tooltip
+            - Button
+                - TextButton
+                    - ModalButton
+                - IconButton
+                - ListButton
+                    - SidebarButton
+            - Modal
+                - CommandModal
+                - SearchModal
+                - SettingModal
+            - etc …
+    - Commands ( API 호출함수 호출부 호출호출 )
+        - Ask AI
+        - Toggle Mobile preview
+        - Toggle Desktop preview
+        - etc …
+    - Search
+        - File search
+        - Keybinding search
+        - Command search
+    - Setting
+        - Local only setting
+        - Synchronized setting ( for logged in user )
+        - Theme
+        - Locale
+        - Font
+    - Synchronization
+        - Local File-Sync
+            - Browser
+                - Browser Origin Private File System API
+            - PWA
+                - Browser File System Access API
+            - Tauri or Electron
+                - Native File System API
+        - Cloud File-Sync
+            - Google
+            - Apple
+            - Dropbox
+            - Hyle
+    - AI
+        - Fix Spelling & Grammar
+        - Summarize
+        - Create Outline
+        - Brainstorm
+        - Feedback
+        - Snowflake framework
+    - Share
+        - Manage privileges by the given URI.
+        - View-only
+        - Real-time Co-edit
+        - Comment
+    - Publish
+        - Preview
+            - Mobile-view
+            - Desktop-view
+            - Paper-view
+        - Typesetting (조판 양식 설정)
+            - Predefined Template
+            - User-defined template.
+                - Share public - server
+                - Private ( default ) - local
+- Authentication
+    - OAuth2 (Ory)
