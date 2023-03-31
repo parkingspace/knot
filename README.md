@@ -61,54 +61,6 @@ root
 
 ### Neovim format on save setup
 
-#### If you use null-ls to format
-
-``` lua
-return function()
-  local null_ls = require("null-ls")
-  null_ls.setup({
-    sources = {
-      null_ls.builtins.formatting.stylua,
-      null_ls.builtins.formatting.dprint,
-    },
-    on_attach = function(client, bufnr)
-      if client.supports_method("textDocument/formatting") then
-        local format_augroup = vim.api.nvim_create_augroup("format_augroup", { clear = true })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          group = format_augroup,
-          buffer = bufnr,
-          callback = function()
-            vim.lsp.buf.format({
-              filter = function(_client)
-                return _client.name == "null-ls"
-              end,
-            })
-          end,
-        })
-      end
-    end,
-  })
-end
-```
-
-#### else
-
-```lua
-local supported_types = { 'js', 'jsx', 'ts', 'tsx', 'json', 'yaml' }
-local filetype = vim.bo.filetype
-if not vim.tbl_contains(supported_types, filetype) then
-  return
-end
-
-local has_dprint = vim.fn.executable('dprint')
-
-if has_dprint then
-  vim.cmd("augroup dprint_autogroup")
-  vim.cmd("autocmd!")
-  vim.cmd("autocmd BufWritePre * silent! !dprint fmt %")
-  vim.cmd("augroup END")
-end
-```
 
 
 ## Todo
