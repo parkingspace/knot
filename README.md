@@ -1,7 +1,48 @@
 # Fabres
 
     Text editor for minimalists.
-    
+ 
+## folder structure ( TODO )
+```
+root
+|-- apps/
+|   |-- web/
+|   |-- desktop/
+|   |-- mobile/
+|   |-- server/
+|   |-- landing/
+|-- libs/
+|   |-- editor/
+|   |-- ui/
+|   |-- config/
+|   |-- features/
+|   |   |-- ai/
+|   |   |-- auth/
+|   |   |-- sync/
+|   |   |-- publish/
+|   |   |-- share/
+|-- utils/
+```
+
+
+## External libraries
+
+ 1. css styling
+    [kobalte](https://kobalte.dev/docs/core/overview/introduction)
+    [vanilla extract](https://vanilla-extract.style/)
+ 2. editor library
+    [tiptap](https://tiptap.dev/)
+ 3. monorepo management tool
+    [turborepo](https://turbo.build/repo)
+ 4. frontend dev tool
+    [vite](https://vitejs.dev/)
+ 5. frontend framwork
+    [solid-js](https://www.solidjs.com/)
+ 5. desktop app builder
+    [tauri](https://tauri.app/)
+ 6. code formater
+    [dprint](https://dprint.dev/)
+
 ## Todo
 
 - Editor
