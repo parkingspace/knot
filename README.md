@@ -61,7 +61,7 @@ root
 
 ### Neovim format on save setup
 
-
+  [wiki](https://github.com/krapjost/knit/wiki)
 
 ## Todo
 
