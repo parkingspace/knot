@@ -2,6 +2,7 @@
 
     Text editor for minimalists.
  
+ 
 ## folder structure ( TODO )
 ```
 root
