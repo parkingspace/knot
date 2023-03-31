@@ -1,3 +1,4 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/b79c6512a46520a32430/maintainability)](https://codeclimate.com/github/krapjost/knit/maintainability)
 # Knit
   Text editor for minimalists.
  
