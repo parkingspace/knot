@@ -70,7 +70,7 @@ root
                 - SearchModal
                 - SettingModal
             - etc …
-    - Commands ( API 호출함수 호출부 호출호출 )
+    - Commands
         - Ask AI
         - Toggle Mobile preview
         - Toggle Desktop preview
@@ -115,7 +115,7 @@ root
             - Mobile-view
             - Desktop-view
             - Paper-view
-        - Typesetting (조판 양식 설정)
+        - Typesetting
             - Predefined Template
             - User-defined template.
                 - Share public - server
