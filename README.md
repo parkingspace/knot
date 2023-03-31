@@ -1,6 +1,5 @@
 # Fabres
-
-    Text editor for minimalists.
+  Text editor for minimalists.
  
  
 ## folder structure ( TODO )
@@ -27,20 +26,33 @@ root
 
 ## External libraries
 
- 1. css styling
-    [kobalte](https://kobalte.dev/docs/core/overview/introduction)
+ * css styling
+ 
+    [kobalte](https://kobalte.dev/docs/core/overview/introduction)   
     [vanilla extract](https://vanilla-extract.style/)
- 2. editor library
+    
+ * editor library
+ 
     [tiptap](https://tiptap.dev/)
- 3. monorepo management tool
+    
+ * monorepo management tool
+ 
     [turborepo](https://turbo.build/repo)
- 4. frontend dev tool
+    
+ * frontend dev tool
+ 
     [vite](https://vitejs.dev/)
- 5. frontend framwork
+    
+ * frontend framwork
+ 
     [solid-js](https://www.solidjs.com/)
- 5. desktop app builder
+    
+ * desktop app builder
+ 
     [tauri](https://tauri.app/)
- 6. code formater
+    
+ * code formater
+ 
     [dprint](https://dprint.dev/)
 
 ## Formatting
