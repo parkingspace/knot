@@ -6,19 +6,17 @@
     "dev": "vite dev",
     "build": "vite build",
     "start": "vite start",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write ."
+    "lint": "dprint fmt"
   },
   "dependencies": {
-    "solid-js": "^1.6.16",
+    "solid-js": "latest",
     "ui": "workspace:*",
     "editor": "workspace:*"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.3",
-    "vite": "^4.2.1",
-    "vite-plugin-solid": "^2.6.1"
+    "vite": "latest",
+    "vite-plugin-solid": "latest"
   }
 }

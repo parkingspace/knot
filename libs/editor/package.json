@@ -1,0 +1,24 @@
+{
+  "name": "editor",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "lint": "dprint fmt"
+  },
+  "dependencies": {
+    "@tiptap/core": "^2.0.1",
+    "@tiptap/pm": "^2.0.1",
+    "@tiptap/starter-kit": "^2.0.1",
+    "ui": "workspace:*",
+    "solid-js": "latest",
+    "solid-tiptap": "^0.5.1"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "typescript": "^4.5.2",
+    "vite": "latest",
+    "vite-plugin-solid": "latest"
+  }
+}

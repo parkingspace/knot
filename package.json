@@ -2,24 +2,15 @@
   "name": "fabres",
   "version": "0.0.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "turbo run format"
+    "lint": "turbo run lint"
   },
   "devDependencies": {
-    "eslint": "latest",
-    "prettier": "latest",
-    "turbo": "latest",
-    "eslint-config-custom": "workspace:*",
-    "@krapjost/prettier-config": "^1.0.0"
+    "dprint": "^0.35.3",
+    "turbo": "latest"
   },
-  "prettier": "@krapjost/prettier-config",
   "engines": {
     "node": ">=14.0.0",
     "pnpm": ">=8"

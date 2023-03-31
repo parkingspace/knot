@@ -1,3 +1,3 @@
 # Fabres
 
-Text editor for minimalists.
+    Text editor for minimalists.
