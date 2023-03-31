@@ -53,29 +53,29 @@ root
 
 ``` lua
 return function()
-	local null_ls = require("null-ls")
-	null_ls.setup({
-		sources = {
-			null_ls.builtins.formatting.stylua,
-			null_ls.builtins.formatting.dprint,
-		},
-		on_attach = function(client, bufnr)
-			if client.supports_method("textDocument/formatting") then
-				local format_augroup = vim.api.nvim_create_augroup("format_augroup", { clear = true })
-				vim.api.nvim_create_autocmd("BufWritePre", {
-					group = format_augroup,
-					buffer = bufnr,
-					callback = function()
-						vim.lsp.buf.format({
-							filter = function(_client)
-								return _client.name == "null-ls"
-							end,
-						})
-					end,
-				})
-			end
-		end,
-	})
+  local null_ls = require("null-ls")
+  null_ls.setup({
+    sources = {
+      null_ls.builtins.formatting.stylua,
+      null_ls.builtins.formatting.dprint,
+    },
+    on_attach = function(client, bufnr)
+      if client.supports_method("textDocument/formatting") then
+        local format_augroup = vim.api.nvim_create_augroup("format_augroup", { clear = true })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          group = format_augroup,
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.format({
+              filter = function(_client)
+                return _client.name == "null-ls"
+              end,
+            })
+          end,
+        })
+      end
+    end,
+  })
 end
 ```
 
