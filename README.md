@@ -1,4 +1,4 @@
-# Fabres
+# Knit
   Text editor for minimalists.
  
  
