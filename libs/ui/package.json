@@ -3,13 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch",
+    "ui:watch": "vite build --watch",
     "lint": "dprint fmt"
   },
   "types": "./src/index.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "./dist/ui.umd.js",
   "module": "./dist/ui.es.js",
   "exports": {
