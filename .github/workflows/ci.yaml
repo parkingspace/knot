@@ -17,9 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 🖊️ Log
+        env:
+          LOG_FILE: "logs/$(date +%y_%m_%d).${{github.job}}.md"
+          LOG_CONTENT: "#$(date +%R)\n > ### Github action CI.build started\n> by $(git log -1 --pretty=format:%cn)\n\n" 
         run: |
-          touch logs/$(date +%y_%m_%d).build.md
-          echo "$(date +%R): CI.build started by $(git log -1 --pretty=format:%cm)" >> logs/$(date +%y_%m_%d).build.md
+          touch $LOG_FILE
+          echo $LOG_CONTENT >> $LOG_FILE
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
