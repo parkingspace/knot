@@ -3,48 +3,32 @@ name: CI
 on:
   push:
     branches: ["main"]
+    paths:
+      - 'apps/**'
+      - 'libs/**'
+    paths-ignore:
+      - 'docs/**'
+      - 'logs/**'
   pull_request:
     types: [opened, synchronize]
  
 jobs:
   build:
     name: Build and Test
-    permissions:
-      contents: write
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
       - name: 🖊️ Log
-        env:
-          l_file_name: ""
-          l_commit_url: ""
-          l_commit_hash: ""
-        run: |
-          l_file_name="logs/$(date +%y%m%d).ci.${{ github.job }}.gen.md"
-          l_commit_hash=$(git log -1 --pretty=%h)
-          l_commit_url="https://github.com/krapjost/knit/commit/$l_commit_hash"
-          touch $l_file_name
-          echo "### 🔨 run ci.build for [$l_commit_hash]($l_commit_url)" >> $l_file_name
-          echo '```yaml' >> $l_file_name
-          echo $(git log -1 --pretty=%s) >> $l_file_name
-          echo "by: $(git log -1 --pretty=%ce)" >> $l_file_name
-          echo '```' >> $l_file_name
-          echo >> $l_file_name
-
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "log: write ci build log"
-          git push
+        uses: ./.github/actions/logger
 
       - name: 🔧 Setup Node.js environment
         uses: actions/setup-node@v3
         with:
           node-version: 16
 
-      - name: 📥 Monorepo install
+      - name: 📥 Pnpm install
         uses: ./.github/actions/pnpm-install
 
       - name: Build
