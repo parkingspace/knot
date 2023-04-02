@@ -19,7 +19,7 @@ jobs:
       - name: 🖊️ Log
         env:
           LOG_FILE: 'logs/$(date +%y_%m_%d).${{ github.job }}.md'
-          LOG_CONTENT: '\# $(date +%R)\\n\> \#\#\# Github action CI.build started\\n\> by $(git log -1 --pretty=format:%cn)\\n\\n'
+          LOG_CONTENT: '# $(date +%R)\n> ### Github action CI.build started\n> by $(git log -1 --pretty=format:%cn)\n\n'
         run: |
           eval touch $LOG_FILE
           echo $LOG_CONTENT >> $(eval echo $LOG_FILE)
