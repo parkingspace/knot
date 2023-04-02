@@ -3,9 +3,6 @@ name: CI
 on:
   push:
     branches: ["main"]
-    paths:
-      - 'apps/**'
-      - 'libs/**'
     paths-ignore:
       - 'docs/**'
       - 'logs/**'
