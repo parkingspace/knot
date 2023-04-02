@@ -5,19 +5,20 @@ runs:
   using: 'composite'
   steps:
     - name: Setup pnpm cache
-      permissions:
-        contents: write
+      shell: bash
       env:
         l_repo_url: "https://github.com/krapjost/knit"
         l_file_name: ""
         l_action_run_url: ""
         l_commit_url: ""
         l_commit_hash: ""
+
       run: |
         l_file_name="logs/$(date +%y%m%d).ci.${{ github.job }}.gen.md"
         l_commit_hash=$(git log -1 --pretty=%h)
         l_commit_url="$l_repo_url/commit/$l_commit_hash"
         l_action_run_url="$l_repo_url/actions/runs/${{ github.run_id }}"
+
         touch $l_file_name
         echo "### 🔨 run [ci.build]($l_action_run_url) for [$l_commit_hash]($l_commit_url)" >> $l_file_name
         echo '```yaml' >> $l_file_name
@@ -25,6 +26,7 @@ runs:
         echo "by: $(git log -1 --pretty=%ce)" >> $l_file_name
         echo '```' >> $l_file_name
         echo >> $l_file_name
+
         git config user.name github-actions
         git config user.email github-actions@github.com
         git add . && git commit -m "log: write ci build log"
