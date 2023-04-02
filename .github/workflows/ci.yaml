@@ -23,7 +23,7 @@ jobs:
           l_commit_hash: ""
         run: |
           l_file_name="logs/$(date +%y%m%d).ci.${{ github.job }}.gen.md"
-          l_commit_hash=$(git log -1 --pretty=$h)
+          l_commit_hash=$(git log -1 --pretty=%h)
           l_commit_url="https://github.com/krapjost/knit/commit/$l_commit_hash"
           touch $l_file_name
           echo "### 🔨 run ci.build for [$l_commit_hash]($l_commit_url)" >> $l_file_name
