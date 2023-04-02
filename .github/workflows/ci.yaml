@@ -22,7 +22,7 @@ jobs:
           COMMITER: 'git log -1 --pretty=format:%ce'
           COMMIT_MSG: 'git log -1 --pretty=format:%s'
           LOG_FILE_PATH: 'logs/$(date +%y%m%d).${{ github.job }}.gen.md'
-          LOG_CONTENTS: '$(LOG_TITLE)\> \#\#\# $(COMMIT_MSG)\\n\> by $(COMMITER)\\n\\n'
+          LOG_CONTENTS: '$LOG_TITLE\> \#\#\# $COMMIT_MSG\\n\> by $COMMITER\\n\\n'
         run: |
           eval touch $LOG_FILE_PATH
           eval echo -e $LOG_CONTENTS >> $(eval echo $LOG_FILE_PATH)
