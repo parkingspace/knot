@@ -16,7 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: |
+      - name: 🖊️ Log
+        run: |
           touch logs/$(date +%y_%m_%d).build.md
           echo "$(date +%R): CI.build started by $(git log -1 --pretty=format:%cm)" >> logs/$(date +%y_%m_%d).build.md
           git config user.name github-actions
@@ -25,11 +26,10 @@ jobs:
           git commit -m "log: write ci build log"
           git push
 
-      - name: Setup Node.js environment
+      - name: 🔧 Setup Node.js environment
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'pnpm'
 
       - name: 📥 Monorepo install
         uses: ./.github/actions/pnpm-install
