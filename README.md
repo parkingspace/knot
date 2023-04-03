@@ -1,28 +1,30 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b79c6512a46520a32430/maintainability)](https://codeclimate.com/github/krapjost/knit/maintainability)
 # Knot
-  Text editor for minimalists.
- 
+
+> **"Let Knot be the guiding hand that weaves your words into a work of art."**
+> 
+> ─ chatGPT 🖋️
  
 ## Structure
-```fortran
+```haskell
 ├─ apps
-│  ├─ server ! Web server for both app
-│  ├─ reader ! Reading stuff
+│  ├─ server     --Web server for both app
+│  ├─ reader     --Reading stuff
 │  │  ├─ web
 │  │  └─ desktop
-│  └─ writer ! Writing stuff
+│  └─ writer     --Writing stuff
 │     ├─ web
 │     └─ desktop
-├─ pkgs ! Internal common libraries
-│  ├─ core ! Text editor core
-│  ├─ ui   ! User interface
-│  ├─ ai   ! AI api
-│  ├─ data ! DB configs and models
-│  ├─ auth ! Auth configs
-│  └─ sync ! File Synchronization
-├─ docs ! Documents for user and contributor
-├─ logs ! Auto generated log files
-└─ dist ! Build output
+├─ pkgs          --Internal common libraries
+│  ├─ core       --Text editor core
+│  ├─ ui         --User interface
+│  ├─ ai         --AI api
+│  ├─ db         --DB configs and models
+│  ├─ auth       --Auth configs
+│  └─ sync       --File Synchronization
+├─ docs          --Documents for user and contributor
+├─ logs          --Auto generated log files
+└─ dist          --Build output
 ```
 
 ## External libraries
