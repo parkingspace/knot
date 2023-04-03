@@ -1,9 +1,9 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b79c6512a46520a32430/maintainability)](https://codeclimate.com/github/krapjost/knit/maintainability)
 # Knot
 
-> **"Let Knot be the guiding hand that weaves your words into a work of art."**
+> **"Knot is the thread that ties your ideas together, transforming them into a tapestry of words."**
 > 
-> ─ chatGPT 🖋️
+> ─ chatGPT 🧶
  
 ## Structure
 ```haskell
