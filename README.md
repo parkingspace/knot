@@ -1,28 +1,28 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b79c6512a46520a32430/maintainability)](https://codeclimate.com/github/krapjost/knit/maintainability)
-# Knit
+# Knot
   Text editor for minimalists.
  
  
-## folder structure ( TODO )
-```
-root
-|-- apps/
-|   |-- web/
-|   |-- desktop/
-|   |-- mobile/
-|   |-- server/
-|   |-- landing/
-|-- libs/
-|   |-- editor/
-|   |-- ui/
-|   |-- config/
-|   |-- features/
-|   |   |-- ai/
-|   |   |-- auth/
-|   |   |-- sync/
-|   |   |-- publish/
-|   |   |-- share/
-|-- utils/
+## Structure
+```fortran
+├─ apps
+│  ├─ server ! Web server for both app
+│  ├─ reader ! Reading stuff
+│  │  ├─ web
+│  │  └─ desktop
+│  └─ writer ! Writing stuff
+│     ├─ web
+│     └─ desktop
+├─ pkgs ! Internal common libraries
+│  ├─ core ! Text editor core
+│  ├─ ui   ! User interface
+│  ├─ ai   ! AI api
+│  ├─ data ! DB configs and models
+│  ├─ auth ! Auth configs
+│  └─ sync ! File Synchronization
+├─ docs ! Documents for user and contributor
+├─ logs ! Auto generated log files
+└─ dist ! Build output
 ```
 
 ## External libraries

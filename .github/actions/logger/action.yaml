@@ -7,7 +7,7 @@ runs:
     - name: Setup pnpm cache
       shell: bash
       env:
-        l_repo_url: "https://github.com/krapjost/knit"
+        l_repo_url: "https://github.com/krapjost/knot"
         l_file_name: ""
         l_action_run_url: ""
         l_commit_url: ""
