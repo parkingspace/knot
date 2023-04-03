@@ -15,17 +15,17 @@ importers:
     dependencies:
       editor:
         specifier: workspace:*
-        version: link:../../libs/editor
+        version: link:../../pkgs/editor
       solid-js:
         specifier: latest
         version: 1.7.0
       ui:
         specifier: workspace:*
-        version: link:../../libs/ui
+        version: link:../../pkgs/ui
     devDependencies:
       tsconfig:
         specifier: workspace:*
-        version: link:../../libs/tsconfig
+        version: link:../../pkgs/tsconfig
       typescript:
         specifier: ^4.5.3
         version: 4.5.3
@@ -36,7 +36,7 @@ importers:
         specifier: latest
         version: 2.6.1(solid-js@1.7.0)(vite@4.2.1)
 
-  libs/editor:
+  pkgs/editor:
     dependencies:
       '@tiptap/core':
         specifier: ^2.0.1
@@ -70,9 +70,9 @@ importers:
         specifier: latest
         version: 2.6.1(solid-js@1.7.0)(vite@4.2.1)
 
-  libs/tsconfig: {}
+  pkgs/tsconfig: {}
 
-  libs/ui:
+  pkgs/ui:
     dependencies:
       '@vanilla-extract/css':
         specifier: ^1.11.0
