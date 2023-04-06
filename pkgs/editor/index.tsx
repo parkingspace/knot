@@ -1,8 +1,8 @@
-import "ui/style.css"
+import 'ui/style.css'
 import { Container, TextArea } from 'ui'
 
-import { onMount } from 'solid-js'
 import StarterKit from '@tiptap/starter-kit'
+import { onMount } from 'solid-js'
 import { createTiptapEditor } from 'solid-tiptap'
 
 function Editor() {

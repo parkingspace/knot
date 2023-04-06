@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "rm -rf ../../dist/web && vite build",
     "start": "vite start",
     "lint": "dprint fmt"
   },
