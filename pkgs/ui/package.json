@@ -14,7 +14,8 @@
     ".": {
       "import": "./dist/ui.es.js",
       "require": "./dist/ui.umd.js"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",

@@ -1,8 +1,5 @@
 {
   "extends": "tsconfig/solid.json",
   "include": ["."],
-  // "compilerOptions": {
-  //   "isolatedModules": false
-  // },
   "exclude": ["node_modules"]
 }
