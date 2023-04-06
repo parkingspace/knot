@@ -39,7 +39,7 @@ jobs:
       - name: Publish to surge.sh
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
-          domain: 'knit.surge.sh'
+          domain: 'ps-knot.surge.sh'
           project: './dist/web'
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
