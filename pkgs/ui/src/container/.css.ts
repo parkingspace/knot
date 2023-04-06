@@ -1,8 +1,10 @@
 import { style } from '@vanilla-extract/css'
 
 export const container = style({
-  height: '100vh',
-  padding: ['5em', '10em'],
+  boxSizing: "border-box",
+  height: "fit-content",
+  minHeight: "100%",
+  padding: '0',
   margin: 0,
   background: 'black',
 })
