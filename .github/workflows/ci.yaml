@@ -3,9 +3,9 @@ name: CI
 on:
   push:
     branches: ["main"]
-    paths:
-      - 'apps/**'
-      - 'pkgs/**'
+    ignore-paths:
+      - 'logs/**'
+      - 'docs/**'
   pull_request:
     types: [opened, synchronize]
  
