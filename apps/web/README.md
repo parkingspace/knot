@@ -1,4 +1,4 @@
-## Knit web app
+## Knot web app
 
 Run the development server on root directory,
 
