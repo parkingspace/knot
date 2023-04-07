@@ -1,5 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/b79c6512a46520a32430/maintainability)](https://codeclimate.com/github/krapjost/knit/maintainability)
-![LoC](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/krapjost/ff4c2b4dc91f66a4b5fb2b62059a3c7e/raw/9d1f84347b543fc8fa72913c813dd553fd4ef39b/knot-badges.json)
+![Lines of Code](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/krapjost/ff4c2b4dc91f66a4b5fb2b62059a3c7e/raw/knot-badges.json)
 ![CI](https://github.com/parkingspace/knot/actions/workflows/ci.yaml/badge.svg)
 
 # Knot
