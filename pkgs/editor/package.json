@@ -5,20 +5,31 @@
   "types": "./index.tsx",
   "license": "MIT",
   "scripts": {
-    "lint": "dprint fmt"
+    "lint": "dprint fmt",
+    "test": "vitest",
+    "test-watch": "vitest",
+    "test-ui": "vitest --ui",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@tiptap/core": "^2.0.1",
     "@tiptap/pm": "^2.0.1",
     "@tiptap/starter-kit": "^2.0.1",
-    "ui": "workspace:*",
     "solid-js": "latest",
-    "solid-tiptap": "^0.5.1"
+    "solid-tiptap": "^0.5.1",
+    "ui": "workspace:*"
   },
   "devDependencies": {
+    "@solidjs/testing-library": "^0.7.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@types/testing-library__jest-dom": "^5.14.5",
+    "@vitest/coverage-c8": "^0.29.8",
+    "@vitest/ui": "^0.29.8",
+    "jsdom": "^21.1.1",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2",
     "vite": "latest",
-    "vite-plugin-solid": "latest"
+    "vite-plugin-solid": "latest",
+    "vitest": "^0.29.8"
   }
 }

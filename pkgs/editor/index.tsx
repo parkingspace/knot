@@ -1,19 +1,17 @@
 import 'ui/style.css'
+import { onMount } from 'solid-js'
 import { Container, TextArea } from 'ui'
 
-import StarterKit from '@tiptap/starter-kit'
-import { onMount } from 'solid-js'
 import { createTiptapEditor } from 'solid-tiptap'
+import Extension from './extension'
 
 function Editor() {
   let ref!: HTMLDivElement
 
   onMount(() => {
     createTiptapEditor(() => ({
-      element: ref!,
-      extensions: [
-        StarterKit,
-      ],
+      element: ref,
+      extensions: [Extension],
       content: `<h1>Hello editor</h1>`,
     }))
   })
