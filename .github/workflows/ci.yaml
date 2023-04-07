@@ -2,49 +2,58 @@ name: CI
  
 on:
   push:
-    branches: ["main"]
-    ignore-paths:
-      - 'logs/**'
+    branches:
+      - "main"
+    paths-ignore:
       - 'docs/**'
   pull_request:
     types: [opened, synchronize]
  
 jobs:
-  build:
-    name: Build and Test
-    timeout-minutes: 15
+  build-and-test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: 🖊️ Log
-        uses: ./.github/actions/logger
-
-      - name: 🔧 Setup Node.js environment
+      - name: 🔧 Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 17
 
-      - name: 📥 Pnpm install
+      - name: 📥 Install pnpm
         uses: ./.github/actions/pnpm-install
 
-      - name: Build
+      - name: 🚧 Build
         run: pnpm build
 
-      - name: Test
+      - name: 🧪 Test
         run: pnpm test
-      
-      - name: Publish to surge.sh
+
+      - name: 祝Upload build output
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: |
+            dist/web
+
+  deploy-web:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+
+      - name:  Download build output
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output
+          path: dist/web
+
+      - name: Deploy web
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
           domain: 'ps-knot.surge.sh'
-          project: './dist/web'
+          project: 'dist/web'
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
 
