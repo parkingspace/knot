@@ -60,19 +60,18 @@ jobs:
   create-badge:
     needs: build-and-test
     runs-on: ubuntu-latest
-    env:
-      TS_LOC: ''
 
     steps:
       - uses: actions/checkout@v3
       - name: Count Typescript lines
         run: >-
-          TS_LOC=$(find . 
+          echo "TS_LINES_OF_CODES=$(find .
           -type f
-          -not -path "./node_modules/**"
-          -regex ".*\.\(ts\|tsx\)$"
+          -not -path './node_modules/**'
+          -regex '.*\.\(ts\|tsx\)$'
           -exec grep -c ^ {} \;
-          | awk '{total += $1} END{print total}')
+          | awk '{total += $1} END{print total}')"
+          >> $GITHUB_ENV
 
       - name: Create Loc Badge
         uses: schneegans/dynamic-badges-action@v1.6.0
@@ -82,5 +81,5 @@ jobs:
           filename: knot-badges.json
           namedLogo: typescript
           label: LoC
-          message: ${{ env.TS_LOC }}
+          message: ${{ GITHUB_ENV.TS_LINES_OF_CODES }}
           color: blue
