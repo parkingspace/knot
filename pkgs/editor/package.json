@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "dprint fmt",
-    "test": "vitest",
+    "test": "vitest run && vitest run --coverage",
     "test-watch": "vitest",
     "test-ui": "vitest --ui",
     "coverage": "vitest run --coverage"

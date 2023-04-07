@@ -16,6 +16,9 @@ export default defineConfig({
       'node_modules/@testing-library/jest-dom/extend-expect',
       './setupVitest.js',
     ],
+    coverage: {
+      reportsDirectory: '../../coverage/editor',
+    }
   },
   resolve: {
     conditions: ['development', 'browser'],
