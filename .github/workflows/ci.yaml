@@ -67,11 +67,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Count Typescript lines
         run: >-
-          find . -not -path "./node_modules/**" -type f
+          TS_LOC=$(find . 
+          -type f
+          -not -path "./node_modules/**"
           -regex ".*\.\(ts\|tsx\)$"
-          -exec grep -c ^ {} \; |
-          awk '{total += $1} END{print total}' |
-          read TS_LOC
+          -exec grep -c ^ {} \;
+          | awk '{total += $1} END{print total}')
 
       - name: Create Loc Badge
         uses: schneegans/dynamic-badges-action@v1.6.0
@@ -79,6 +80,7 @@ jobs:
           auth: ${{ secrets.BADGE_GIST_SECRET }}
           gistID: ff4c2b4dc91f66a4b5fb2b62059a3c7e
           filename: knot-badges.json
-          label: TS Lines
-          message: $TS_LOC
+          namedLogo: typescript
+          label: LoC
+          message: ${{ env.TS_LOC }}
           color: blue
