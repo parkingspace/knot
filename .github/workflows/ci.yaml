@@ -60,22 +60,25 @@ jobs:
   create-badge:
     needs: build-and-test
     runs-on: ubuntu-latest
+    env:
+      TS_LOC: ''
+
     steps:
       - uses: actions/checkout@v3
+      - name: Count Typescript lines
+        run: >-
+          find . -not -path "./node_modules/**" -type f
+          -regex ".*\.\(ts\|tsx\)$"
+          -exec grep -c ^ {} \; |
+          awk '{total += $1} END{print total}' |
+          read TS_LOC
 
-      - name: Make Line of codes Badge
-        uses: shadowmoose/GHA-LoC-Badge@1.0.0
-        id: loc
+      - name: Create Loc Badge
+        uses: schneegans/dynamic-badges-action@v1.6.0
         with:
-          debug: true
-          directory: ./
-          badge: ./badges/loc.svg
-          patterns: '*.js|*.ts|*.tsx'
-          ignore: 'node_modules|dist'
-
-      - name: Make bundle size badge
-        uses: mikeal/bundle-size-action@master
-
-      - uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          auth: ${{ secrets.BADGE_GIST_SECRET }}
+          gistID: ff4c2b4dc91f66a4b5fb2b62059a3c7e
+          filename: knot-badges.json
+          label: TS Lines
+          message: $TS_LOC
+          color: blue
