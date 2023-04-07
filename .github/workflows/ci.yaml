@@ -29,7 +29,7 @@ jobs:
       - name: 🧪 Test
         run: pnpm test
 
-      - name: 祝Upload build output
+      - name:  Upload build output
         uses: actions/upload-artifact@v3
         with:
           name: build-output
@@ -43,13 +43,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name:  Download build output
+      - name:  Download build output
         uses: actions/download-artifact@v3
         with:
           name: build-output
           path: dist/web
 
-      - name: Deploy web
+      - name: 🌏 Deploy web
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
           domain: 'ps-knot.surge.sh'
@@ -57,3 +57,25 @@ jobs:
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
 
+  create-badge:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Make Line of codes Badge
+        uses: shadowmoose/GHA-LoC-Badge@1.0.0
+        id: loc
+        with:
+          debug: true
+          directory: ./
+          badge: ./badges/loc.svg
+          patterns: '*.js|*.ts|*.tsx'
+          ignore: 'node_modules|dist'
+
+      - name: Make bundle size badge
+        uses: mikeal/bundle-size-action@master
+
+      - uses: mikeal/publish-to-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
