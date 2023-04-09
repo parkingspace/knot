@@ -40,9 +40,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 			echo "Creating Homebrew tap \`knot/deps\`..."
 			brew tap-new knot/deps
 		fi
-
-    echo "Install Clang etc..."
-    xcode-select --install
 else
 	log_err "Your OS ($OSTYPE) is not supported by this script. We would welcome a PR or some help adding your OS to this script. https://github.com/knot/spacedrive/issues"
 	exit 1
