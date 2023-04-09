@@ -83,13 +83,21 @@ jobs:
           override: true
           components: rustfmt, rust-src
 
+      - name: Run 'setup-tauri.sh' script
+        if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+        run: ./.github/scripts/setup-tauri.sh
+
+      - name: Run 'setup-tauri.ps1' script
+        if: matrix.platform == 'windows-latest'
+        run: ./.github/scripts/setup-tauri.ps1 -ci
+
       - name:  Download web build
         uses: actions/download-artifact@v3
         with:
           name: web-build
           path: dist/web
 
-      - name: Bundle Desktop
+      - name: Build Desktop
         run: pnpm desktop build
 
   create-badge:
