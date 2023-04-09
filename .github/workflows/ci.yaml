@@ -89,11 +89,8 @@ jobs:
           name: web-build
           path: dist/web
 
-      - name: Cargo fetch
-        run: cargo fetch
-
       - name: Bundle Desktop
-        run: pnpm desktop tauri build
+        run: pnpm desktop build
 
   create-badge:
     name: Create badge
