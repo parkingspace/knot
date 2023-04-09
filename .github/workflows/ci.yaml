@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - "main"
-    paths-ignore:
-      - 'docs/**'
+    paths:
+      - 'apps/**'
+      - 'pkgs/**'
+      - '.github/**'
   pull_request:
     types: [opened, synchronize]
  
@@ -25,7 +27,7 @@ jobs:
         uses: ./.github/actions/pnpm-install
 
       - name: 🚧 Build & Test
-        run: pnpm web build test
+        run: pnpm build:web && pnpm test:web
 
       - name:  Upload web build
         uses: actions/upload-artifact@v3
@@ -98,13 +100,12 @@ jobs:
           path: dist/web
 
       - name: Build Desktop
-        run: pnpm desktop build
+        run: pnpm build:desktop
 
   create-badge:
-    name: Create badge
     needs: build-web
+    name: Create badge
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Count Typescript lines

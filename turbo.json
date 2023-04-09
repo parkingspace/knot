@@ -2,20 +2,8 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "web#build": {
-      "dependsOn": ["ui#build"],
-      "outputs": ["dist/**"]
-    },
-    "desktop#build": {
-      "dependsOn": ["web#build"],
-      "outputs": ["dist/**"]
-    },
+    "lint": {},
     "test": {
-      "dependsOn": ["build"],
       "outputs": ["coverage/**"]
     },
     "ui#dev": {
@@ -29,6 +17,17 @@
       "cache": false,
       "dependsOn": ["web#dev"]
     },
-    "lint": {}
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "web#build": {
+      "dependsOn": ["ui#build"],
+      "outputs": ["dist/**"]
+    },
+    "desktop#build": {
+      "dependsOn": ["web#build"],
+      "outputs": ["dist/**"]
+    }
   }
 }
