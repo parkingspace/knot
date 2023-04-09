@@ -11,6 +11,7 @@ on:
  
 jobs:
   build-web:
+    name: Build web app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,6 +34,7 @@ jobs:
           path: dist/web
 
   deploy-web:
+    name: Deploy web app
     needs: build-web
     runs-on: ubuntu-latest
     environment: production
@@ -55,7 +57,7 @@ jobs:
 
   build-desktop:
     needs: build-web
-    name: Build (${{ matrix.platform }}) app
+    name: Build ${{ matrix.platform }} app
     runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: true
@@ -81,9 +83,6 @@ jobs:
           override: true
           components: rustfmt, rust-src
 
-      - name: Cache Rust dependencies
-        uses: ./.github/actions/cache-rust-deps
-
       - name:  Download web build
         uses: actions/download-artifact@v3
         with:
@@ -97,6 +96,7 @@ jobs:
         run: pnpm desktop tauri build
 
   create-badge:
+    name: Create badge
     needs: build-web
     runs-on: ubuntu-latest
 
