@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "build": "vite build",
-    "ui:watch": "vite build --watch",
+    "watcher": "vite build --watch",
+    "dev": "pm2 start pnpm --name ui -- run watcher",
     "lint": "dprint fmt"
   },
   "types": "./src/index.ts",

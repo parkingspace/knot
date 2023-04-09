@@ -6,16 +6,29 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "web#build": {
+      "dependsOn": ["ui#build"],
+      "outputs": ["dist/**"]
+    },
+    "desktop#build": {
+      "dependsOn": ["web#build"],
+      "outputs": ["dist/**"]
+    },
     "test": {
       "dependsOn": ["build"],
       "outputs": ["coverage/**"]
     },
-    "dev": {
-      "dependsOn": ["ui:watch"],
-      "cache": false,
-      "persistent": true
+    "ui#dev": {
+      "cache": false
     },
-    "ui:watch": {},
+    "web#dev": {
+      "cache": false,
+      "dependsOn": ["ui#dev"]
+    },
+    "desktop#dev": {
+      "cache": false,
+      "dependsOn": ["web#dev"]
+    },
     "lint": {}
   }
 }

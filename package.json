@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "turbo run build --filter=!desktop",
     "test": "turbo run test",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "web": "turbo run --filter=web",
+    "desktop": "turbo run --filter=desktop",
+    "kill": "pm2 kill"
   },
   "devDependencies": {
     "dprint": "^0.35.3",
+    "pm2": "^5.3.0",
     "turbo": "latest"
   },
   "engines": {

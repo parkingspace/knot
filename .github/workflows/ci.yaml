@@ -10,7 +10,7 @@ on:
     types: [opened, synchronize]
  
 jobs:
-  build-and-test:
+  build-web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,30 +23,26 @@ jobs:
       - name: 📥 Install pnpm
         uses: ./.github/actions/pnpm-install
 
-      - name: 🚧 Build
-        run: pnpm build
+      - name: 🚧 Build & Test
+        run: pnpm web build test
 
-      - name: 🧪 Test
-        run: pnpm test
-
-      - name:  Upload build output
+      - name:  Upload web build
         uses: actions/upload-artifact@v3
         with:
-          name: build-output
-          path: |
-            dist/web
+          name: web-build
+          path: dist/web
 
   deploy-web:
-    needs: build-and-test
+    needs: build-web
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v3
 
-      - name:  Download build output
+      - name:  Download web build
         uses: actions/download-artifact@v3
         with:
-          name: build-output
+          name: web-build
           path: dist/web
 
       - name: 🌏 Deploy web
@@ -57,8 +53,51 @@ jobs:
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
 
+  build-desktop:
+    needs: build-web
+    name: Build (${{ matrix.platform }}) app
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: true
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🔧 Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 17
+
+      - name: 📥 Install pnpm
+        uses: ./.github/actions/pnpm-install
+
+      - name: 🦀 Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+          components: rustfmt, rust-src
+
+      - name: Cache Rust dependencies
+        uses: ./.github/actions/cache-rust-deps
+
+      - name:  Download web build
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: dist/web
+
+      - name: Cargo fetch
+        run: cargo fetch
+
+      - name: Bundle Desktop
+        run: pnpm desktop tauri build
+
   create-badge:
-    needs: build-and-test
+    needs: build-web
     runs-on: ubuntu-latest
 
     steps:

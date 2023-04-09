@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite dev",
+    "vite:dev": "vite dev",
+    "dev": "pm2 start pnpm --name web -- run vite:dev",
     "build": "rm -rf ../../dist/web && vite build",
     "start": "vite start",
     "lint": "dprint fmt"

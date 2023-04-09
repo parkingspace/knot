@@ -18,7 +18,7 @@ export default defineConfig({
     ],
     coverage: {
       reportsDirectory: '../../coverage/editor',
-    }
+    },
   },
   resolve: {
     conditions: ['development', 'browser'],

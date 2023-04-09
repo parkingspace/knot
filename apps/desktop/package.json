@@ -1,14 +1,12 @@
 {
   "name": "desktop",
   "version": "1.0.0",
-  "description": "",
+  "description": "knot desktop app",
   "main": "index.js",
   "scripts": {
-    "build-web": "pnpm --filter web build",
-    "dev-web": "pnpm --filter web dev --clearScreen=false",
-    "dev": "tauri dev",
-    "build": "tauri build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tauri:dev": "tauri dev",
+    "dev": "pm2 start pnpm --name desktop -- run tauri:dev",
+    "build": "tauri build"
   },
   "keywords": [],
   "author": "krapjost",
@@ -17,6 +15,7 @@
     "@tauri-apps/api": "^1.2.0"
   },
   "devDependencies": {
+    "web": "workspace:*",
     "@tauri-apps/cli": "^1.2.3"
   }
 }
