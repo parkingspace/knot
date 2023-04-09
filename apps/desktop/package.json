@@ -1,0 +1,22 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-web": "pnpm --filter web build",
+    "dev-web": "pnpm --filter web dev --clearScreen=false",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "krapjost",
+  "license": "ISC",
+  "dependencies": {
+    "@tauri-apps/api": "^1.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.2.3"
+  }
+}
