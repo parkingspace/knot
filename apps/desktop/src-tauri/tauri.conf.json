@@ -53,11 +53,15 @@
     },
     "windows": [
       {
+        "center": true,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "decorations": false,
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
         "title": "knot",
-        "width": 800
+        "height": 100,
+        "width": 400
       }
     ]
   }

@@ -6,5 +6,5 @@ export const container = style({
   minHeight: '100%',
   padding: '0',
   margin: 0,
-  background: 'black',
+  background: '#000000aa',
 })

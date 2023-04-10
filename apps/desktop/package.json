@@ -11,9 +11,6 @@
   "keywords": [],
   "author": "krapjost",
   "license": "ISC",
-  "dependencies": {
-    "@tauri-apps/api": "^1.2.0"
-  },
   "devDependencies": {
     "web": "workspace:*",
     "@tauri-apps/cli": "^1.2.3"

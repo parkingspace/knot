@@ -16,9 +16,9 @@
   },
   "devDependencies": {
     "dprint": "^0.35.3",
+    "husky": "^8.0.3",
     "pm2": "^5.3.0",
-    "turbo": "latest",
-    "husky": "^8.0.0"
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=14.0.0",

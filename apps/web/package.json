@@ -12,7 +12,8 @@
   "dependencies": {
     "solid-js": "latest",
     "ui": "workspace:*",
-    "editor": "workspace:*"
+    "editor": "workspace:*",
+    "@tauri-apps/api": "^1.2.0"
   },
   "devDependencies": {
     "tsconfig": "workspace:*",
