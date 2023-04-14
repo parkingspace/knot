@@ -58,7 +58,7 @@
         "alwaysOnTop": true,
         "decorations": false,
         "fullscreen": false,
-        "resizable": true,
+        "resizable": false,
         "title": "knot",
         "height": 100,
         "width": 400

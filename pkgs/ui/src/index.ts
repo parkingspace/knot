@@ -1,4 +1,5 @@
-import { Container } from './container'
+import { Container, FlexContainer } from './container'
+import { Spacer } from './spacer'
 import { TextArea } from './textarea'
 
-export { Container, TextArea }
+export { Container, FlexContainer, Spacer, TextArea }
