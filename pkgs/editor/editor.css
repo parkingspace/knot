@@ -1,16 +1,18 @@
-html, body, #root {
+html,
+body,
+#root {
   overflow: hidden;
 }
 
 @font-face {
   font-family: knotFont;
-  src: url('fonts/SunBatang-Bold.otf');
+  src: url("fonts/SunBatang-Bold.otf");
   font-weight: bold;
 }
 
 @font-face {
   font-family: knotFont;
-  src: url('fonts/SunBatang-Light.otf');
+  src: url("fonts/SunBatang-Light.otf");
 }
 
 .ProseMirror {
@@ -18,41 +20,38 @@ html, body, #root {
   overflow: auto;
   height: 100%;
   width: 100%;
-  color: rgb(235, 220, 200);
-  background: rgb(8, 0, 13, 1);
-  /* caret-color: transparent; */
+  color: rgb(235 220 200);
+  background: rgb(20 23 31 / 100%);
+  caret-color: transparent;
 }
 
 .ProseMirror::-webkit-scrollbar {
-  width: 0px;
+  width: 0;
   background: transparent;
 }
 
-/* .ProseMirror::-webkit-scrollbar-thumb { */
-/*   background: rgba(0, 0, 0, 0.5); */
-/*   border-radius: 5px; */
-/* } */
-
-.ProseMirror::before, 
+.ProseMirror::before,
 .ProseMirror::after {
-  content: '';
+  content: "";
   display: block;
   height: 50%;
 }
+
 .ProseMirror::before {
-  background: linear-gradient(rgba(20, 50, 40, 0.7), transparent);
+  background: linear-gradient(rgb(30 40 50 / 70%), 20%, transparent);
 }
+
 .ProseMirror::after {
-  background: linear-gradient(transparent, rgba(50, 20, 30, 0.7));
+  background: linear-gradient(transparent, 80%, rgb(30 40 50 / 70%));
 }
 
 .ProseMirror-focused {
-  outline: 0px !important;
-  border: 0px !important;
+  outline: 0 !important;
+  border: 0 !important;
 }
 
-.ProseMirror > :is(h1, h2, h3, h4, h5, h6, p) {
-  box-shadow: inset 0 0 0 0.1px rgba(0, 200, 100, 0.8);
+.ProseMirror :is(h1, h2, h3, h4, h5, h6, p) {
+  box-shadow: inset 0 0 0 0.1px rgb(0 200 200 / 50%);
   white-space: pre-wrap;
   word-wrap: break-word;
   line-height: 1.5em;
@@ -61,18 +60,43 @@ html, body, #root {
   padding: 0.2em;
 }
 
-.ProseMirror > strong {
+.ProseMirror strong {
   font-weight: bold;
 }
 
-.ProseMirror > em {
+.ProseMirror em {
   font-style: italic;
 }
 
 .knotCaret {
-    position: absolute;
-    z-index: 2;
-    width: 10em;
-    border-radius: 0 9999px 9999px 0;
-    background: linear-gradient(.25turn, rgba(230, 100, 90, 1), 10%, rgba(0, 200, 100, 0.3));
+  position: absolute;
+  z-index: 2;
+  width: 0.5em;
+  border-radius: 0px 9999px 9999px 0px;
+  background: linear-gradient(
+    0.25turn,
+    rgb(110 240 250 / 100%),
+    10%,
+    rgb(30 40 50 / 30%)
+  );
+  animation: blink 1s infinite;
+  animation-timing-function: ease-in;
+  /* animation-timing-function: step-start; */
+  /* animation-timing-function: steps(1, end); */
+}
+
+/* carot animation */
+@keyframes blink {
+  0% {
+    opacity: 0;
+    width: 0.5em;
+  }
+  50% {
+    opacity: 1;
+    width: 0.2em;
+  }
+  100% {
+    opacity: 0;
+    width: 0.5em;
+  }
 }
