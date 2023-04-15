@@ -13,13 +13,12 @@
   "json": {
     "lineWidth": 80
   },
-  "markdown": {
-  },
-  "toml": {
-  },
-  "dockerfile": {
-  },
-  "includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,toml,dockerfile}"],
+  "markdown": {},
+  "toml": {},
+  "dockerfile": {},
+  "includes": [
+    "**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,toml,dockerfile}"
+  ],
   "excludes": [
     "**/node_modules",
     "**/*-lock.json"

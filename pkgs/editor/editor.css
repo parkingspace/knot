@@ -2,6 +2,21 @@ html,
 body,
 #root {
   overflow: hidden;
+  height: 100%;
+  font-size: 18px;
+}
+
+h1 {
+  font-size: 2em;
+}
+h2 {
+  font-size: 1.7em;
+}
+h3 {
+  font-size: 1.35em;
+}
+p {
+  font-size: 1em;
 }
 
 @font-face {
@@ -70,33 +85,44 @@ body,
 
 .knotCaret {
   position: absolute;
+  pointer-events: none;
   z-index: 2;
-  width: 0.5em;
-  border-radius: 0px 9999px 9999px 0px;
   background: linear-gradient(
     0.25turn,
-    rgb(110 240 250 / 100%),
+    rgb(255 255 255 / 100%),
     10%,
-    rgb(30 40 50 / 30%)
+    rgb(0 255 200 / 10%),
+    60%,
+    rgb(0 100 255 / 20%),
+    90%,
+    transparent
   );
+  /* border-radius: 0px 9999px 9999px 0px; */
+
+  left: 0;
+  top: 0;
+  transition-property: left, top;
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.22, 0.68, 0, 1.21);
+
+  width: 1px;
   animation: blink 1s infinite;
+  /* animation-timing-function: cubic-bezier(0, 3, 1, -2); */
   animation-timing-function: ease-in;
-  /* animation-timing-function: step-start; */
-  /* animation-timing-function: steps(1, end); */
 }
 
 /* carot animation */
 @keyframes blink {
   0% {
-    opacity: 0;
-    width: 0.5em;
-  }
-  50% {
     opacity: 1;
-    width: 0.2em;
+    width: 1px;
+  }
+  80% {
+    opacity: 1;
+    width: 1em;
   }
   100% {
     opacity: 0;
-    width: 0.5em;
+    width: 1px;
   }
 }

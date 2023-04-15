@@ -54,6 +54,7 @@ function Editor() {
 
     const caretPos = getCaretGlobalPosition()
     if (!caretPos) { return }
+
     knotCaret.style.top = caretPos.top + 'px'
     knotCaret.style.left = caretPos.left + 'px'
 
@@ -65,6 +66,7 @@ function Editor() {
     extensions: [Extension],
     content: `<h1>Hi! This is knot 🧶</h1>`,
     onCreate({ editor }) {
+      editor.view.dom.spellcheck = false
       editor.view.dom.addEventListener('scroll', () => redrawKnotCaret())
     },
     onSelectionUpdate({ editor }) {
