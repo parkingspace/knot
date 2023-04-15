@@ -1,10 +1,9 @@
-const { vanillaExtractPlugin } = require('@vanilla-extract/vite-plugin')
 const { defineConfig } = require('vite')
 const solidPlugin = require('vite-plugin-solid')
 const path = require('path')
 
 module.exports = defineConfig({
-  plugins: [solidPlugin(), vanillaExtractPlugin()],
+  plugins: [solidPlugin()],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),

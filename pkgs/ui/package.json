@@ -8,7 +8,9 @@
     "lint": "dprint fmt"
   },
   "types": "./src/index.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/ui.umd.js",
   "module": "./dist/ui.es.js",
   "exports": {
@@ -20,14 +22,12 @@
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
-    "@vanilla-extract/vite-plugin": "^3.8.0",
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2",
     "vite": "latest",
     "vite-plugin-solid": "latest"
   },
   "dependencies": {
-    "@vanilla-extract/css": "^1.11.0",
     "normalize.css": "^8.0.1",
     "solid-js": "latest"
   }
