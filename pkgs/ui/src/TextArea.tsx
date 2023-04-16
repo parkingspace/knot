@@ -1,18 +1,15 @@
 import { JSX } from 'solid-js'
-import { spacer } from './.css'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement>
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
-const Spacer: Component = (props) => {
+const TextArea: Component = (props) => {
   return (
-    <div
-      onclick={props.onclick}
-      class={spacer}
-    >
+    <div class='text-emerald-400 text-2xl' ref={props.ref}>
+      <p>hi from text area</p>
       {props.children}
     </div>
   )
 }
 
-export { Spacer }
+export { TextArea }

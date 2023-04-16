@@ -1,15 +1,16 @@
 import { JSX } from 'solid-js'
-import { textarea } from './.css'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement>
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
-const TextArea: Component = (props) => {
+const Spacer: Component = (props) => {
   return (
-    <div class={textarea} ref={props.ref}>
+    <div
+      onclick={props.onclick}
+    >
       {props.children}
     </div>
   )
 }
 
-export { TextArea }
+export { Spacer }

@@ -1,4 +1,4 @@
-import 'ui/style.css'
+import 'ui/style'
 import './editor.css'
 import { createSignal, onMount } from 'solid-js'
 import { createTiptapEditor } from 'solid-tiptap'
@@ -97,6 +97,7 @@ function Editor() {
   return (
     <FlexContainer>
       <TextArea ref={ref} />
+      <p class='text-purple-600'>hi from editor</p>
     </FlexContainer>
   )
 }
