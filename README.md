@@ -36,7 +36,7 @@
 - css styling
 
   [kobalte](https://kobalte.dev/docs/core/overview/introduction)\
-  [vanilla extract](https://vanilla-extract.style/)
+  [tailwindCSS](https://tailwindcss.com/)
 
 - editor library
 
