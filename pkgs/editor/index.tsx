@@ -97,7 +97,7 @@ function Editor() {
   return (
     <FlexContainer>
       <TextArea ref={ref} />
-      <p class='text-purple-600'>hi from editor</p>
+      <p class='text-purple-700'>hi from editor</p>
     </FlexContainer>
   )
 }

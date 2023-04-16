@@ -1,7 +1,8 @@
 module.exports = function(context) {
   const config = {
     content: [
-      context === 'editor' ? './*.{jsx,tsx}' : './src/**/*.{js,jsx,ts,tsx}',
+      '../../pkgs/{editor/*.{ts,tsx},ui/src/**/*.{ts,tsx}}',
+      '../../apps/web/src/**/*.{ts,tsx}',
     ],
     theme: {
       extend: {},
