@@ -6,5 +6,6 @@
 
 export * from './Container'
 export * from './Flex'
+export * from './KobalteSample'
 export * from './Spacer'
 export * from './TextArea'

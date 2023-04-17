@@ -7,7 +7,7 @@ module.exports = function(context) {
     theme: {
       extend: {},
     },
-    plugins: [],
+    plugins: [require('@kobalte/tailwindcss')],
   }
 
   return config
