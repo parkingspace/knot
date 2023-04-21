@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = function(context) {
   const config = {
     content: [
@@ -5,7 +7,11 @@ module.exports = function(context) {
       '../../apps/web/src/**/*.{ts,tsx}',
     ],
     theme: {
-      extend: {},
+      extend: {
+        fontFamily: {
+          sans: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans],
+        },
+      },
     },
     plugins: [require('@kobalte/tailwindcss')],
   }
