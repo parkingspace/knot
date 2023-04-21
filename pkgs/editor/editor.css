@@ -3,7 +3,7 @@ body,
 #root {
   overflow: hidden;
   height: 100%;
-  font-size: 18px;
+  font-size: 21px;
 }
 
 h1 {
@@ -36,13 +36,13 @@ p {
   height: 100%;
   width: 100%;
   color: rgb(235 220 200);
-  background: rgb(20 23 31 / 100%);
-  caret-color: transparent;
+  background: rgb(30 30 40 / 100%);
+  /* caret-color: transparent; */
 }
 
 .ProseMirror::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
+  width: 2px;
+  /* background: transparent; */
 }
 
 .ProseMirror::before,
@@ -66,7 +66,7 @@ p {
 }
 
 .ProseMirror :is(h1, h2, h3, h4, h5, h6, p) {
-  box-shadow: inset 0 0 0 0.1px rgb(0 200 200 / 50%);
+  box-shadow: inset 0 0 0 0.3px rgb(100 100 180 / 50%);
   white-space: pre-wrap;
   word-wrap: break-word;
   line-height: 1.5em;
@@ -97,8 +97,7 @@ p {
     90%,
     transparent
   );
-  /* border-radius: 0px 9999px 9999px 0px; */
-
+  border-radius: 0px 9999px 9999px 0px;
   left: 0;
   top: 0;
   transition-property: left, top;
