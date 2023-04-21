@@ -6,12 +6,8 @@
     "test": {
       "outputs": ["coverage/**"]
     },
-    "ui#dev": {
+    "dev": {
       "cache": false
-    },
-    "web#dev": {
-      "cache": false,
-      "dependsOn": ["ui#dev"]
     },
     "desktop#dev": {
       "cache": false,
@@ -19,10 +15,6 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "web#build": {
-      "dependsOn": ["ui#build"],
       "outputs": ["dist/**"]
     },
     "desktop#build": {

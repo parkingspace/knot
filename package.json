@@ -3,16 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "test:web": "turbo run --filter=web test",
-    "dev:web": "turbo run --filter=web dev",
-    "dev:desktop": "turbo run --filter=desktop dev",
     "build": "turbo run build",
-    "build:web": "turbo run --filter=web build",
-    "build:desktop": "pnpm --filter desktop build",
-    "kill": "pm2 kill",
-    "prepare": "husky install"
+    "web": "pnpm --filter web --",
+    "desktop": "turbo run --filter=desktop --"
   },
   "devDependencies": {
     "dprint": "^0.35.4",
@@ -22,7 +18,8 @@
   },
   "engines": {
     "node": ">=14.0.0",
-    "pnpm": ">=8"
-  },
-  "packageManager": "pnpm@8.0.0"
+    "pnpm": ">=8",
+    "npm": "pnpm",
+    "yarn": "pnpm"
+  }
 }
