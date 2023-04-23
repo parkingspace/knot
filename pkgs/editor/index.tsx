@@ -17,25 +17,31 @@ function Editor() {
     content: `<h1>Hi! This is knot</h1>`,
     onCreate({ editor }) {
       editor.view.dom.spellcheck = false
-      knotCaret = createKnotCaret({ parent: editorRef })
+      knotCaret = createKnotCaret()
       typewriter = createTypewriter({ dom: editor.view.dom })
       editor.view.dom.addEventListener(
         'scroll',
         () => knotCaret.move({ delay: 0, duration: 0 }),
       )
     },
-    onSelectionUpdate({ editor }) {
-      // TODO: set height only when the current line is changed
+    onFocus() {
+      knotCaret.show()
+    },
+    onBlur() {
+      knotCaret.hide()
+    },
+    onDestroy() {
+      knotCaret.destroy()
+    },
+    onSelectionUpdate() {
       typewriter.scroll(
         knotCaret
-          .setHeight(editor.view)
           .move({ delay: 0, duration: 0.2 })
           .y,
       )
     },
-    onUpdate({ editor }) {
+    onUpdate() {
       knotCaret
-        .setHeight(editor.view)
         .move({ delay: 0, duration: 0.2 })
     },
   }))
