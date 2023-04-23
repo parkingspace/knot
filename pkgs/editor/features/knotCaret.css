@@ -1,0 +1,47 @@
+#root {
+  /* caret-color: transparent; */
+}
+
+.knotCaret {
+  position: absolute;
+  pointer-events: none;
+  z-index: 999;
+  background: linear-gradient(
+    0.25turn,
+    rgb(255 255 255 / 100%),
+    10%,
+    rgb(0 255 200 / 10%),
+    60%,
+    rgb(0 100 255 / 20%),
+    90%,
+    transparent
+  );
+  border-radius: 0px 9999px 9999px 0px;
+  left: 0;
+  top: 0;
+  transition-property: left, top;
+  transition-duration: 1s;
+  transition-timing-function: cubic-bezier(0.22, 0.68, 0, 1.21);
+  display: block;
+
+  width: 1px;
+  animation: blink 1s infinite;
+  animation-timing-function: cubic-bezier(0, 3, 1, -2);
+  animation-timing-function: ease-in;
+}
+
+/* carot animation */
+@keyframes blink {
+  0% {
+    opacity: 1;
+    width: 1px;
+  }
+  80% {
+    opacity: 1;
+    width: 1em;
+  }
+  100% {
+    opacity: 0;
+    width: 1px;
+  }
+}

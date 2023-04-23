@@ -1,19 +1,15 @@
 import './editor.css'
-import { createSignal, onMount } from 'solid-js'
 import { createTiptapEditor } from 'solid-tiptap'
-import { FlexContainer, TextArea } from 'ui'
-import extensions from './extensions'
-import redrawKnotCaret from './features/knotCaret'
+import { TextArea } from 'ui'
+
+import { createKnotCaret, KnotCaret } from './features/knotCaret'
+import { createTypewriter, Typewriter } from './features/typewriter'
+import extensions from './tt_extensions'
 
 function Editor() {
-  let editorRef!: HTMLDivElement
-  let caret: HTMLDivElement
-  const [originNode, setOriginNode] = createSignal<HTMLElement | null>(null)
-
-  onMount(() => {
-    caret = document.createElement('div')
-    editorRef.appendChild(caret).classList.add('knotCaret')
-  })
+  let editorRef: HTMLDivElement
+  let knotCaret: KnotCaret
+  let typewriter: Typewriter
 
   createTiptapEditor(() => ({
     element: editorRef,
@@ -21,39 +17,30 @@ function Editor() {
     content: `<h1>Hi! This is knot</h1>`,
     onCreate({ editor }) {
       editor.view.dom.spellcheck = false
+      knotCaret = createKnotCaret({ parent: editorRef })
+      typewriter = createTypewriter({ dom: editor.view.dom })
       editor.view.dom.addEventListener(
         'scroll',
-        () => redrawKnotCaret(caret, originNode),
+        () => knotCaret.move({ delay: 0, duration: 0 }),
       )
     },
     onSelectionUpdate({ editor }) {
-      const view = editor.view
-      const currentPos = view.posAtDOM(
-        view
-          .domAtPos(view.state.selection.head)
-          .node,
-        0,
+      // TODO: set height only when the current line is changed
+      typewriter.scroll(
+        knotCaret
+          .setHeight(editor.view)
+          .move({ delay: 0, duration: 0.2 })
+          .y,
       )
-      const currentDom = view.domAtPos(currentPos).node as HTMLElement
-      setOriginNode(currentDom)
-
-      const caretPos = redrawKnotCaret(caret, originNode)
-      console.log(caretPos)
-
-      if (!caretPos) { return }
-      view.dom.scrollBy({
-        top: caretPos.top - window.innerHeight / 2,
-        left: 0,
-        behavior: 'smooth',
-      })
+    },
+    onUpdate({ editor }) {
+      knotCaret
+        .setHeight(editor.view)
+        .move({ delay: 0, duration: 0.2 })
     },
   }))
 
-  return (
-    <FlexContainer>
-      <TextArea ref={editorRef} />
-    </FlexContainer>
-  )
+  return <TextArea ref={editorRef!} />
 }
 
 export { Editor }
