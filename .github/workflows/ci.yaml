@@ -1,16 +1,16 @@
 name: CI
- 
+
 on:
   push:
     branches:
       - "main"
     paths:
-      - 'apps/**'
-      - 'pkgs/**'
-      - '.github/**'
+      - "apps/**"
+      - "pkgs/**"
+      - ".github/**"
   pull_request:
     types: [opened, synchronize]
- 
+
 jobs:
   build-web:
     name: Build web app
@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/actions/pnpm-install
 
       - name: 🚧 Build & Test
-        run: pnpm build:web && pnpm test:web
+        run: pnpm web build && pnpm web test
 
       - name:  Upload web build
         uses: actions/upload-artifact@v3
@@ -52,8 +52,8 @@ jobs:
       - name: 🌏 Deploy web
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
-          domain: 'ps-knot.surge.sh'
-          project: 'dist/web'
+          domain: "ps-knot.surge.sh"
+          project: "dist/web"
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
 
@@ -100,7 +100,7 @@ jobs:
           path: dist/web
 
       - name: Build Desktop
-        run: pnpm build:desktop
+        run: pnpm desktop build
 
   create-badge:
     needs: build-web
