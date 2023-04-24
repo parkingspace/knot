@@ -3,7 +3,7 @@ import Code from '@tiptap/extension-code'
 export default Code.extend({
   addKeyboardShortcuts() {
     return {
-      'Mod-Alt-C': () => this.editor.commands.toggleCode(),
+      'Mod-i': () => this.editor.commands.toggleCode(),
     }
   },
 })

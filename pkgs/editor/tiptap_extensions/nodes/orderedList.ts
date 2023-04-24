@@ -1,11 +1,17 @@
-import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
 
-export default BulletList
+const orderedList = OrderedList
+  .extend({
+    addKeyboardShortcuts() {
+      return {
+        'Mod-alt-o': () => this.editor.commands.toggleOrderedList(),
+      }
+    },
+  })
   .configure({
-    // Specify the list item name.
-    // Default: 'listItem'
-    itemTypeName: 'listItem',
-
+    HTMLAttributes: {
+      class: 'list-decimal',
+    },
     // Decides whether to keep the marks from a previous line
     // after toggling the list either using inputRule or using the button
     // Default: false
@@ -16,10 +22,5 @@ export default BulletList
     // Default: false
     keepAttributes: true,
   })
-  .extend({
-    addKeyboardShortcuts() {
-      return {
-        'Mod-Alt-8': () => this.editor.commands.toggleBulletList(),
-      }
-    },
-  })
+
+export default orderedList

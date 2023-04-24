@@ -1,9 +1,10 @@
 import Strike from '@tiptap/extension-strike'
 
-export default Strike.extend({
+export default Strike
+.extend({
   addKeyboardShortcuts() {
     return {
-      'Mod-Shift-X': () => this.editor.commands.toggleStrike(),
+      'Mod-Shift-x': () => this.editor.commands.toggleStrike(),
     }
   },
 })

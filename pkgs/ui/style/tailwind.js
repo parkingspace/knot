@@ -13,7 +13,10 @@ module.exports = function(context) {
         },
       },
     },
-    plugins: [require('@kobalte/tailwindcss')],
+    plugins: [
+      require('@kobalte/tailwindcss'),
+      require('@tailwindcss/typography'),
+    ],
   }
 
   return config

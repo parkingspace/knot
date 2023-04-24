@@ -1,6 +1,6 @@
 import bubbleMenu from './bubbleMenu'
-import characterCout from './characterCout'
-// TODO: add yjs support
+import characterCount from './characterCount'
+// TODO: add yjs collaboration support
 // import collaboration from './collaboration'
 // import collaborationCursor from './collaborationCursor'
 import color from './color'
@@ -16,7 +16,7 @@ import typography from './typography'
 
 export default [
   bubbleMenu,
-  characterCout,
+  characterCount,
   // collaboration,
   // collaborationCursor,
   color,

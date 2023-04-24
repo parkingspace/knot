@@ -1,12 +1,26 @@
 import './editor.css'
+import { createSignal } from 'solid-js'
 import { createTiptapEditor } from 'solid-tiptap'
 import { TextArea } from 'ui'
 
+import {
+  KeymapSettingModal,
+  setKeymap,
+  WhichKeyModal,
+} from './features/keybinding'
 import { createKnotCaret, KnotCaret } from './features/knotCaret'
 import { createTypewriter, Typewriter } from './features/typewriter'
-import extensions from './tt_extensions'
+import extensions from './tiptap_extensions'
 
-function Editor() {
+const [showKeybindingModal, setShowKeybindingModal] = createSignal(false)
+const [pressedKey, setPressedKey] = createSignal<string>()
+
+setKeymap({
+  setPressedKey,
+  toggleKeybindingModal: () => setShowKeybindingModal(!showKeybindingModal()),
+})
+
+export function Editor() {
   let editorRef: HTMLDivElement
   let knotCaret: KnotCaret
   let typewriter: Typewriter
@@ -46,7 +60,14 @@ function Editor() {
     },
   }))
 
-  return <TextArea ref={editorRef!} />
+  return (
+    <>
+      <TextArea ref={editorRef!} />
+      <KeymapSettingModal
+        show={showKeybindingModal()}
+        toggle={setShowKeybindingModal}
+      />
+      <WhichKeyModal pressedKey={pressedKey} />
+    </>
+  )
 }
-
-export { Editor }

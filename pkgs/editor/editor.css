@@ -1,6 +1,7 @@
 /*
  * This is temporary stylesheet, 
- * will be removed when figure out how to apply tailwind styles to editor
+ * will be removed when figure out how to apply 
+ * tailwind styles to editor
  * */
 
 html,
@@ -68,7 +69,7 @@ ol {
 }
 
 .ProseMirror :is(h1, h2, h3, h4, h5, h6, p, pre) {
-  box-shadow: inset 0 0 0 0.3px rgb(100 100 180 / 50%);
+  box-shadow: inset 0 0 0 0.3px rgb(255 100 255 / 50%);
   white-space: pre-wrap;
   word-wrap: break-word;
   line-height: 1.5em;
