@@ -1,0 +1,19 @@
+#root {
+  caret-color: transparent;
+}
+
+.knotCaret {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  display: block;
+  pointer-events: none;
+  z-index: 999;
+  /* border-radius: 0px 9999px 9999px 0px; */
+  background: linear-gradient(
+    0.25turn,
+    rgb(255 255 255 / 100%),
+    rgb(100 200 200 / 50%)
+  );
+}

@@ -20,5 +20,6 @@
     "pnpm": ">=8",
     "npm": "pnpm",
     "yarn": "pnpm"
-  }
+  },
+  "packageManager": "pnpm@8.0.0"
 }

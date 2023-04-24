@@ -5,7 +5,11 @@ const Container: ParentComponent = (props) => {
 }
 
 const FlexContainer: ParentComponent = (props) => {
-  return <div>{props.children}</div>
+  return (
+    <div class='overflow-hidden flex flex-col w-full h-full m-0 p-0'>
+      {props.children}
+    </div>
+  )
 }
 
 export { Container, FlexContainer }

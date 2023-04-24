@@ -19,15 +19,15 @@
 │  └─ writer     --Writing stuff
 │     ├─ web
 │     └─ desktop
-├─ pkgs          --Internal common libraries
-│  ├─ core       --Text editor core
+├─ pkgs
+│  ├─ editor     --Text editor core
+│  ├─ config     --Common config files
 │  ├─ ui         --User interface
 │  ├─ ai         --AI api
 │  ├─ db         --DB configs and models
 │  ├─ auth       --Auth configs
 │  └─ sync       --File Synchronization
-├─ docs          --Documents for user and contributor
-├─ logs          --Auto generated log files
+├─ docs          --Documents for contributors
 └─ dist          --Build output
 ```
 
@@ -66,86 +66,40 @@
 
 `pnpm lint` will format all files recursively. you can find the format rules at `dprint.json`
 
-### Neovim format on save setup
+### Format on save
+
+#### Neovim
 
 [wiki](https://github.com/krapjost/knit/wiki)
 
 ## Todo
 
-- Editor
-  - Core
-    - Keybinding
-    - Input-rules
-    - history (undo, redo)
-  - User Interface
-    - Theme
-      - Dark
-      - Light
-      - Sepia
-      - etc …
-    - Dumb Components
-      - Breadcrumbs
-      - Tooltip
-      - Button
-        - TextButton
-          - ModalButton
-        - IconButton
-        - ListButton
-          - SidebarButton
-      - Modal
-        - CommandModal
-        - SearchModal
-        - SettingModal
-      - etc …
-  - Commands
-    - Ask AI
-    - Toggle Mobile preview
-    - Toggle Desktop preview
-    - etc …
-  - Search
-    - File search
-    - Keybinding search
-    - Command search
-  - Setting
-    - Local only setting
-    - Synchronized setting ( for logged in user )
-    - Theme
-    - Locale
-    - Font
-  - Synchronization
-    - Local File-Sync
-      - Browser
-        - Browser Origin Private File System API
-      - PWA
-        - Browser File System Access API
-      - Tauri or Electron
-        - Native File System API
-    - Cloud File-Sync
-      - Google
-      - Apple
-      - Dropbox
-      - Hyle
-  - AI
-    - Fix Spelling & Grammar
-    - Summarize
-    - Create Outline
-    - Brainstorm
-    - Feedback
-    - Snowflake framework
-  - Share
-    - Manage privileges by the given URI.
-    - View-only
-    - Real-time Co-edit
-    - Comment
-  - Publish
-    - Preview
-      - Mobile-view
-      - Desktop-view
-      - Paper-view
-    - Typesetting
-      - Predefined Template
-      - User-defined template.
-        - Share public - server
-        - Private ( default ) - local
-- Authentication
-  - OAuth2 (Ory)
+#### editor
+
+- [x] Markdown editing
+- [ ] Synchronized editing with sidebar
+- [ ] Keybinding
+  - [x] Common keybinding
+  - [ ] Knot keybinding
+  - [ ] which-key
+- [ ] Collaborative editing
+  - [ ] Share link
+- [ ] Persistence
+- [ ] File sync
+  - [ ] Local
+  - [ ] Cloud
+- [ ] Togglable feature
+- [ ] Preview window
+- [ ] Typewriter-like auto scroll
+- [ ] Full-text search
+  - [ ] Search and move
+  - [ ] Search and paste
+- [ ] Backlink
+  - [ ] Graph view
+
+#### UI
+
+- [ ] Theme
+- [ ] Sidebar
+- [ ] Modal
+- [ ] Which-key
