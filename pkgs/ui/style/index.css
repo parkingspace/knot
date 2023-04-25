@@ -8,3 +8,8 @@ body,
   overflow: hidden;
   height: 100%;
 }
+
+:root {
+  --editor-padding: 0 calc(96px + env(safe-area-inset-right, 96px)) 0
+    calc(96px + env(safe-area-inset-left, 96px));
+}

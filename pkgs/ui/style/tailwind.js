@@ -11,6 +11,9 @@ module.exports = function(context) {
         fontFamily: {
           sans: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans],
         },
+        padding: {
+          'editor': 'var(--editor-padding)',
+        },
       },
     },
     plugins: [
