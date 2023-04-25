@@ -28,7 +28,12 @@ export function Editor() {
   createTiptapEditor(() => ({
     element: editorRef,
     extensions: extensions,
-    content: `<h1>Hi! This is knot</h1>`,
+    editorProps: {
+      attributes: {
+        class:
+          'prose md:prose-lg lg:prose-xl leading-relaxed font-serif text-gray-700 w-full outline-transparent mt-10 prose-p:m-0 pl-editor-left p-editor',
+      },
+    },
     onCreate({ editor }) {
       editor.view.dom.spellcheck = false
       knotCaret = createKnotCaret()
@@ -64,11 +69,6 @@ export function Editor() {
     <BaseLayout>
       <Sidebar />
       <TextArea ref={editorRef!} />
-      <KeymapSettingModal
-        show={showKeybindingModal()}
-        toggle={setShowKeybindingModal}
-      />
-      <WhichKeyModal pressedKey={pressedKey} />
     </BaseLayout>
   )
 }

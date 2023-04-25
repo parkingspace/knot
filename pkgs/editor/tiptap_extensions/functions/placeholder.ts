@@ -5,15 +5,6 @@ import Placeholder from '@tiptap/extension-placeholder'
 
 // https://tiptap.dev/api/extensions/placeholder
 export default Placeholder.configure({
-  showOnlyWhenEditable: true,
-  showOnlyCurrent: true,
-  includeChildren: true,
-
-  // The added CSS class if the editor is empty.
-  emptyEditorClass: 'is-editor-empty',
-  // The added CSS class if the node is empty.
-  emptyNodeClass: 'is-empty',
-
   // The placeholder text added as data-placeholder attribute.
   placeholder: (props: {
     editor: Editor
@@ -22,8 +13,8 @@ export default Placeholder.configure({
     hasAnchor: boolean
   }) => {
     if (props.node.type.name === 'heading') {
-      return 'Default title'
+      return `Heading ${props.node.attrs.level}`
     }
-    return 'Default content'
+    return 'Start writing...'
   },
 })

@@ -5,7 +5,10 @@ type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 const TextArea: Component = (props) => {
   return (
-    <div class='h-full p-0 m-0' ref={props.ref}>
+    <div
+      class='w-full h-full flex justify-center overflow-auto'
+      ref={props.ref}
+    >
       {props.children}
     </div>
   )
