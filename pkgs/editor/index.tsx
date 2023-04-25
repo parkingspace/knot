@@ -1,4 +1,5 @@
 import './editor.css'
+import clsx from 'clsx'
 import { createSignal } from 'solid-js'
 import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Sidebar, TextArea } from 'ui'
@@ -25,13 +26,16 @@ export function Editor() {
   let knotCaret: KnotCaret
   let typewriter: Typewriter
 
+  const editorStyle = clsx(
+    'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full min-h-screen h-fit p-editor',
+  )
+
   createTiptapEditor(() => ({
     element: editorRef,
     extensions: extensions,
     editorProps: {
       attributes: {
-        class:
-          'prose md:prose-lg lg:prose-xl leading-relaxed font-serif text-gray-700 w-full outline-transparent mt-10 prose-p:m-0 pl-editor-left p-editor',
+        class: editorStyle,
       },
     },
     onCreate({ editor }) {

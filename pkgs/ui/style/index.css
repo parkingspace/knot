@@ -6,10 +6,10 @@ html,
 body,
 #root {
   overflow: hidden;
-  height: 100%;
+  height: 100vh;
 }
 
 :root {
-  --editor-padding: 0 calc(96px + env(safe-area-inset-right, 96px)) 0
+  --editor-padding: 4rem calc(96px + env(safe-area-inset-right, 96px)) 10rem
     calc(96px + env(safe-area-inset-left, 96px));
 }
