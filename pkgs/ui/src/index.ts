@@ -1,7 +1,3 @@
 export * from './BaseLayout'
-export * from './Container'
-export * from './Flex'
-export * from './KobalteSample'
 export * from './Sidebar'
-export * from './Spacer'
 export * from './TextArea'
