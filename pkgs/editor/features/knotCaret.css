@@ -1,6 +1,7 @@
 /* border-radius: 0px 9999px 9999px 0px; */
 #root {
-  caret-color: transparent;
+  /* caret-color: transparent; */
+  caret-color: rgb(0 0 0);
 }
 
 .knotCaret {
