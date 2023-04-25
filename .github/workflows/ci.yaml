@@ -50,7 +50,7 @@ jobs:
           path: dist/web
 
       - name: 🌏 Deploy web
-        uses: dswistowski/surge-sh-action@v1.0.1
+        uses: dswistowski/surge-sh-action@v1.0.2
         with:
           domain: "ps-knot.surge.sh"
           project: "dist/web"
