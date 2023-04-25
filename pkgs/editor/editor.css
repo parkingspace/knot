@@ -3,14 +3,6 @@
  * will be removed when figure out how to apply 
  * tailwind styles to editor
  * */
-
-html,
-body,
-#root {
-  overflow: hidden;
-  height: 100%;
-}
-
 #root {
   font-size: 21px;
 }
@@ -18,15 +10,19 @@ body,
 h1 {
   font-size: 2em;
 }
+
 h2 {
   font-size: 1.7em;
 }
+
 h3 {
   font-size: 1.35em;
 }
+
 p {
   font-size: 1em;
 }
+
 code {
   font-size: 0.8em;
 }
@@ -35,6 +31,7 @@ ul {
   list-style-type: disc;
   margin-left: 2em;
 }
+
 ol {
   list-style-type: decimal;
   margin-left: 2em;

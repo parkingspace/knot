@@ -1,3 +1,4 @@
+/* border-radius: 0px 9999px 9999px 0px; */
 #root {
   caret-color: transparent;
 }
@@ -10,7 +11,6 @@
   display: block;
   pointer-events: none;
   z-index: 999;
-  /* border-radius: 0px 9999px 9999px 0px; */
   background: linear-gradient(
     0.25turn,
     rgb(255 255 255 / 100%),
