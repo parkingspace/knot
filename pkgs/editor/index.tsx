@@ -1,7 +1,7 @@
 import './editor.css'
 import { createSignal } from 'solid-js'
 import { createTiptapEditor } from 'solid-tiptap'
-import { TextArea } from 'ui'
+import { BaseLayout, Sidebar, TextArea } from 'ui'
 
 import {
   KeymapSettingModal,
@@ -61,13 +61,14 @@ export function Editor() {
   }))
 
   return (
-    <>
+    <BaseLayout>
+      <Sidebar />
       <TextArea ref={editorRef!} />
       <KeymapSettingModal
         show={showKeybindingModal()}
         toggle={setShowKeybindingModal}
       />
       <WhichKeyModal pressedKey={pressedKey} />
-    </>
+    </BaseLayout>
   )
 }
