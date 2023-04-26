@@ -1,11 +1,10 @@
-// TODO: Make this file as single entry point as solid signal.
 import type { SingleCommands } from '@tiptap/core'
 /**
  * This is a list of all the commands that are available in the editor.
  * The commands are grouped by their category.
  *
  * mod is a meta key,
- * commandKey key on macOS
+ * Command key on macOS
  * Control key on Windows and Linux.
  *
  * @category Commands
@@ -13,17 +12,21 @@ import type { SingleCommands } from '@tiptap/core'
 
 type CommandKey = keyof SingleCommands
 export type EditorShortcuts = {
-  [key: string]: { key: string; commandKey: CommandKey; description: string }[]
+  [key: string]: {
+    key: string
+    commandKey: CommandKey
+    description: string
+  }[]
 }
 
 export const editorShortcuts: EditorShortcuts = {
   'paragraph': [{
-    key: 'Mod-Alt-0',
+    key: 'Alt-0',
     commandKey: 'setParagraph',
-    description: 'Transforms all selected nodes to paragraphs.',
+    description: 'Transforms node to paragraphs.',
   }],
   'listItem': [{
-    key: 'Enter',
+    key: 'Shift-Enter',
     commandKey: 'splitListItem',
     description: 'split list item',
   }, {
@@ -60,18 +63,11 @@ export const editorShortcuts: EditorShortcuts = {
     commandKey: 'toggleBulletList',
     description: 'toggle a bullet list',
   }],
-  'hardBreak': [
-    {
-      key: 'Mod-Enter',
-      commandKey: 'setHardBreak',
-      description: 'set hard break',
-    },
-    {
-      key: 'Mod-Shift-Enter',
-      commandKey: 'setHardBreak',
-      description: 'set hard break',
-    },
-  ],
+  'hardBreak': [{
+    key: 'Mod-Shift-Enter',
+    commandKey: 'setHardBreak',
+    description: 'set hard break',
+  }],
   'bold': [{
     key: 'Mod-b',
     commandKey: 'toggleBold',
@@ -92,7 +88,7 @@ export const editorShortcuts: EditorShortcuts = {
     commandKey: 'toggleUnderline',
     description: 'toggle an underline mark',
   }],
-  // TODO: toggle linke needs to wrap with custom ui to set href
+  // TODO: toggle link needs to wrap with custom ui to set href
   'link': [{
     key: 'Mod-l',
     commandKey: 'toggleLink',
@@ -131,16 +127,6 @@ export const editorShortcuts: EditorShortcuts = {
       description: 'removes any font color',
     },
   ],
-  // 'focus': [{
-  //   key: '',
-  //   commandKey: 'focus',
-  //   description: '',
-  // }],
-  // 'fontFamily': [{
-  //   key: '',
-  //   commandKey: '',
-  //   description: '',
-  // }],
   'history': [
     {
       key: 'Mod-z',
@@ -175,23 +161,4 @@ export const editorShortcuts: EditorShortcuts = {
       description: 'align text justify',
     },
   ],
-}
-
-// TODO: merge with editorShortcuts
-export const keymapGroup: {
-  [name: string]: { key: string; description: string }[]
-} = {
-  'ctrl': [
-    { key: 'a', description: 'select all text' },
-    { key: 'b', description: 'bold' },
-    { key: 'c', description: 'copy' },
-    { key: 'd', description: 'duplicate line' },
-    { key: 'h', description: 'replace' },
-    { key: 'i', description: 'italic' },
-    { key: 'k', description: 'insert link' },
-    { key: 'm', description: 'toggle markdown preview' },
-  ],
-  'ctrl+shift': [],
-  'alt': [],
-  'alt+shift': [],
 }
