@@ -29,6 +29,7 @@ export function Editor() {
       extensions: extensions,
       editorProps: {
         attributes: {
+          id: 'document',
           class: editorStyle,
         },
       },

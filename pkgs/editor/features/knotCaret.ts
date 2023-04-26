@@ -78,10 +78,16 @@ export class KnotCaret extends HTMLElement {
    * @memberof knotCaret
    */
   #getDefaultCaretRect(): { x: number; y: number; height: number } | undefined {
-    const s = document.getSelection()
-    if (!s) { return }
-    const r = s.rangeCount && s.getRangeAt(0)
-    if (!r) { return }
+    let r
+
+    if (document.activeElement && document.activeElement.id === 'document') {
+      r = document.getSelection()?.getRangeAt(0)
+    }
+
+    if (!r) {
+      return
+    }
+
     const node = r.startContainer
     const content = node.textContent
     const offset = r.startOffset
@@ -100,6 +106,7 @@ export class KnotCaret extends HTMLElement {
     rect = r2.getBoundingClientRect()
     return { x: rect.right + pageOffset.x, y: rect.top, height: rect.height }
   }
+
   hide() {
     this.style.visibility = 'hidden'
   }
