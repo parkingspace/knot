@@ -43,9 +43,15 @@ export function Editor() {
           'scroll',
           () => knotCaret.move({ delay: 0, duration: 0 }),
         )
+        editor.view.dom.addEventListener(
+          'focus',
+          () => knotCaret.move({ delay: 0, duration: 0 }),
+        )
+
         editor.view.dom.spellcheck = false
       },
       onFocus() {
+        knotCaret.move({ delay: 0, duration: 0.0 })
         knotCaret.show()
       },
       onBlur() {

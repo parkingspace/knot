@@ -50,6 +50,7 @@ export class KnotCaret extends HTMLElement {
 
   connectedCallback() {
     this.className = 'knotCaret'
+    this.move({ delay: 0, duration: 0.0 })
   }
 
   /**
