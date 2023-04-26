@@ -5,7 +5,7 @@ import Text from '@tiptap/extension-text'
 
 import Blockquote from './blockQuote'
 import BulletList from './bulletList'
-import Document from './Document'
+import Document from './document'
 import HardBreak from './hardBreak'
 //  FIX: lowlight is not working
 import CodeBlock from './codeBlock'
