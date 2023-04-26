@@ -1,12 +1,23 @@
 import './knotCaret.css'
 
-// TODO: animation could be better if stopped while typing.
-const blinkAnimation = {
-  opacity: [0, 1],
-  offset: [0, 1],
-}
+// TODO: Pause animation when user is typing
+const blinkAnimation = [
+  {
+    opacity: 0,
+    easing: 'ease-in',
+  },
+  {
+    opacity: 1,
+    easing: 'ease-out',
+  },
+  {
+    opacity: 0,
+    easing: 'ease-in',
+  },
+]
+
 const blinkTiming = {
-  duration: 1200,
+  duration: 1600,
   iterations: Infinity,
 }
 
@@ -17,7 +28,8 @@ const blinkTiming = {
 // and only show when editor is focused
 export function createKnotCaret() {
   const caret = document.createElement('knot-caret')
-  caret.animate(blinkAnimation, blinkTiming)
+  // animation is disabled for now
+  // caret.animate(blinkAnimation, blinkTiming)
   const root = document.getElementById('root') ?? document.body
   root.appendChild(caret)
   return caret as KnotCaret
