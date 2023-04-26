@@ -1,20 +1,21 @@
-/* border-radius: 0px 9999px 9999px 0px; */
 #root {
-  /* caret-color: transparent; */
-  caret-color: rgb(0 0 0);
+  caret-color: transparent;
 }
 
 .knotCaret {
   position: absolute;
   left: 0;
   top: 0;
-  width: 2px;
+  width: 4px;
   display: block;
   pointer-events: none;
+  border-radius: 0.5rem;
   z-index: 999;
-  background: linear-gradient(
-    0.25turn,
-    rgb(255 255 255 / 100%),
-    rgb(100 200 200 / 50%)
-  );
+  /* background: linear-gradient( */
+  /*   0.25turn, */
+  /*   rgb(255 255 255 / 100%), */
+  /*   rgb(100 200 200 / 50%) */
+  /* ); */
+  /* TODO: Choose a color, make it as a variable */
+  background-color: rgb(31 41 55);
 }
