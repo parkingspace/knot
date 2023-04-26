@@ -36,7 +36,7 @@ export function Editor() {
   createTiptapEditor(() => ({
     element: editorRef,
     extensions: extensions,
-    content: sampleText,
+    // content: sampleText,
     editorProps: {
       attributes: {
         class: editorStyle,

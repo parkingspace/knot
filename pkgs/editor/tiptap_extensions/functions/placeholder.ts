@@ -13,6 +13,9 @@ export default Placeholder.configure({
     hasAnchor: boolean
   }) => {
     if (props.node.type.name === 'heading') {
+      if (props.pos === 0) {
+        return 'Untitled'
+      }
       return `Heading ${props.node.attrs.level}`
     }
     return 'Start writing...'

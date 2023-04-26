@@ -1,11 +1,11 @@
 // essential nodes that are required for the editor to work
-import Document from '@tiptap/extension-document'
 import ListItem from '@tiptap/extension-list-item'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 
 import Blockquote from './blockQuote'
 import BulletList from './bulletList'
+import Document from './Document'
 import HardBreak from './hardBreak'
 //  FIX: lowlight is not working
 import CodeBlock from './codeBlock'
