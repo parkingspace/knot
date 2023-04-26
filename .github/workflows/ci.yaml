@@ -57,51 +57,6 @@ jobs:
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
 
-  build-desktop:
-    needs: build-web
-    name: Build ${{ matrix.platform }} app
-    runs-on: ${{ matrix.platform }}
-    strategy:
-      fail-fast: true
-      matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: 🔧 Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 17
-
-      - name: 📥 Install pnpm
-        uses: ./.github/actions/pnpm-install
-
-      - name: 🦀 Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
-          components: rustfmt, rust-src
-
-      - name: Run 'setup-tauri.sh' script
-        if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-        run: ./.github/scripts/setup-tauri.sh
-
-      - name: Run 'setup-tauri.ps1' script
-        if: matrix.platform == 'windows-latest'
-        run: ./.github/scripts/setup-tauri.ps1 -ci
-
-      - name:  Download web build
-        uses: actions/download-artifact@v3
-        with:
-          name: web-build
-          path: dist/web
-
-      - name: Build Desktop
-        run: pnpm desktop build
-
   create-badge:
     needs: build-web
     name: Create badge
