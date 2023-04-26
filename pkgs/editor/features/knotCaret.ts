@@ -35,6 +35,7 @@ export function createKnotCaret() {
   return caret as KnotCaret
 }
 
+// FIX: caret is not positioned correctly when the editor is scrolled
 /**
  * KnotCaret is a custom element that is used to customize the caret of the editor.
  * @class knotCaret
