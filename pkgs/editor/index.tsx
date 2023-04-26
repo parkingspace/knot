@@ -60,12 +60,16 @@ export function Editor() {
       onDestroy() {
         knotCaret.destroy()
       },
-      onSelectionUpdate() {
+      onSelectionUpdate({ editor }) {
         typewriter.scroll(
           knotCaret
             .move({ delay: 0, duration: 0.2 })
             .y,
         )
+
+        editor.state.selection.from === editor.state.selection.to
+          ? knotCaret.show()
+          : knotCaret.hide()
       },
       onUpdate() {
         knotCaret
