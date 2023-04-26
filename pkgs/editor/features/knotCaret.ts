@@ -31,6 +31,7 @@ export function createKnotCaret() {
   // animation is disabled for now
   // caret.animate(blinkAnimation, blinkTiming)
   const root = document.getElementById('root') ?? document.body
+
   root.appendChild(caret)
   return caret as KnotCaret
 }
@@ -122,13 +123,16 @@ export class KnotCaret extends HTMLElement {
   }
 
   hide() {
-    this.style.visibility = 'hidden'
+    this.style.display = 'none'
   }
+
   show() {
-    this.style.visibility = 'visible'
+    this.style.display = 'block'
   }
+
   destroy() {
     this.remove()
   }
 }
+
 customElements.define('knot-caret', KnotCaret)
