@@ -1,22 +1,40 @@
 import type { SingleCommands } from '@tiptap/core'
-/**
- * This is a list of all the commands that are available in the editor.
- * The commands are grouped by their category.
- *
- * mod is a meta key,
- * Command key on macOS
- * Control key on Windows and Linux.
- *
- * @category Commands
- */
 
-type CommandKey = keyof SingleCommands
+export type CommandKey = keyof SingleCommands
 export type EditorShortcuts = {
   [key: string]: {
     key: string
     commandKey: CommandKey
     description: string
   }[]
+}
+
+export function applyEditorShortcuts(that: any) {
+  return editorShortcuts[that.name].reduce(
+    (a, v) => {
+      if (v.commandKey === 'toggleHeading') {
+        const lv: string = v.description.split(' ').pop() || '1'
+        const level: number = parseInt(lv, 10)
+        return {
+          ...a,
+          [v.key]: () => that.editor.commands[v.commandKey]({ level }),
+        }
+      }
+
+      if (v.commandKey === 'setTextAlign') {
+        const direction = v.description.split(' ').pop() || 'left'
+        return {
+          ...a,
+          [v.key]: () => that.editor.commands[v.commandKey](direction),
+        }
+      }
+      return {
+        ...a,
+        [v.key]: () => that.editor.commands[v.commandKey](),
+      }
+    },
+    {},
+  )
 }
 
 export const editorShortcuts: EditorShortcuts = {
@@ -41,17 +59,25 @@ export const editorShortcuts: EditorShortcuts = {
   'heading': [{
     key: 'Mod-Alt-1',
     commandKey: 'toggleHeading',
-    description: 'toggle heading node',
+    description: 'toggle heading 1',
+  }, {
+    key: 'Mod-Alt-2',
+    commandKey: 'toggleHeading',
+    description: 'toggle heading 2',
+  }, {
+    key: 'Mod-Alt-3',
+    commandKey: 'toggleHeading',
+    description: 'toggle heading 3',
   }],
   'blockquote': [{
     key: 'Mod-Shift-b',
     commandKey: 'toggleBlockquote',
-    description: 'toggle the blockquote',
+    description: 'toggle blockquote',
   }],
   'codeBlock': [{
     key: 'Mod-Alt-c',
     commandKey: 'toggleCodeBlock',
-    description: 'toggle the code block',
+    description: 'toggle code block',
   }],
   'orderedList': [{
     key: 'Mod-Shift-7',
@@ -141,7 +167,7 @@ export const editorShortcuts: EditorShortcuts = {
   ],
   'textAlign': [
     {
-      key: 'Mod-Shift-l',
+      key: 'Mod-Shift-h',
       commandKey: 'setTextAlign',
       description: 'align text to left',
     },
@@ -151,12 +177,12 @@ export const editorShortcuts: EditorShortcuts = {
       description: 'align text to center',
     },
     {
-      key: 'Mod-Shift-r',
+      key: 'Mod-Shift-l',
       commandKey: 'setTextAlign',
       description: 'align text to right',
     },
     {
-      key: 'Mod-Shift-j',
+      key: 'Mod-Shift-k',
       commandKey: 'setTextAlign',
       description: 'align text justify',
     },

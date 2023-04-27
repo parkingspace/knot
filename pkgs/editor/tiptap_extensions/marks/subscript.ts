@@ -1,9 +1,8 @@
 import Subscript from '@tiptap/extension-subscript'
+import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
 
 export default Subscript.extend({
   addKeyboardShortcuts() {
-    return {
-      'Mod-,': () => this.editor.commands.toggleSubscript(),
-    }
+    return applyEditorShortcuts(this)
   },
 })

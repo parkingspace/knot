@@ -1,11 +1,10 @@
 import OrderedList from '@tiptap/extension-ordered-list'
+import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
 
 const orderedList = OrderedList
   .extend({
     addKeyboardShortcuts() {
-      return {
-        'Mod-alt-o': () => this.editor.commands.toggleOrderedList(),
-      }
+      return applyEditorShortcuts(this)
     },
   })
   .configure({
@@ -15,12 +14,12 @@ const orderedList = OrderedList
     // Decides whether to keep the marks from a previous line
     // after toggling the list either using inputRule or using the button
     // Default: false
-    keepMarks: true,
+    keepMarks: false,
 
     // Decides whether to keep the attributes from a previous line
     // after toggling the list either using inputRule or using the button
     // Default: false
-    keepAttributes: true,
+    keepAttributes: false,
   })
 
 export default orderedList

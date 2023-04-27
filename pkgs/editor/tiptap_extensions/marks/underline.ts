@@ -1,9 +1,8 @@
 import Underline from '@tiptap/extension-underline'
+import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
 
 export default Underline.extend({
   addKeyboardShortcuts() {
-    return {
-      'Mod-u': () => this.editor.commands.toggleUnderline(),
-    }
+    return applyEditorShortcuts(this)
   },
 })

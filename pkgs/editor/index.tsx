@@ -4,11 +4,11 @@ import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Sidebar, TextArea } from 'ui'
 
 import { onMount } from 'solid-js'
-import { WhichKeyModal } from './features/keybinding'
+import { WhichKeyModal } from './features/keymap/whichkeyModal'
 import {
-  createEditorKeymap,
+  setKeyboardEventListeners,
   useEditorKeymap,
-} from './features/keybinding/keymapStore'
+} from './features/keymap/keymapStore'
 import { createKnotCaret, KnotCaret } from './features/knotCaret'
 import { createTypewriter, Typewriter } from './features/typewriter'
 import extensions from './tiptap_extensions'
@@ -35,19 +35,20 @@ export function Editor() {
       },
       onCreate({ editor }) {
         if (keymap) {
-          createEditorKeymap(editor, keymap)
+          setKeyboardEventListeners(editor, keymap)
         }
         knotCaret = createKnotCaret()
-        typewriter = createTypewriter({ dom: editor.view.dom })
-        editor.view.dom.addEventListener(
+        const scrollableDom = editor.view.dom.parentElement
+        if (!scrollableDom) { return }
+        typewriter = createTypewriter({ dom: scrollableDom })
+        scrollableDom.addEventListener(
           'scroll',
           () => knotCaret.move({ delay: 0, duration: 0 }),
         )
-        editor.view.dom.addEventListener(
+        scrollableDom.addEventListener(
           'focus',
           () => knotCaret.move({ delay: 0, duration: 0 }),
         )
-
         editor.view.dom.spellcheck = false
       },
       onFocus() {

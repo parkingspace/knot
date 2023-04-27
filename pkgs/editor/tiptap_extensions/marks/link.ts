@@ -1,9 +1,9 @@
 import Link from '@tiptap/extension-link'
+import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
 
 export default Link.extend({
-  // https://tiptap.dev/api/marks/link#keyboard-shortcuts
-  // Doesn’t have a keyboard shortcut
+  // TODO: https://tiptap.dev/api/marks/link#keyboard-shortcuts
   addKeyboardShortcuts() {
-    return {}
+    return applyEditorShortcuts(this)
   },
 })

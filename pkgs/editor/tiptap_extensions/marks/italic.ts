@@ -1,9 +1,8 @@
 import Italic from '@tiptap/extension-italic'
+import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
 
 export default Italic.extend({
   addKeyboardShortcuts() {
-    return {
-      'Mod-i': () => this.editor.commands.toggleItalic(),
-    }
+    return applyEditorShortcuts(this)
   },
 })

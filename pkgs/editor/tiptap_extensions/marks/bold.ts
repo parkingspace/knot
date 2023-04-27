@@ -1,9 +1,8 @@
 import Bold from '@tiptap/extension-bold'
+import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
 
 export default Bold.extend({
   addKeyboardShortcuts() {
-    return {
-      'Mod-b': () => this.editor.commands.toggleBold(),
-    }
+    return applyEditorShortcuts(this)
   },
 })

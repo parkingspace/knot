@@ -1,11 +1,10 @@
 import BulletList from '@tiptap/extension-bullet-list'
+import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
 
 const bulletlist = BulletList
   .extend({
     addKeyboardShortcuts() {
-      return {
-        'Mod-alt-u': () => this.editor.commands.toggleBulletList(),
-      }
+      return applyEditorShortcuts(this)
     },
   })
   .configure({
