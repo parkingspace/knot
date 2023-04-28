@@ -1,3 +1,4 @@
+import { Button as KButton } from '@kobalte/core'
 import { cva, VariantProps } from 'class-variance-authority'
 
 import { JSX } from 'solid-js'
@@ -24,11 +25,12 @@ const button = cva([
 export const Button: Component = (props) => {
   const { size } = props
   return (
-    <button
+    <KButton.Root
+      onclick={props.onclick}
       class={button({ size })}
     >
       {props
         .children}
-    </button>
+    </KButton.Root>
   )
 }
