@@ -1,4 +1,5 @@
-import type { SingleCommands } from '@tiptap/core'
+import type { Editor, SingleCommands } from '@tiptap/core'
+import { Level } from '@tiptap/extension-heading'
 
 export type CommandKey = keyof SingleCommands
 export type EditorShortcuts = {
@@ -10,22 +11,39 @@ export type EditorShortcuts = {
 }
 
 export function applyEditorShortcuts(that: any) {
+  if (!editorShortcuts[that.name]) { return {} }
   return editorShortcuts[that.name].reduce(
     (a, v) => {
       if (v.commandKey === 'toggleHeading') {
         const lv: string = v.description.split(' ').pop() || '1'
-        const level: number = parseInt(lv, 10)
+        const level: Level = parseInt(lv, 10) as Level
         return {
           ...a,
-          [v.key]: () => that.editor.commands[v.commandKey]({ level }),
+          [v.key]: (e: { editor: Editor }) =>
+            e.editor.commands.toggleHeading({ level }),
         }
       }
-
       if (v.commandKey === 'setTextAlign') {
         const direction = v.description.split(' ').pop() || 'left'
         return {
           ...a,
-          [v.key]: () => that.editor.commands[v.commandKey](direction),
+          [v.key]: (e: { editor: Editor }) =>
+            e.editor.commands.setTextAlign(direction),
+        }
+      }
+      if (v.commandKey === 'setParagraph') {
+        return {
+          ...a,
+          [v.key]: (e: { editor: Editor }) => e.editor.commands.setParagraph(),
+        }
+      }
+      if (v.commandKey === 'splitListItem') {
+        return {
+          ...a,
+          [v.key]: (e: { editor: Editor }) => {
+            return e.editor.can().splitListItem('listItem')
+              && e.editor.commands.splitListItem('listItem')
+          },
         }
       }
       return {
@@ -39,12 +57,12 @@ export function applyEditorShortcuts(that: any) {
 
 export const editorShortcuts: EditorShortcuts = {
   'paragraph': [{
-    key: 'Alt-0',
+    key: 'Mod-Alt-0',
     commandKey: 'setParagraph',
-    description: 'Transforms node to paragraphs.',
+    description: 'Transforms node to paragraph',
   }],
   'listItem': [{
-    key: 'Shift-Enter',
+    key: 'Enter',
     commandKey: 'splitListItem',
     description: 'split list item',
   }, {
@@ -115,11 +133,11 @@ export const editorShortcuts: EditorShortcuts = {
     description: 'toggle an underline mark',
   }],
   // TODO: toggle link needs to wrap with custom ui to set href
-  'link': [{
-    key: 'Mod-l',
-    commandKey: 'toggleLink',
-    description: 'open toggle link modal',
-  }],
+  // 'link': [{
+  //   key: 'Mod-l',
+  //   commandKey: 'toggleLink',
+  //   description: 'open toggle link modal',
+  // }],
   'strike': [{
     key: 'Mod-Shift-x',
     commandKey: 'toggleStrike',
