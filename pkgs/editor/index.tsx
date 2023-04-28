@@ -48,13 +48,13 @@ export function Editor() {
   }
 
   return (
-    <>
-      <Nav isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <BaseLayout isSidebarOpen={isSidebarOpen}>
-        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+    <BaseLayout isSidebarOpen={isSidebarOpen}>
+      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <div>
+        <Nav isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <TextArea ref={editorRef!} />
-        <WhichKeyModal />
-      </BaseLayout>
-    </>
+      </div>
+      <WhichKeyModal />
+    </BaseLayout>
   )
 }
