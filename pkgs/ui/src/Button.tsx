@@ -12,7 +12,7 @@ const button = cva([
 ], {
   variants: {
     size: {
-      icon: ['p-1'],
+      icon: ['p-2'],
       sm: ['text-sm', 'py-1', 'px-2'],
       md: ['text-base', 'py-2', 'px-4'],
     },
