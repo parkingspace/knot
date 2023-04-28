@@ -7,7 +7,7 @@ type propType = JSX.HTMLAttributes<HTMLButtonElement> & ButtonProps
 type Component = (props: propType & { ref?: HTMLButtonElement }) => JSX.Element
 
 const button = cva([
-  'cursor-pointer text-neutral-500 rounded-md outline-none items-center transition-colors',
+  'cursor-pointer text-neutral-600 rounded-md outline-none items-center transition-colors',
   'hover:bg-neutral-200',
 ], {
   variants: {

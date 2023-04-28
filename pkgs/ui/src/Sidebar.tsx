@@ -1,7 +1,7 @@
-import { IconLayoutSidebarLeftCollapse } from '@tabler/icons-solidjs'
 import clsx from 'clsx'
 import { Accessor, JSX } from 'solid-js'
 import { Button } from './Button'
+import { Icon } from './Icon'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>
@@ -26,9 +26,9 @@ const Sidebar: Component = (props) => {
       )}
     >
       {props.children}
-      <div class='flex justify-end p-3'>
+      <div class='flex justify-end p-2'>
         <Button onclick={props.toggleSidebar} size={'icon'}>
-          <IconLayoutSidebarLeftCollapse stroke={'1.2'} />
+          <Icon name='IconLayoutSidebarLeftCollapse' />
         </Button>
       </div>
     </div>
