@@ -1,4 +1,3 @@
-import { IconLayoutSidebarLeftExpand } from '@tabler/icons-solidjs'
 import { Accessor, JSX, Show } from 'solid-js'
 import { Button } from './Button'
 import { Icon } from './Icon'
@@ -20,6 +19,9 @@ const Nav: Component = (props) => {
           </Button>
         </Show>
       </div>
+      <Button size={'icon'}>
+        <Icon name='IconSunFilled' />
+      </Button>
     </div>
   )
 }
