@@ -14,6 +14,10 @@ module.exports = function(context) {
         padding: {
           'editor': 'var(--editor-padding)',
         },
+        gridTemplateColumns: {
+          'with-sidebar': '280px 1fr',
+          'without-sidebar': '0px 1fr',
+        },
       },
     },
     plugins: [
