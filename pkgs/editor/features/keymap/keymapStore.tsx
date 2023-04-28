@@ -100,7 +100,6 @@ function createEditorKeymap() {
 }
 
 export function setKeyboardEventListeners(
-  editor: Editor,
   keymap?: ReturnType<typeof createEditorKeymap>,
 ) {
   if (!keymap) { return }

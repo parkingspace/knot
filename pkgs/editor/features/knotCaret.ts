@@ -1,3 +1,4 @@
+import { Editor } from '@tiptap/core'
 import './knotCaret.css'
 
 // TODO: Pause animation when user is typing
@@ -26,14 +27,42 @@ const blinkTiming = {
 // Idea is, the trailing afterimage is proportional to the distance.
 // TODO: Make caret listen to focus state of editor
 // and only show when editor is focused
-export function createKnotCaret() {
-  const caret = document.createElement('knot-caret')
+export function createKnotCaret(opts: { editor: Editor }) {
+  const { editor } = opts
+  const scrollDom = editor.view.dom.parentElement
+  if (!scrollDom) {
+    throw new Error('Scroll dom not found')
+  }
+  scrollDom.onscroll = () => caret.move()
+  scrollDom.onfocus = () => caret.move()
+
+  const caret = document.createElement('knot-caret') as KnotCaret
   // animation is disabled for now
   // caret.animate(blinkAnimation, blinkTiming)
   const root = document.getElementById('root') ?? document.body
-
   root.appendChild(caret)
-  return caret as KnotCaret
+
+  editor.on('focus', () => {
+    caret.show()
+    caret.move()
+  })
+  editor.on('blur', () => {
+    caret.hide()
+  })
+  editor.on('selectionUpdate', () => {
+    caret.move({ duration: 0.2, delay: 0 })
+    editor.state.selection.from === editor.state.selection.to
+      ? caret.show()
+      : caret.hide()
+  })
+  editor.on('update', () => {
+    caret.move({ duration: 0.2, delay: 0 })
+  })
+  editor.on('destroy', () => {
+    caret.destroy()
+  })
+
+  return caret
 }
 
 // FIX: caret is not positioned correctly when the editor is scrolled
@@ -52,7 +81,7 @@ export class KnotCaret extends HTMLElement {
 
   connectedCallback() {
     this.className = 'knotCaret'
-    this.move({ delay: 0, duration: 0.0 })
+    this.move()
   }
 
   /**
@@ -68,11 +97,11 @@ export class KnotCaret extends HTMLElement {
    * document.body.appendChild(caret)
    * caret.move({ duration: 0.5, delay: 0 })
    */
-  move(opts: {
+  move(opts?: {
     duration: number
     delay: number
   }) {
-    const { duration, delay } = opts
+    const { duration, delay } = opts || { duration: 0.0, delay: 0.0 }
     const { x, y, height } = this.#getDefaultCaretRect()
       || { x: 0, y: 0, height: 0 }
     this.style.height = height + 'px'
