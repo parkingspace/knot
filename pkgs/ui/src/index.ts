@@ -1,4 +1,6 @@
 export * from './BaseLayout'
 export * from './Button'
+export * from './FlexBox'
+export * from './Nav'
 export * from './Sidebar'
 export * from './TextArea'

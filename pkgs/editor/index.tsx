@@ -1,14 +1,14 @@
 import './editor.css'
 import clsx from 'clsx'
 import { createTiptapEditor } from 'solid-tiptap'
-import { BaseLayout, Sidebar, TextArea } from 'ui'
+import { BaseLayout, Nav, Sidebar, TextArea } from 'ui'
 
-import { onMount } from 'solid-js'
-import { WhichKeyModal } from './features/keymap/whichkeyModal'
+import { createSignal, onMount } from 'solid-js'
 import {
   setKeyboardEventListeners,
   useEditorKeymap,
 } from './features/keymap/keymapStore'
+import { WhichKeyModal } from './features/keymap/whichkeyModal'
 import { createKnotCaret, KnotCaret } from './features/knotCaret'
 import { createTypewriter, Typewriter } from './features/typewriter'
 import extensions from './tiptap_extensions'
@@ -79,11 +79,20 @@ export function Editor() {
     }))
   })
 
+  const [isSidebarOpen, setIsSidebarOpen] = createSignal(true)
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen())
+  }
+
   return (
-    <BaseLayout>
-      <Sidebar />
-      <TextArea ref={editorRef!} />
-      <WhichKeyModal />
-    </BaseLayout>
+    <>
+      <Nav isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <BaseLayout isSidebarOpen={isSidebarOpen}>
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <TextArea ref={editorRef!} />
+        <WhichKeyModal />
+      </BaseLayout>
+    </>
   )
 }
