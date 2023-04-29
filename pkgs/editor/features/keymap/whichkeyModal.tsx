@@ -1,18 +1,18 @@
 import './whichkeyModal.css'
 import { For, Show } from 'solid-js'
-import { useEditorKeymap } from './keymapStore'
+import { useWhichkeyState } from './whichkeyStore'
 
 export function WhichKeyModal() {
-  const keymap = useEditorKeymap()
-  if (!keymap) return
-  const { keymaps, pressedKey } = keymap
+  const wk = useWhichkeyState()
+  if (!wk) { return }
+  const { wkKeymap, pressedKey } = wk
 
   return (
     <Show when={pressedKey()}>
       <div class='WhichKey'>
         <span>{pressedKey()}</span>
         <For
-          each={keymaps()}
+          each={wkKeymap[pressedKey()]}
           fallback={
             <p>
               <span>No keymaps are found</span>

@@ -4,8 +4,8 @@ import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Nav, Sidebar, TextArea } from 'ui'
 
 import { createResource, createSignal, onMount } from 'solid-js'
-import { useEditorKeymap } from './features/keymap/keymapStore'
 import { WhichKeyModal } from './features/keymap/whichkeyModal'
+import { useWhichkeyState } from './features/keymap/whichkeyStore'
 import {
   getUserEditorFeatures,
   initEditorFeatures,
@@ -15,8 +15,8 @@ import extensions from './tiptap_extensions'
 export function Editor() {
   let editorRef: HTMLDivElement
 
+  const wk = useWhichkeyState()
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
-  const keymap = useEditorKeymap()
 
   const editorStyle = clsx(
     'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full min-h-screen h-fit p-editor prose-p:m-0',
@@ -36,7 +36,7 @@ export function Editor() {
         editor.view.dom.spellcheck = false
 
         const features = userEditorFeatures()
-        features && initEditorFeatures(features, editor, keymap)
+        features && initEditorFeatures(features, editor, wk?.setPressedKey)
       },
     }))
   })

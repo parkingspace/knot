@@ -1,4 +1,4 @@
-import { EditorKeymapProvider } from 'editor/features/keymap/keymapStore'
+import { WhichkeyStateProvider } from 'editor/features/keymap/whichkeyStore'
 import { render } from 'solid-js/web'
 import 'ui/style'
 import App from './App'
@@ -7,9 +7,9 @@ const root = document.getElementById('root') as HTMLElement
 
 render(
   () => (
-    <EditorKeymapProvider>
+    <WhichkeyStateProvider>
       <App />
-    </EditorKeymapProvider>
+    </WhichkeyStateProvider>
   ),
   root,
 )

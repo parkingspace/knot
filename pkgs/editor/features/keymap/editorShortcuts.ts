@@ -1,207 +1,174 @@
-import type { Editor, SingleCommands } from '@tiptap/core'
-import { Level } from '@tiptap/extension-heading'
+import type { Editor } from '@tiptap/core'
 
-export type CommandKey = keyof SingleCommands
-export type EditorShortcuts = {
+export function applyEditorShortcuts(that: any) {
+  if (!editorShortcuts[that.name]) {
+    console.log('No shortcuts for node: ', that.name)
+    return {}
+  }
+  return editorShortcuts[that.name].reduce((a, v) => {
+    return {
+      ...a,
+      [v.keys]: v.command,
+    }
+  }, {})
+}
+
+export interface EditorShortcuts {
   [key: string]: {
-    key: string
-    commandKey: CommandKey
+    keys: string
+    command: (t: { editor: Editor }) => any
     description: string
   }[]
 }
 
-export function applyEditorShortcuts(that: any) {
-  if (!editorShortcuts[that.name]) { return {} }
-  return editorShortcuts[that.name].reduce(
-    (a, v) => {
-      if (v.commandKey === 'toggleHeading') {
-        const lv: string = v.description.split(' ').pop() || '1'
-        const level: Level = parseInt(lv, 10) as Level
-        return {
-          ...a,
-          [v.key]: (e: { editor: Editor }) =>
-            e.editor.commands.toggleHeading({ level }),
-        }
-      }
-      if (v.commandKey === 'setTextAlign') {
-        const direction = v.description.split(' ').pop() || 'left'
-        return {
-          ...a,
-          [v.key]: (e: { editor: Editor }) =>
-            e.editor.commands.setTextAlign(direction),
-        }
-      }
-      if (v.commandKey === 'setParagraph') {
-        return {
-          ...a,
-          [v.key]: (e: { editor: Editor }) => e.editor.commands.setParagraph(),
-        }
-      }
-      if (v.commandKey === 'splitListItem') {
-        return {
-          ...a,
-          [v.key]: (e: { editor: Editor }) => {
-            return e.editor.can().splitListItem('listItem')
-              && e.editor.commands.splitListItem('listItem')
-          },
-        }
-      }
-      return {
-        ...a,
-        [v.key]: () => that.editor.commands[v.commandKey](),
-      }
-    },
-    {},
-  )
-}
-
 export const editorShortcuts: EditorShortcuts = {
   'paragraph': [{
-    key: 'Mod-Alt-0',
-    commandKey: 'setParagraph',
+    keys: 'Mod-Alt-0',
+    command: (t) => t.editor.commands.setParagraph(),
     description: 'Transforms node to paragraph',
   }],
   'listItem': [{
-    key: 'Enter',
-    commandKey: 'splitListItem',
+    keys: 'Enter',
+    command: (t) => t.editor.commands.splitListItem('listItem'),
     description: 'split list item',
   }, {
-    key: 'Tab',
-    commandKey: 'sinkListItem',
+    keys: 'Tab',
+    command: t => t.editor.commands.sinkListItem('listItem'),
     description: 'sink list item',
   }, {
-    key: 'Shift-Tab',
-    commandKey: 'liftListItem',
+    keys: 'Shift-Tab',
+    command: t => t.editor.commands.liftListItem('listItem'),
     description: 'lift list item',
   }],
   'heading': [{
-    key: 'Mod-Alt-1',
-    commandKey: 'toggleHeading',
+    keys: 'Mod-Alt-1',
+    command: t => t.editor.commands.toggleHeading({ level: 1 }),
     description: 'toggle heading 1',
   }, {
-    key: 'Mod-Alt-2',
-    commandKey: 'toggleHeading',
+    keys: 'Mod-Alt-2',
+    command: t => t.editor.commands.toggleHeading({ level: 2 }),
     description: 'toggle heading 2',
   }, {
-    key: 'Mod-Alt-3',
-    commandKey: 'toggleHeading',
+    keys: 'Mod-Alt-3',
+    command: t => t.editor.commands.toggleHeading({ level: 3 }),
     description: 'toggle heading 3',
   }],
   'blockquote': [{
-    key: 'Mod-Shift-b',
-    commandKey: 'toggleBlockquote',
+    keys: 'Mod-Shift-b',
+    command: t => t.editor.commands.toggleBlockquote(),
     description: 'toggle blockquote',
   }],
   'codeBlock': [{
-    key: 'Mod-Alt-c',
-    commandKey: 'toggleCodeBlock',
+    keys: 'Mod-Alt-c',
+    command: t => t.editor.commands.toggleCodeBlock(),
     description: 'toggle code block',
   }],
   'orderedList': [{
-    key: 'Mod-Shift-7',
-    commandKey: 'toggleOrderedList',
+    keys: 'Mod-Shift-7',
+    command: t => t.editor.commands.toggleOrderedList(),
     description: 'toggle an ordered list',
   }],
   'bulletList': [{
-    key: 'Mod-Shift-8',
-    commandKey: 'toggleBulletList',
+    keys: 'Mod-Shift-8',
+    command: t => t.editor.commands.toggleBulletList(),
     description: 'toggle a bullet list',
   }],
   'hardBreak': [{
-    key: 'Mod-Shift-Enter',
-    commandKey: 'setHardBreak',
+    keys: 'Mod-Shift-Enter',
+    command: t => t.editor.commands.setHardBreak(),
     description: 'set hard break',
   }],
   'bold': [{
-    key: 'Mod-b',
-    commandKey: 'toggleBold',
+    keys: 'Mod-b',
+    command: t => t.editor.commands.toggleBold(),
     description: 'toggle the bold mark',
   }],
   'code': [{
-    key: 'Mod-e',
-    commandKey: 'toggleCode',
+    keys: 'Mod-e',
+    command: t => t.editor.commands.toggleCode(),
     description: 'toggle inline code mark',
   }],
   'italic': [{
-    key: 'Mod-i',
-    commandKey: 'toggleItalic',
+    keys: 'Mod-i',
+    command: t => t.editor.commands.toggleItalic(),
     description: 'toggle the italic mark',
   }],
   'underline': [{
-    key: 'Mod-u',
-    commandKey: 'toggleUnderline',
+    keys: 'Mod-u',
+    command: t => t.editor.commands.toggleUnderline(),
     description: 'toggle an underline mark',
   }],
   // TODO: toggle link needs to wrap with custom ui to set href
   // 'link': [{
-  //   key: 'Mod-l',
-  //   commandKey: 'toggleLink',
+  //   keys: 'Mod-l',
+  //   command: 'toggleLink',
   //   description: 'open toggle link modal',
   // }],
   'strike': [{
-    key: 'Mod-Shift-x',
-    commandKey: 'toggleStrike',
+    keys: 'Mod-Shift-x',
+    command: t => t.editor.commands.toggleStrike(),
     description: 'toggle Strike mark',
   }],
   'subscript': [{
-    key: 'Mod-,',
-    commandKey: 'toggleSubscript',
+    keys: 'Mod-,',
+    command: t => t.editor.commands.toggleSubscript(),
     description: 'toggle subscript mark',
   }],
   'superscript': [{
-    key: 'Mod-.',
-    commandKey: 'toggleSuperscript',
+    keys: 'Mod-.',
+    command: t => t.editor.commands.toggleSuperscript(),
     description: 'toggle superscript mark',
   }],
   'highlight': [{
-    key: 'Mod-Shift-h',
-    commandKey: 'toggleHighlight',
+    keys: 'Mod-Shift-h',
+    command: t => t.editor.commands.toggleHighlight(),
     description: 'toggle a text highlight',
   }],
-  // TODO: Is this needed?
   'color': [
     {
-      key: 'Mod-Shift-e',
-      commandKey: 'setColor',
+      keys: 'Mod-Shift-e',
+      command: t => {
+        return t.editor.commands.setColor('#958DF1')
+      },
       description: 'set font color',
     },
     {
-      key: 'Mod-Shift-r',
-      commandKey: 'unsetColor',
-      description: 'removes any font color',
+      keys: 'Mod-Shift-r',
+      command: t => t.editor.commands.unsetColor(),
+      description: 'remove font color',
     },
   ],
   'history': [
     {
-      key: 'Mod-z',
-      commandKey: 'undo',
+      keys: 'Mod-z',
+      command: t => t.editor.commands.undo(),
       description: 'undo the last change',
     },
     {
-      key: 'Mod-Shift-z',
-      commandKey: 'redo',
+      keys: 'Mod-Shift-z',
+      command: t => t.editor.commands.redo(),
       description: 'redo the last change',
     },
   ],
   'textAlign': [
     {
-      key: 'Mod-Shift-h',
-      commandKey: 'setTextAlign',
+      keys: 'Mod-Shift-h',
+      command: t => t.editor.commands.setTextAlign('left'),
       description: 'align text to left',
     },
     {
-      key: 'Mod-Shift-e',
-      commandKey: 'setTextAlign',
+      keys: 'Mod-Shift-;',
+      command: t => t.editor.commands.setTextAlign('center'),
       description: 'align text to center',
     },
     {
-      key: 'Mod-Shift-l',
-      commandKey: 'setTextAlign',
+      keys: 'Mod-Shift-l',
+      command: t => t.editor.commands.setTextAlign('right'),
       description: 'align text to right',
     },
     {
-      key: 'Mod-Shift-k',
-      commandKey: 'setTextAlign',
+      keys: 'Mod-Shift-k',
+      command: t => t.editor.commands.setTextAlign('justify'),
       description: 'align text justify',
     },
   ],
