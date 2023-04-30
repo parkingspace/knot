@@ -5,12 +5,14 @@ export function applyEditorShortcuts(that: any) {
     console.log('No shortcuts for node: ', that.name)
     return {}
   }
-  return editorShortcuts[that.name].reduce((a, v) => {
-    return {
-      ...a,
-      [v.keys]: v.command,
-    }
-  }, {})
+
+  const shortcuts: Record<string, (t: { editor: Editor }) => any> = {}
+
+  for (const shortcut of editorShortcuts[that.name]) {
+    shortcuts[shortcut.keys] = shortcut.command
+  }
+
+  return shortcuts
 }
 
 export interface EditorShortcuts {
