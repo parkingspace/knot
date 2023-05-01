@@ -17,7 +17,7 @@
   "toml": {},
   "dockerfile": {},
   "includes": [
-    "**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,toml,dockerfile,css}"
+    "**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,toml,dockerfile,css,html}"
   ],
   "excludes": [
     "**/node_modules",
