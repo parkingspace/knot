@@ -19,6 +19,7 @@ const Sidebar: Component = (props) => {
         'min-w-[280px]',
         'transition-all',
         'ease-in-out',
+        'dark:bg-stone-800',
         {
           '-translate-x-full opacity-0 invisible cursor-none': !props
             .isSidebarOpen(),

@@ -1,7 +1,7 @@
 import './editor.css'
 import clsx from 'clsx'
 import { createTiptapEditor } from 'solid-tiptap'
-import { BaseLayout, Nav, Sidebar, TextArea } from 'ui'
+import { BaseLayout, Header, Sidebar, TextArea } from 'ui'
 
 import { createResource, createSignal, onMount } from 'solid-js'
 import { WhichKeyModal } from './features/keymap/whichkeyModal'
@@ -51,7 +51,7 @@ export function Editor() {
     <BaseLayout isSidebarOpen={isSidebarOpen}>
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div>
-        <Nav isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Header isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <TextArea ref={editorRef!} />
       </div>
       <WhichKeyModal />

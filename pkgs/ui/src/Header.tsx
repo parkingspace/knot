@@ -10,7 +10,7 @@ type propType = JSX.HTMLAttributes<HTMLDivElement> & {
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 // TODO: Add breadcrumbs to the nav
-const Nav: Component = (props) => {
+const Header: Component = (props) => {
   return (
     <div class='flex p-2 justify-between'>
       <div
@@ -27,11 +27,14 @@ const Nav: Component = (props) => {
           </Button>
         </Show>
       </div>
-      <Button size={'icon'}>
+      <Button
+        onclick={() => document.documentElement.classList.toggle('dark')}
+        size={'icon'}
+      >
         <Icon name='IconSunFilled' />
       </Button>
     </div>
   )
 }
 
-export { Nav }
+export { Header }
