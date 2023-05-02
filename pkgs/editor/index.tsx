@@ -1,7 +1,8 @@
 import './editor.css'
 import clsx from 'clsx'
 import { createTiptapEditor } from 'solid-tiptap'
-import { BaseLayout, Header, Sidebar, TextArea } from 'ui'
+import { BaseLayout, Sidebar, TextArea } from 'ui'
+import { Header } from './interface'
 
 import { createResource, createSignal, onMount } from 'solid-js'
 import { WhichKeyModal } from './features/keymap/whichkeyModal'
