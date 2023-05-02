@@ -4,7 +4,7 @@ module.exports = function(context) {
   const config = {
     darkMode: 'class',
     content: [
-      '../../pkgs/{editor/*.{ts,tsx},ui/src/**/*.{ts,tsx}}',
+      '../../pkgs/{editor/**/*.{ts,tsx},ui/src/**/*.{ts,tsx}}',
       '../../apps/web/src/**/*.{ts,tsx}',
     ],
     theme: {
