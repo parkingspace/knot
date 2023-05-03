@@ -4,7 +4,9 @@ import { useWhichkeyState } from './whichkeyStore'
 
 export function WhichKeyModal() {
   const wk = useWhichkeyState()
-  if (!wk) { return }
+  if (!wk) {
+    return
+  }
   const { wkKeymap, pressedKey } = wk
 
   return (
