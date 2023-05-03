@@ -51,7 +51,7 @@ export function Editor() {
   return (
     <BaseLayout isSidebarOpen={isSidebarOpen}>
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div>
+      <div class='flex flex-col h-full overflow-hidden'>
         <Header isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <TextArea ref={editorRef!} />
       </div>
