@@ -8,7 +8,10 @@
     "trailingCommas": "onlyMultiLine",
     "preferHanging": false,
     "binaryExpression.linePerExpression": true,
-    "memberExpression.linePerExpression": true
+    "memberExpression.linePerExpression": true,
+    "ifStatement.useBraces": "always",
+    "ifStatement.bracePosition": "sameLine",
+    "ifStatement.singleBodyPosition": "nextLine"
   },
   "json": {
     "lineWidth": 80
