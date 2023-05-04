@@ -4,7 +4,7 @@ import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Sidebar, TextArea } from 'ui'
 import { Header } from './interface'
 
-import { createResource, createSignal, onMount } from 'solid-js'
+import { createEffect, createResource, createSignal, onMount } from 'solid-js'
 import { WhichKeyModal } from './features/keymap/whichkeyModal'
 import { useWhichkeyState } from './features/keymap/whichkeyStore'
 import {
@@ -18,6 +18,8 @@ export function Editor() {
 
   const wk = useWhichkeyState()
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
+
+  const [headings, setHeadings] = createSignal<Array<Element>>()
 
   const editorStyle = clsx(
     'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full h-fit p-editor prose-p:m-0',
@@ -39,6 +41,11 @@ export function Editor() {
         const features = userEditorFeatures()
         features && initEditorFeatures(features, editor, wk?.setPressedKey)
       },
+      onUpdate({ editor }) {
+        const headingNodes = editor.view.dom.querySelectorAll('h1, h2, h3')
+        const headingNodesArray = Array.from(headingNodes)
+        setHeadings(headingNodesArray)
+      },
     }))
   })
 
@@ -50,7 +57,11 @@ export function Editor() {
 
   return (
     <BaseLayout isSidebarOpen={isSidebarOpen}>
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar
+        headings={headings}
+        isSidebarOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+      />
       <div class='flex flex-col h-full overflow-hidden'>
         <Header isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <TextArea ref={editorRef!} />

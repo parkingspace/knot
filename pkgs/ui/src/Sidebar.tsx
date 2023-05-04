@@ -1,15 +1,23 @@
 import clsx from 'clsx'
-import { Accessor, JSX } from 'solid-js'
+import { Accessor, createEffect, JSX } from 'solid-js'
 import { Button } from './Button'
 import { Icon } from './Icon'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>
   toggleSidebar: () => void
+  headings: Accessor<Array<Element> | undefined>
 }
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 const Sidebar: Component = (props) => {
+  createEffect(() => {
+    if (props.headings() !== undefined) {
+      const test = props.headings()
+      console.log(test)
+    }
+  })
+
   return (
     <div
       class={clsx(
