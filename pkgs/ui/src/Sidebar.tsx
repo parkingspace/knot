@@ -1,23 +1,25 @@
 import clsx from 'clsx'
-import { Accessor, createEffect, JSX } from 'solid-js'
+import { Accessor, createEffect, createSignal, For, JSX } from 'solid-js'
 import { Button } from './Button'
 import { Icon } from './Icon'
+
+type Heading = {
+  el: Element
+  isFocus: boolean
+}
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>
   toggleSidebar: () => void
-  headings: Accessor<Array<Element> | undefined>
+  headings: Heading[] | undefined
 }
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 const Sidebar: Component = (props) => {
   createEffect(() => {
-    if (props.headings() !== undefined) {
-      const test = props.headings()
-      console.log(test)
-    }
+    console.log('heading', props.headings?.length)
   })
-
+  // TODO: Find out why <For> doesn't work here
   return (
     <div
       class={clsx(
@@ -40,6 +42,20 @@ const Sidebar: Component = (props) => {
           <Icon name='IconLayoutSidebarLeftCollapse' />
         </Button>
       </div>
+
+      {(props.headings || []).map((heading) => {
+        const headingClass = clsx('p-2', {
+          'bg-stone-300': heading.isFocus,
+        }, {
+          'bg-stone-700': !heading.isFocus,
+        })
+
+        return (
+          <div class={headingClass}>
+            {heading.el.textContent}
+          </div>
+        )
+      })}
     </div>
   )
 }
