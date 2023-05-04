@@ -44,17 +44,17 @@ const Sidebar: Component = (props) => {
       </div>
 
       {(props.headings || []).map((heading) => {
-        const headingClass = clsx('p-2', {
-          'bg-stone-300': heading.isFocus,
-        }, {
-          'bg-stone-700': !heading.isFocus,
-        })
-
-        return (
-          <div class={headingClass}>
-            {heading.el.textContent}
-          </div>
+        const headingClass = clsx(
+          'p-2',
+          {
+            'bg-stone-300': heading.isFocus,
+          },
+          {
+            'bg-stone-100': !heading.isFocus,
+          },
         )
+
+        return <div class={headingClass}>{heading.el.textContent}</div>
       })}
     </div>
   )

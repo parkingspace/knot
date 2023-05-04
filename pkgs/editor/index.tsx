@@ -32,11 +32,19 @@ export function Editor() {
   )
 
   const toggleHeadingFocus = (className: string) => {
-    console.log("classname", className)
-
-    setHeadings(
-      (heading) => heading.el.className.includes(className),
-      produce((heading) => (heading.isFocus = !heading.isFocus)),
+    setHeadings(() =>
+      headings.map((heading) => {
+        if (heading.el.className.includes(className)) {
+          return {
+            ...heading,
+            isFocus: !heading.isFocus,
+          }
+        }
+        return {
+          ...heading,
+          isFocus: false,
+        }
+      })
     )
   }
 
@@ -59,25 +67,30 @@ export function Editor() {
       onUpdate({ editor }) {
         const headingNodes = editor.view.dom.querySelectorAll('h1, h2, h3')
         const headingNodesArray = Array.from(headingNodes)
-        setHeadings(headingNodesArray.map((el) => {
-          return {
-            el: el,
-            isFocus: el.className.includes('has-focus'),
-          }
-        }))
+        setHeadings(
+          headingNodesArray.map((el) => {
+            return {
+              el: el,
+              isFocus: el.className.includes('has-focus'),
+            }
+          }),
+        )
       },
       onSelectionUpdate({ editor }) {
         const view = editor.view
         const currentPos = view.posAtDOM(
-          view
-            .domAtPos(view.state.selection.head)
-            .node,
+          view.domAtPos(view.state.selection.head).node,
           0,
         )
         const currentDom = view.domAtPos(currentPos)
-        console.log('currentDOm', currentDom.node.nodeName)
-        if (currentDom.node.nodeName.match(/h[1-3]/i)) {
-          toggleHeadingFocus((currentDom.node as HTMLElement).className)
+        const node = currentDom.node as HTMLElement
+        // if (node.nodeName.match(/h[1-3]/i)) {
+        //   toggleHeadingFocus((currentDom.node as HTMLElement).className)
+        // }
+
+        const closestHeading = node.closest('h3')
+        if (closestHeading) {
+          toggleHeadingFocus(closestHeading.className)
         }
       },
     }))
