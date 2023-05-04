@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Accessor, createEffect, createSignal, For, JSX } from 'solid-js'
+import { Accessor, For, JSX } from 'solid-js'
 import { Button } from './Button'
 import { Icon } from './Icon'
 
@@ -16,7 +16,6 @@ type propType = JSX.HTMLAttributes<HTMLDivElement> & {
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 const Sidebar: Component = (props) => {
-  // TODO: Find out why <For> doesn't work here
   return (
     <div
       class={clsx(
@@ -40,19 +39,16 @@ const Sidebar: Component = (props) => {
         </Button>
       </div>
 
-      {(props.headings || []).map((heading) => {
-        const headingClass = clsx(
-          'p-2',
-          {
-            'bg-stone-300': heading.isFocus,
-          },
-          {
+      <For each={props.headings}>
+        {(heading) => {
+          const headingClass = clsx('p-2', {
+            'bg-neutral-200': heading.isFocus,
             'bg-stone-100': !heading.isFocus,
-          },
-        )
+          })
 
-        return <div class={headingClass}>{heading.el.textContent}</div>
-      })}
+          return <div class={headingClass}>{heading.el.textContent}</div>
+        }}
+      </For>
     </div>
   )
 }
