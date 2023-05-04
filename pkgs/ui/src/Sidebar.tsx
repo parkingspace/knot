@@ -16,9 +16,6 @@ type propType = JSX.HTMLAttributes<HTMLDivElement> & {
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 const Sidebar: Component = (props) => {
-  createEffect(() => {
-    console.log('heading', props.headings?.length)
-  })
   // TODO: Find out why <For> doesn't work here
   return (
     <div
