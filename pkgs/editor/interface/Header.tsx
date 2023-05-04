@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { Accessor, JSX, Show } from 'solid-js'
 import { Button, Icon } from 'ui'
+import { ColorSchemeToggle } from './ColorSchemeToggle'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>
@@ -26,12 +27,7 @@ const Header: Component = (props) => {
           </Button>
         </Show>
       </div>
-      <Button
-        onclick={() => document.documentElement.classList.toggle('dark')}
-        size={'icon'}
-      >
-        <Icon name='IconSunFilled' />
-      </Button>
+      <ColorSchemeToggle />
     </div>
   )
 }
