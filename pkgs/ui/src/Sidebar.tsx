@@ -5,7 +5,7 @@ import { Icon } from './Icon'
 
 type Heading = {
   el: Element
-  isFocus: boolean
+  hasFocus: boolean
 }
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
@@ -44,10 +44,10 @@ const Sidebar: Component = (props) => {
         const headingClass = clsx(
           'p-2',
           {
-            'bg-stone-300': heading.isFocus,
+            'bg-stone-300': heading.hasFocus,
           },
           {
-            'bg-stone-100': !heading.isFocus,
+            'bg-stone-100': !heading.hasFocus,
           },
         )
 

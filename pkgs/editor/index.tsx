@@ -4,8 +4,18 @@ import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Sidebar, TextArea } from 'ui'
 import { Header } from './interface'
 
-import { createEffect, createResource, createSignal, onMount } from 'solid-js'
-import { createStore, produce } from 'solid-js/store'
+import { Node } from '@tiptap/pm/model'
+import { Transaction } from '@tiptap/pm/state'
+import { EditorView } from '@tiptap/pm/view'
+import {
+  createEffect,
+  createMemo,
+  createResource,
+  createSignal,
+  onMount,
+  Setter,
+} from 'solid-js'
+import { createStore, produce, SetStoreFunction } from 'solid-js/store'
 import { WhichKeyModal } from './features/keymap/whichkeyModal'
 import { useWhichkeyState } from './features/keymap/whichkeyStore'
 import {
@@ -14,9 +24,58 @@ import {
 } from './features/toggleFeature'
 import extensions from './tiptap_extensions'
 
+function findFirstPreviousHeading(node: Element) {
+  let previousNode = node.previousElementSibling
+  if (!previousNode) {
+    return
+  }
+  let found = false
+  while (!found && previousNode) {
+    if (previousNode.nodeName.includes('H')) {
+      found = true
+      return previousNode
+    } else {
+      previousNode = previousNode.previousElementSibling
+    }
+  }
+}
+function isHeading(node: Element) {
+  return node.nodeName.includes('H')
+}
+
+function isEmptyHeading(node: Element) {
+  return isHeading(node) && node.textContent === ''
+}
+
+function isLineAdded(transaction: Transaction) {
+  return transaction.doc.childCount > transaction.before.childCount
+}
+function isLineRemoved(transaction: Transaction) {
+  return transaction.doc.childCount < transaction.before.childCount
+}
+function isLineChanged(transaction: Transaction) {
+  return transaction.docChanged
+      && isLineAdded(transaction)
+    || isLineRemoved(transaction)
+}
+
+function findCurrentLineDomNode(view: EditorView) {
+  const currentPos = view.posAtDOM(
+    view.domAtPos(view.state.selection.head).node,
+    0,
+  )
+  return view.domAtPos(currentPos).node
+}
+
 type Heading = {
   el: Element
-  isFocus: boolean
+  hasFocus: boolean
+}
+
+function fillEmptyHeading(dom: Element, content: string) {
+  if (isEmptyHeading(dom)) {
+    dom.textContent = content
+  }
 }
 
 export function Editor() {
@@ -24,74 +83,51 @@ export function Editor() {
 
   const wk = useWhichkeyState()
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
-
   const [headings, setHeadings] = createStore<Array<Heading>>([])
-
-  type DocumentList = {
-    [key: string]: { [key: string]: HTMLElement }[]
-  }[]
-
-  const [documentList, setDocumentList] = createStore<DocumentList>([])
+  const [currentLineDomNode, setCurrentLineDomNode] = createSignal<Element>()
 
   const editorStyle = clsx(
     'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full h-fit p-editor prose-p:m-0',
   )
-  function findPreviousHeading(node: Element) {
-    let previousNode = node.previousElementSibling
-    if (!previousNode) {
-      return
-    }
-    let found = false
-    while (!found && previousNode) {
-      if (previousNode.nodeName.includes('H')) {
-        found = true
-        return previousNode
-      } else {
-        previousNode = previousNode.previousElementSibling
-      }
-    }
+  function updateDefaultHeadingList(
+    dom: HTMLElement,
+  ) {
+    const headings = [...dom.querySelectorAll('h1, h2, h3')]
+      .map((el) => ({
+        el,
+        hasFocus: false,
+      }))
+    setHeadings(headings)
   }
 
-  const toggleHeadingFocus = (focusedNode: HTMLElement) => {
-    if (focusedNode.nodeName.includes('H')) {
-      setHeadings((state) => {
-        return state.map((heading) => {
-          if (heading.el.className.includes('has-focus')) {
-            return {
-              ...heading,
-              isFocus: true,
-            }
-          }
-          return {
-            ...heading,
-            isFocus: false,
-          }
-        })
-      })
+  function removeFocusFromHeading(el: Element) {
+    setHeadings(
+      (heading) => heading.el !== el,
+      'hasFocus',
+      false,
+    )
+  }
+  function setFocusToHeading(el: Element) {
+    setHeadings(
+      (heading) => heading.el === el,
+      'hasFocus',
+      true,
+    )
+  }
+
+  function toggleHeadingFocus(el: Element) {
+    setFocusToHeading(el)
+    removeFocusFromHeading(el)
+  }
+
+  const toggleEveryHeadingFocusState = (focusedNode: Element) => {
+    if (isHeading(focusedNode)) {
+      toggleHeadingFocus(focusedNode)
     } else {
-      const previousHeading = findPreviousHeading(focusedNode)
-      if (!previousHeading) {
-        return
+      const prevHeading = findFirstPreviousHeading(focusedNode)
+      if (prevHeading) {
+        toggleHeadingFocus(prevHeading)
       }
-      setHeadings((state) => {
-        return state.map((heading) => {
-          console.log(heading.el)
-          console.log(previousHeading)
-          console.log(heading.el === previousHeading)
-          if (heading.el === previousHeading) {
-            console.log('found')
-            console.log(heading.isFocus)
-            return {
-              ...heading,
-              isFocus: true,
-            }
-          }
-          return {
-            ...heading,
-            isFocus: false,
-          }
-        })
-      })
     }
   }
 
@@ -111,26 +147,17 @@ export function Editor() {
         const features = userEditorFeatures()
         features && initEditorFeatures(features, editor, wk?.setPressedKey)
       },
-      onTransaction({ editor }) {
-        const headingNodes = editor.view.dom.querySelectorAll('h1, h2, h3')
-        const headingNodesArray = Array.from(headingNodes)
-        setHeadings(
-          headingNodesArray.map((el) => {
-            return {
-              el: el,
-              isFocus: false,
-            }
-          }),
-        )
-
-        const view = editor.view
-        const currentPos = view.posAtDOM(
-          view.domAtPos(view.state.selection.head).node,
-          0,
-        )
-        const currentDom = view.domAtPos(currentPos)
-        const node = currentDom.node as HTMLElement
-        toggleHeadingFocus(node)
+      onTransaction({ editor, transaction }) {
+        const currentLine = findCurrentLineDomNode(editor.view) as Element
+        if (transaction.docChanged) {
+          // FIX: Find and update headings everytime when doc changed should be optimized
+          updateDefaultHeadingList(editor.view.dom)
+          const previousLine = currentLine.previousElementSibling
+          if (isLineAdded(transaction) && previousLine) {
+            fillEmptyHeading(previousLine, 'Untitled')
+          }
+        }
+        toggleEveryHeadingFocusState(currentLine)
       },
     }))
   })
