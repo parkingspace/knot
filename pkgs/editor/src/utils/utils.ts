@@ -1,6 +1,9 @@
 import { Node } from '@tiptap/pm/model'
 import type { EditorState, Transaction } from '@tiptap/pm/state'
 import type { EditorView } from '@tiptap/pm/view'
+import { createRoot } from 'solid-js'
+import { createStore } from 'solid-js/store'
+import type { HeadingFocusState } from '../headingFocusStore'
 
 export function isHeading(node: Element) {
   return node.nodeName.includes('H')
@@ -39,31 +42,62 @@ export function fillEmptyHeading(dom: Element, content: string) {
   }
 }
 
-// TODO: implement this function
-export function getAllHeadings(editorState: EditorState) {
-  let lastHeading: Node | undefined
-  let headingNodes: Array<Node> = []
+function headingFocusStore() {
+  const [headings, setHeadings] = createStore<HeadingFocusState[]>([])
 
-  editorState.doc.nodesBetween(0, editorState.doc.content.size, (node, pos) => {
-    if (node.type.name === 'heading') {
-      headingNodes.push(node)
-      if (pos > editorState.selection.from) {
-        return false
-      }
-      lastHeading = node
+  function getAllHeadings(editorState: EditorState) {
+    let lastHeading: Node | undefined
+    let headingNodes: Array<Node> = []
+
+    editorState.doc.nodesBetween(
+      0,
+      editorState.doc.content.size,
+      (node, pos) => {
+        if (node.type.name === 'heading') {
+          headingNodes.push(node)
+          if (pos > editorState.selection.from) {
+            return false
+          }
+          lastHeading = node
+        }
+      },
+    )
+
+    setHeadings(
+      headingNodes.map((node) => {
+        return {
+          node: node,
+          hasFocus: false,
+        }
+      }),
+    )
+
+    return { lastHeading, headingNodes }
+  }
+
+  function toggleHeadingFocus(heading: Node | undefined) {
+    if (heading) {
+      setHeadings((state) => {
+        return state.map((h) => {
+          if (h.node === heading) {
+            return {
+              ...h,
+              hasFocus: true,
+            }
+          }
+          return {
+            ...h,
+            hasFocus: false,
+          }
+        })
+      })
     }
-  })
-
-  setHeadings(
-    headingNodes.map((node) => {
-      return {
-        node: node,
-        hasFocus: false,
-      }
-    }),
-  )
-
-  if (lastHeading) {
-    toggleHeadingFocus(lastHeading)
+  }
+  return {
+    headings,
+    toggleHeadingFocus,
+    getAllHeadings,
   }
 }
+
+export const headingManager = () => createRoot(headingFocusStore)

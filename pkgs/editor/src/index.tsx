@@ -1,9 +1,7 @@
 import './editor.css'
-import { Node } from '@tiptap/pm/model'
 import clsx from 'clsx'
 import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Sidebar, TextArea } from 'ui'
-import type { HeadingFocusState } from './headingFocusStore'
 import { Header } from './interface'
 
 import { createResource, createSignal, onMount } from 'solid-js'
@@ -15,35 +13,18 @@ import {
   initEditorFeatures,
 } from './features/toggleFeature'
 import extensions from './tiptap_extensions'
-import { getAllHeadings } from './utils/utils'
+import {headingManager} from './utils/utils'
 
 export function Editor() {
   let editorRef: HTMLDivElement
 
   const wk = useWhichkeyState()
+  const { headings, toggleHeadingFocus, getAllHeadings } = headingManager()
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
-  const [headings, setHeadings] = createStore<HeadingFocusState[]>([])
 
   const editorStyle = clsx(
     'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0',
   )
-
-  const toggleHeadingFocus = (node: Node) => {
-    setHeadings((state) => {
-      return state.map((heading) => {
-        if (heading.node === node) {
-          return {
-            ...heading,
-            hasFocus: true,
-          }
-        }
-        return {
-          ...heading,
-          hasFocus: false,
-        }
-      })
-    })
-  }
 
   onMount(() => {
     createTiptapEditor(() => ({
@@ -62,7 +43,8 @@ export function Editor() {
         features && initEditorFeatures(features, editor, wk?.setPressedKey)
       },
       onTransaction({ editor }) {
-        getAllHeadings(editor.state)
+        const { lastHeading } = getAllHeadings(editor.state)
+        toggleHeadingFocus(lastHeading)
       },
     }))
   })
