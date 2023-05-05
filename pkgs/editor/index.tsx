@@ -24,7 +24,7 @@ export function Editor() {
   const [headings, setHeadings] = createStore<HeadingFocusState[]>([])
 
   const editorStyle = clsx(
-    'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full h-fit p-editor prose-p:m-0',
+    'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0',
   )
 
   const toggleHeadingFocus = (node: Node) => {
