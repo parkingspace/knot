@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Accessor, For, JSX } from 'solid-js'
+import { Accessor, For, JSX, Show } from 'solid-js'
 import type { HeadingFocusState } from '../../../pkgs/editor/headingFocusStore'
 import { Button } from './Button'
 import { Icon } from './Icon'
@@ -34,25 +34,22 @@ const Sidebar: Component = (props) => {
           <Icon name='IconLayoutSidebarLeftCollapse' />
         </Button>
       </div>
-      {props.headings.map((heading) => {
-        const headingClass = clsx(
-          'p-2',
-          'text-sm',
-          'cursor-pointer',
-          'hover:bg-neutral-600',
-          'hover:text-white',
-          {
-            'bg-neutral-200': heading.hasFocus,
-            'font-semibold': heading.hasFocus,
-            'bg-stone-100': !heading.hasFocus,
-            'pl-4': heading.el.tagName === 'H1',
-            'pl-6': heading.el.tagName === 'H2',
-            'pl-8': heading.el.tagName === 'H3',
-          },
-        )
+      <For each={props.headings} fallback={null}>
+        {(heading) => {
+          const headingClass = clsx(
+            'p-2 text-sm cursor-pointer transition-colors ease-in-out',
+            'hover:bg-neutral-500 hover:text-white',
+            {
+              'bg-neutral-200 font-semibold': heading.hasFocus,
+              'bg-stone-100': !heading.hasFocus,
+            },
+          )
 
-        return <div class={headingClass}>{heading.el.textContent}</div>
-      })}
+          return (
+              <div class={headingClass}>{heading.node.textContent}</div>
+          )
+        }}
+      </For>
     </div>
   )
 }
