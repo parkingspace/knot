@@ -19,7 +19,7 @@ export function Editor() {
   let editorRef: HTMLDivElement
 
   const wk = useWhichkeyState()
-  const { headings, getAllHeadings } = headingManager()
+  const { headingStates, getAllHeadings } = headingManager()
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
 
   const editorStyle = clsx(
@@ -58,7 +58,7 @@ export function Editor() {
   return (
     <BaseLayout isSidebarOpen={isSidebarOpen}>
       <Sidebar
-        headings={headings}
+        headingStates={headingStates}
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
       />

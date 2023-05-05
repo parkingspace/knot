@@ -3,7 +3,7 @@ import type { EditorState, Transaction } from '@tiptap/pm/state'
 import type { EditorView } from '@tiptap/pm/view'
 import { createRoot } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import type { HeadingFocusState } from '../headingFocusStore'
+import type { HeadingState } from '../headingFocusStore'
 
 export function isHeading(node: Element) {
   return node.nodeName.includes('H')
@@ -43,7 +43,7 @@ export function fillEmptyHeading(dom: Element, content: string) {
 }
 
 function headingFocusStore() {
-  const [headings, setHeadings] = createStore<HeadingFocusState[]>([])
+  const [headingStates, setHeadingStates] = createStore<HeadingState[]>([])
 
   function getAllHeadings(editorState: EditorState) {
     let lastHeading: Node | undefined
@@ -63,7 +63,7 @@ function headingFocusStore() {
       },
     )
 
-    setHeadings(
+    setHeadingStates(
       headingNodes.map((node) => {
         return {
           node: node,
@@ -77,26 +77,27 @@ function headingFocusStore() {
     }
   }
 
-  function toggleHeadingFocus(heading: Node | undefined) {
-    if (heading) {
-      setHeadings((state) => {
-        return state.map((h) => {
-          if (h.node === heading) {
-            return {
-              ...h,
-              hasFocus: true,
-            }
-          }
-          return {
-            ...h,
-            hasFocus: false,
-          }
-        })
-      })
+  function toggleHeadingFocus(targetHeading: Node | undefined) {
+    if (!targetHeading) {
+      return
     }
+    setHeadingStates((headings) =>
+      headings.map((heading) => {
+        if (heading.node === targetHeading) {
+          return {
+            ...heading,
+            hasFocus: true,
+          }
+        }
+        return {
+          ...heading,
+          hasFocus: false,
+        }
+      })
+    )
   }
   return {
-    headings,
+    headingStates,
     getAllHeadings,
   }
 }

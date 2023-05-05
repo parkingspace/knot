@@ -1,13 +1,13 @@
 import clsx from 'clsx'
 import { Accessor, For, JSX, Match, Show, Switch } from 'solid-js'
-import type { HeadingFocusState } from '../../../pkgs/editor/src/headingFocusStore'
+import type { HeadingState } from '../../../pkgs/editor/src/headingFocusStore'
 import { Button } from './Button'
 import { Icon } from './Icon'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>
   toggleSidebar: () => void
-  headings: HeadingFocusState[]
+  headingStates: HeadingState[]
 }
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
@@ -34,7 +34,7 @@ const Sidebar: Component = (props) => {
           <Icon name='IconLayoutSidebarLeftCollapse' />
         </Button>
       </div>
-      <For each={props.headings} fallback={null}>
+      <For each={props.headingStates} fallback={null}>
         {(heading, idx) => {
           const headingClass = clsx(
             'flex gap-x-2 items-center p-2 text-sm transition-colors ease-in-out',
