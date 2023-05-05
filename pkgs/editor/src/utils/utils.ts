@@ -1,22 +1,6 @@
 import type { Transaction } from '@tiptap/pm/state'
 import type { EditorView } from '@tiptap/pm/view'
 
-export function findFirstPreviousHeading(node: Element) {
-  let previousNode = node.previousElementSibling
-  if (!previousNode) {
-    return
-  }
-  let found = false
-  while (!found && previousNode) {
-    if (previousNode.nodeName.includes('H')) {
-      found = true
-      return previousNode
-    } else {
-      previousNode = previousNode.previousElementSibling
-    }
-  }
-}
-
 export function isHeading(node: Element) {
   return node.nodeName.includes('H')
 }
