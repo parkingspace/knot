@@ -46,7 +46,9 @@ const Sidebar: Component = (props) => {
           )
 
           return (
+            <Show when={heading.node.textContent.length > 0}>
               <div class={headingClass}>{heading.node.textContent}</div>
+            </Show>
           )
         }}
       </For>
