@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Accessor, For, JSX, Show } from 'solid-js'
+import { Accessor, For, JSX, Match, Show, Switch } from 'solid-js'
 import type { HeadingFocusState } from '../../../pkgs/editor/headingFocusStore'
 import { Button } from './Button'
 import { Icon } from './Icon'
@@ -35,9 +35,9 @@ const Sidebar: Component = (props) => {
         </Button>
       </div>
       <For each={props.headings} fallback={null}>
-        {(heading) => {
+        {(heading, idx) => {
           const headingClass = clsx(
-            'p-2 text-sm cursor-pointer transition-colors ease-in-out',
+            'flex gap-x-2 items-center p-2 text-sm transition-colors ease-in-out',
             'hover:bg-neutral-500 hover:text-white',
             {
               'bg-neutral-200 font-semibold': heading.hasFocus,
@@ -50,7 +50,25 @@ const Sidebar: Component = (props) => {
 
           return (
             <Show when={heading.node.textContent.length > 0}>
-              <div class={headingClass}>{heading.node.textContent}</div>
+              <div class={headingClass}>
+                <Switch>
+                  <Match when={heading.node.attrs.level === 1 && idx() === 0}>
+                    <Icon name='IconFileText' />
+                  </Match>
+                  u
+                  <Match when={heading.node.attrs.level === 1}>
+                    <Icon name='IconH1' />
+                  </Match>
+                  <Match when={heading.node.attrs.level === 2}>
+                    <Icon name='IconH2' />
+                  </Match>
+                  <Match when={heading.node.attrs.level === 3}>
+                    <Icon name='IconH3' />
+                  </Match>
+                  u
+                </Switch>
+                {heading.node.textContent}
+              </div>
             </Show>
           )
         }}
