@@ -42,6 +42,9 @@ const Sidebar: Component = (props) => {
             {
               'bg-neutral-200 font-semibold': heading.hasFocus,
               'bg-stone-100': !heading.hasFocus,
+              'pl-4': heading.node.attrs.level === 1,
+              'pl-6': heading.node.attrs.level === 2,
+              'pl-8': heading.node.attrs.level === 3,
             },
           )
 
