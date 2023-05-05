@@ -72,7 +72,9 @@ function headingFocusStore() {
       }),
     )
 
-    return { lastHeading, headingNodes }
+    return {
+      toggleLastHeadingFocus: () => toggleHeadingFocus(lastHeading),
+    }
   }
 
   function toggleHeadingFocus(heading: Node | undefined) {
@@ -95,7 +97,6 @@ function headingFocusStore() {
   }
   return {
     headings,
-    toggleHeadingFocus,
     getAllHeadings,
   }
 }

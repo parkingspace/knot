@@ -13,13 +13,13 @@ import {
   initEditorFeatures,
 } from './features/toggleFeature'
 import extensions from './tiptap_extensions'
-import {headingManager} from './utils/utils'
+import { headingManager } from './utils/utils'
 
 export function Editor() {
   let editorRef: HTMLDivElement
 
   const wk = useWhichkeyState()
-  const { headings, toggleHeadingFocus, getAllHeadings } = headingManager()
+  const { headings, getAllHeadings } = headingManager()
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
 
   const editorStyle = clsx(
@@ -43,8 +43,8 @@ export function Editor() {
         features && initEditorFeatures(features, editor, wk?.setPressedKey)
       },
       onTransaction({ editor }) {
-        const { lastHeading } = getAllHeadings(editor.state)
-        toggleHeadingFocus(lastHeading)
+        getAllHeadings(editor.state)
+          .toggleLastHeadingFocus()
       },
     }))
   })
