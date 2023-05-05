@@ -1,4 +1,5 @@
 import './editor.css'
+import { Node } from '@tiptap/pm/model'
 import clsx from 'clsx'
 import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Sidebar, TextArea } from 'ui'
