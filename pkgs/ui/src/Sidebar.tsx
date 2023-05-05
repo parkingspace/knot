@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Accessor, For, JSX, Match, Show, Switch } from 'solid-js'
-import type { HeadingFocusState } from '../../../pkgs/editor/headingFocusStore'
+import type { HeadingFocusState } from '../../../pkgs/editor/src/headingFocusStore'
 import { Button } from './Button'
 import { Icon } from './Icon'
 

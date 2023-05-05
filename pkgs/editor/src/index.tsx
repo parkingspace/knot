@@ -15,6 +15,7 @@ import {
   initEditorFeatures,
 } from './features/toggleFeature'
 import extensions from './tiptap_extensions'
+import { getAllHeadings } from './utils/utils'
 
 export function Editor() {
   let editorRef: HTMLDivElement
@@ -61,35 +62,7 @@ export function Editor() {
         features && initEditorFeatures(features, editor, wk?.setPressedKey)
       },
       onTransaction({ editor }) {
-        let lastHeading: Node | undefined
-        let headingNodes: Array<Node> = []
-
-        editor.view.state.doc.nodesBetween(
-          0,
-          editor.state.doc.content.size,
-          (node, pos) => {
-            if (node.type.name === 'heading') {
-              headingNodes.push(node)
-              if (pos > editor.view.state.selection.from) {
-                return false
-              }
-              lastHeading = node
-            }
-          },
-        )
-
-        setHeadings(
-          headingNodes.map((node) => {
-            return {
-              node: node,
-              hasFocus: false,
-            }
-          }),
-        )
-
-        if (lastHeading) {
-          toggleHeadingFocus(lastHeading)
-        }
+        getAllHeadings(editor.state)
       },
     }))
   })

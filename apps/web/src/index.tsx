@@ -1,4 +1,4 @@
-import { WhichkeyStateProvider } from 'editor/features/keymap/whichkeyStore'
+import { WhichkeyStateProvider } from 'editor/src/features/keymap/whichkeyStore'
 import { render } from 'solid-js/web'
 import 'ui/style'
 import App from './App'
