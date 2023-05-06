@@ -1,15 +1,30 @@
 import { createEffect, createSignal, Show } from 'solid-js'
 import { Button, Icon } from 'ui'
 
-type theme = 'light' | 'dark'
+type Theme = 'light' | 'dark'
 
-// TODO: use localstorage to persist the color scheme
+function getTheme(): Theme {
+  if (typeof localStorage === 'undefined' || !localStorage.getItem('theme')) {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  }
+
+  const theme = localStorage.getItem('theme') as Theme
+  return theme
+}
+
 export const ColorSchemeToggle = () => {
-  const [theme, setTheme] = createSignal<theme>('light')
+  const [theme, setTheme] = createSignal<Theme>(getTheme())
 
   createEffect(() => {
     const root = document.documentElement
     root.classList.toggle('dark', theme() === 'dark')
+    if (theme() === 'light') {
+      localStorage.setItem('theme', 'light')
+    } else {
+      localStorage.setItem('theme', 'dark')
+    }
   })
 
   return (
