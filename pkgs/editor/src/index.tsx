@@ -4,7 +4,13 @@ import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, Sidebar, TextArea } from 'ui'
 import { Header } from './interface'
 
-import { createResource, createSignal, onMount } from 'solid-js'
+import {
+  createContext,
+  createResource,
+  createSignal,
+  onMount,
+  useContext,
+} from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { WhichKeyModal } from './features/keymap/whichkeyModal'
 import { useWhichkeyState } from './features/keymap/whichkeyStore'
@@ -15,10 +21,42 @@ import {
 import extensions from './tiptap_extensions'
 import { headingManager } from './utils/utils'
 
+type SidebarState = ReturnType<typeof createSidebarState>
+
+const SidebarContext = createContext<SidebarState>()
+
+export const useSidebarState = () => {
+  const context = useContext(SidebarContext)
+  if (!context) {
+    throw new Error('useSidebarState must be used within SidebarProvider')
+  }
+  return context
+}
+
+export function createSidebarState() {
+  const [isSidebarOpen, setIsSidebarOpen] = createSignal(true)
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen())
+  }
+
+  return { isSidebarOpen, setIsSidebarOpen, toggleSidebar }
+}
+
+export function SidebarProvider(props: { children: any }) {
+  const sidebarState = createSidebarState()
+  return (
+    <SidebarContext.Provider value={sidebarState}>
+      {props.children}
+    </SidebarContext.Provider>
+  )
+}
+
 export function Editor() {
   let editorRef: HTMLDivElement
 
   const wk = useWhichkeyState()
+  const sidebar = useSidebarState()
   const { headingStates, getAllHeadings } = headingManager()
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
 
@@ -43,27 +81,23 @@ export function Editor() {
         features && initEditorFeatures(features, editor, wk?.setPressedKey)
       },
       onTransaction({ editor }) {
-        getAllHeadings(editor.state)
-          .toggleLastHeadingFocus()
+        getAllHeadings(editor.state).toggleLastHeadingFocus()
       },
     }))
   })
 
-  const [isSidebarOpen, setIsSidebarOpen] = createSignal(true)
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen())
-  }
-
   return (
-    <BaseLayout isSidebarOpen={isSidebarOpen}>
+    <BaseLayout isSidebarOpen={sidebar.isSidebarOpen}>
       <Sidebar
         headingStates={headingStates}
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
+        isSidebarOpen={sidebar.isSidebarOpen}
+        toggleSidebar={sidebar.toggleSidebar}
       />
       <div class='flex flex-col h-full overflow-hidden'>
-        <Header isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Header
+          isSidebarOpen={sidebar.isSidebarOpen}
+          toggleSidebar={sidebar.toggleSidebar}
+        />
         <TextArea ref={editorRef!} />
       </div>
       <WhichKeyModal />
