@@ -4,53 +4,16 @@ import { createTiptapEditor } from 'solid-tiptap'
 import { BaseLayout, TextArea } from 'ui'
 import { Header, Sidebar } from './interface'
 
-import {
-  createContext,
-  createResource,
-  createSignal,
-  onMount,
-  useContext,
-} from 'solid-js'
-import { createStore } from 'solid-js/store'
+import { createResource, onMount } from 'solid-js'
 import { WhichKeyModal } from './features/keymap/whichkeyModal'
 import { useWhichkeyState } from './features/keymap/whichkeyStore'
 import {
   getUserEditorFeatures,
   initEditorFeatures,
 } from './features/toggleFeature'
+import { useSidebarState } from './interface/Sidebar'
 import extensions from './tiptap_extensions'
 import { headingManager } from './utils/utils'
-
-type SidebarState = ReturnType<typeof createSidebarState>
-
-const SidebarContext = createContext<SidebarState>()
-
-export const useSidebarState = () => {
-  const context = useContext(SidebarContext)
-  if (!context) {
-    throw new Error('useSidebarState must be used within SidebarProvider')
-  }
-  return context
-}
-
-export function createSidebarState() {
-  const [isSidebarOpen, setIsSidebarOpen] = createSignal(true)
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen())
-  }
-
-  return { isSidebarOpen, setIsSidebarOpen, toggleSidebar }
-}
-
-export function SidebarProvider(props: { children: any }) {
-  const sidebarState = createSidebarState()
-  return (
-    <SidebarContext.Provider value={sidebarState}>
-      {props.children}
-    </SidebarContext.Provider>
-  )
-}
 
 export function Editor() {
   let editorRef: HTMLDivElement

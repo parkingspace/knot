@@ -1,5 +1,5 @@
 import { WhichkeyStateProvider } from 'editor/src/features/keymap/whichkeyStore'
-import { SidebarProvider } from 'editor/src/index'
+import { SidebarProvider } from 'editor/src/interface/Sidebar'
 import { render } from 'solid-js/web'
 import 'ui/style'
 import App from './App'

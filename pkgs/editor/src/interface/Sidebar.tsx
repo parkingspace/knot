@@ -1,5 +1,15 @@
 import clsx from 'clsx'
-import { Accessor, For, JSX, Match, Show, Switch } from 'solid-js'
+import {
+  Accessor,
+  createContext,
+  createSignal,
+  For,
+  JSX,
+  Match,
+  Show,
+  Switch,
+  useContext,
+} from 'solid-js'
 import { Button, Icon } from 'ui'
 import type { HeadingState } from '../headingFocusStore'
 
@@ -9,6 +19,36 @@ type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   headingStates: HeadingState[]
 }
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
+type SidebarState = ReturnType<typeof createSidebarState>
+
+const SidebarContext = createContext<SidebarState>()
+
+export const useSidebarState = () => {
+  const context = useContext(SidebarContext)
+  if (!context) {
+    throw new Error('useSidebarState must be used within SidebarProvider')
+  }
+  return context
+}
+
+export function createSidebarState() {
+  const [isSidebarOpen, setIsSidebarOpen] = createSignal(true)
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen())
+  }
+
+  return { isSidebarOpen, setIsSidebarOpen, toggleSidebar }
+}
+
+export function SidebarProvider(props: { children: any }) {
+  const sidebar = createSidebarState()
+  return (
+    <SidebarContext.Provider value={sidebar}>
+      {props.children}
+    </SidebarContext.Provider>
+  )
+}
 
 const Sidebar: Component = (props) => {
   return (
