@@ -1,8 +1,8 @@
 import './editor.css'
 import clsx from 'clsx'
 import { createTiptapEditor } from 'solid-tiptap'
-import { BaseLayout, Sidebar, TextArea } from 'ui'
-import { Header } from './interface'
+import { BaseLayout, TextArea } from 'ui'
+import { Header, Sidebar } from './interface'
 
 import {
   createContext,

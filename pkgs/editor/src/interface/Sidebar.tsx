@@ -1,8 +1,7 @@
 import clsx from 'clsx'
 import { Accessor, For, JSX, Match, Show, Switch } from 'solid-js'
-import type { HeadingState } from '../../../pkgs/editor/src/headingFocusStore'
-import { Button } from './Button'
-import { Icon } from './Icon'
+import { Button, Icon } from 'ui'
+import type { HeadingState } from '../headingFocusStore'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>
