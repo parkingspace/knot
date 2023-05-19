@@ -117,51 +117,92 @@ function SearchBox(
   },
 ) {
   const [results, setResults] = createSignal<any[]>([])
+  const [selectedIndex, setSelectedIndex] = createSignal(0)
   const [docs, setDocs] = createSignal<any[]>([])
 
-  createEffect(() => {
-    props.isSearchBoxOpen()
-      && document.getElementById('search-box')?.focus()
+  onMount(() => {
+    tinykeys(window, {
+      'Tab': (e) => {
+        e.preventDefault()
+        if (selectedIndex() >= docs().length - 1) {
+          setSelectedIndex(0)
+        } else {
+          setSelectedIndex(selectedIndex() + 1)
+        }
+      },
+      'Shift+Tab': (e) => {
+        e.preventDefault()
+        if (selectedIndex() <= 0) {
+          setSelectedIndex(docs().length - 1)
+        } else {
+          setSelectedIndex(selectedIndex() - 1)
+        }
+      },
+    }, { event: 'keydown' })
   })
+
   createEffect(() => {
-    console.log('results', results())
-    if (results().length > 0) {
-      const matchedDocs = results().flatMap((result) => {
-        console.log('result', result.result)
-        return result.result.map((id: number) => {
-          return props.docs[id]
-        })
-      })
-      console.log('matched', matchedDocs)
-      setDocs(matchedDocs)
+    if (props.isSearchBoxOpen()) {
+      document.getElementById('search-box')?.focus()
     } else {
       setDocs([])
     }
   })
+  createEffect(() => {
+    const matchedDocs = results().flatMap((r) =>
+      r.result.map((id: number) => props.docs[id])
+    )
+    console.log('matched doc: ', matchedDocs)
+    setDocs(matchedDocs)
+  })
+
+  createEffect(() => {
+    const searchResult = document.getElementById(
+      `search-result-${selectedIndex()}`,
+    )
+    searchResult?.scrollIntoView({
+      behavior: 'smooth',
+    })
+  })
+
   return (
     <Show when={props.isSearchBoxOpen()}>
-      <div class='absolute flex items-center justify-center w-full h-full'>
-        <input
-          id='search-box'
-          type='text'
-          onInput={async (e) => {
-            const searchResults = await props.searchIndex.search(
-              e.currentTarget.value,
-            )
-            console.log(searchResults)
-            setResults(searchResults)
-          }}
-          class='w-1/2 h-10 p-2 border-2 border-gray-300 rounded-lg'
-        />
-        <div class='relative flex flex-col items-center justify-center w-64 h-64 bg-white border-2 border-gray-300 rounded-lg'>
-          {docs().map((doc) => {
-            return (
-              <>
-                <div class='text-lg font-bold'>{doc.title}</div>
-                <div class='text-sm'>{doc.content.join(' ')}</div>
-              </>
-            )
-          })}
+      <div class='absolute flex items-center justify-start pt-[200px] w-full h-full flex-col bg-white/10 backdrop-blur-sm'>
+        <div class='p-4 rounded bg-stone-100 shadow-lg w-1/2 overflow-hidden'>
+          <input
+            id='search-box'
+            type='text'
+            onInput={async (e) => {
+              const searchResults = await props.searchIndex.search(
+                e.currentTarget.value,
+              )
+              setResults(searchResults)
+            }}
+            class='w-full h-10 p-2 rounded focus:ring-0 focus:ring-offset-0 focus:outline-none caret-black'
+          />
+
+          <div class='mt-4 flex flex-col items-center w-full bg-white max-h-96 overflow-y-auto rounded divide-y'>
+            <For each={docs()}>
+              {(doc, index) => {
+                return (
+                  <div
+                    id={`search-result-${index()}`}
+                    class={clsx('text-sm p-2 w-full', {
+                      'bg-neutral-100': selectedIndex() !== index(),
+                      'bg-stone-200': selectedIndex() === index(),
+                    })}
+                  >
+                    <div class='font-bold w-full'>
+                      {doc.title}
+                    </div>
+                    <div class='truncate'>
+                      {doc.content.join(' ')}
+                    </div>
+                  </div>
+                )
+              }}
+            </For>
+          </div>
         </div>
       </div>
     </Show>
