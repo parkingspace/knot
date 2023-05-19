@@ -42,23 +42,45 @@ export function fillEmptyHeading(dom: Element, content: string) {
   }
 }
 
+const docIs = {
+  1: { title: 'foo', content: ['foo', 'bar'] },
+  2: { title: 'bar', content: ['foo', 'bar'] },
+}
+
 function headingFocusStore() {
   const [headingStates, setHeadingStates] = createStore<HeadingState[]>([])
 
   function getAllHeadings(editorState: EditorState) {
     let lastHeading: Node | undefined
     let headingNodes: Array<Node> = []
+    let contents: Array<string> = []
+    let docs: { 'title': string; 'content': string[] }[] = []
 
+    let currentHeading: Node | undefined
+    let headingIndex = -1
     editorState.doc.nodesBetween(
       0,
       editorState.doc.content.size,
       (node, pos) => {
         if (node.type.name === 'heading') {
           headingNodes.push(node)
+          currentHeading = node
+          headingIndex += 1
+          docs[headingIndex] = {
+            title: headingNodes[headingIndex].textContent,
+            content: [],
+          }
           if (pos > editorState.selection.from) {
             return false
           }
           lastHeading = node
+        }
+        if (node.type.name === 'paragraph') {
+          contents.push(node.textContent)
+          docs[headingIndex].content = [
+            ...docs[headingIndex].content,
+            node.textContent,
+          ]
         }
       },
     )
@@ -74,6 +96,8 @@ function headingFocusStore() {
 
     return {
       toggleLastHeadingFocus: () => toggleHeadingFocus(lastHeading),
+      headings: headingNodes,
+      docs: docs,
     }
   }
 

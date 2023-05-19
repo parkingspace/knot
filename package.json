@@ -21,5 +21,8 @@
     "npm": "pnpm",
     "yarn": "pnpm"
   },
-  "packageManager": "pnpm@8.0.0"
+  "packageManager": "pnpm@8.0.0",
+  "dependencies": {
+    "flexsearch": "^0.7.3"
+  }
 }
