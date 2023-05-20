@@ -1,28 +1,21 @@
 import './editor.css'
 import clsx from 'clsx'
+import { Index } from 'flexsearch'
 import { createTiptapEditor } from 'solid-tiptap'
 import tinykeys from 'tinykeys'
 import { BaseLayout, TextArea } from 'ui'
 import { Header, Sidebar } from './interface'
 import searchIndex from './search'
 
-import { Document, Index } from 'flexsearch'
 import {
   Accessor,
   createEffect,
-  createResource,
   createSignal,
   For,
   onMount,
-  ParentComponent,
   Show,
 } from 'solid-js'
-import { WhichKeyModal } from './features/keymap/whichkeyModal'
-import { useWhichkeyState } from './features/keymap/whichkeyStore'
-import {
-  getUserEditorFeatures,
-  initEditorFeatures,
-} from './features/toggleFeature'
+import { Features, useUserConfig } from './features'
 import { useSidebarState } from './interface/Sidebar'
 import extensions from './tiptap_extensions'
 import { headingManager } from './utils/utils'
@@ -31,11 +24,10 @@ export function Editor() {
   let editorRef: HTMLDivElement
 
   const [isSearchBoxOpen, setIsSearchBoxOpen] = createSignal(false)
-  const wk = useWhichkeyState()
+
   const sidebar = useSidebarState()
   const { headingStates, getAllHeadings } = headingManager()
   const [docs, setDocs] = createSignal<any[]>([])
-  const [userEditorFeatures] = createResource(getUserEditorFeatures)
 
   const editorStyle = clsx(
     'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0',
@@ -44,72 +36,64 @@ export function Editor() {
   onMount(() => {
     tinykeys(window, {
       '$mod+k': (e) => {
-        console.log('key pressed')
         e.preventDefault()
         setIsSearchBoxOpen(!isSearchBoxOpen())
       },
       'Escape': () => {
-        isSearchBoxOpen() && setIsSearchBoxOpen(false)
+        setIsSearchBoxOpen(false)
       },
     }, { event: 'keydown' })
-
-    createTiptapEditor(() => ({
-      element: editorRef,
-      extensions: extensions,
-      editorProps: {
-        attributes: {
-          id: 'document',
-          class: editorStyle,
-        },
-      },
-      onCreate({ editor }) {
-        editor.view.dom.spellcheck = false
-
-        const features = userEditorFeatures()
-        features && initEditorFeatures(features, editor, wk?.setPressedKey)
-      },
-      onTransaction({ editor }) {
-        const { docs, headings, toggleLastHeadingFocus } = getAllHeadings(
-          editor.state,
-        )
-        setDocs(docs)
-        toggleLastHeadingFocus()
-
-        docs.forEach((doc, index) => {
-          searchIndex.add(index, {
-            title: doc.title,
-            content: doc.content.join(' '),
-          })
-        })
-      },
-    }))
   })
+
+  const useEditor = createTiptapEditor(() => ({
+    element: editorRef,
+    extensions: extensions,
+    editorProps: {
+      attributes: {
+        id: 'document',
+        class: editorStyle,
+      },
+    },
+    onTransaction({ editor }) {
+      const { docs, toggleLastHeadingFocus } = getAllHeadings(
+        editor.state,
+      )
+      setDocs(docs)
+      toggleLastHeadingFocus()
+
+      docs.forEach((doc, index) => {
+        searchIndex.add(index, {
+          title: doc.title,
+          content: doc.content.join(' '),
+        })
+      })
+    },
+  }))
 
   return (
     <BaseLayout isSidebarOpen={sidebar.isSidebarOpen}>
-      <Sidebar
-        headingStates={headingStates}
-        isSidebarOpen={sidebar.isSidebarOpen}
-        toggleSidebar={sidebar.toggleSidebar}
-      />
-      <div class='flex flex-col h-full overflow-hidden'>
-        <Header
-          isSidebarOpen={sidebar.isSidebarOpen}
-          toggleSidebar={sidebar.toggleSidebar}
-        />
-        <TextArea ref={editorRef!} />
-      </div>
-      <SearchBox
-        isSearchBoxOpen={isSearchBoxOpen}
-        searchIndex={searchIndex}
-        docs={docs()}
-      />
-      <WhichKeyModal />
+      <Features editor={useEditor()!} config={useUserConfig()} />
+      <TextArea ref={editorRef!} />
     </BaseLayout>
   )
 }
 
-function SearchBox(
+// <WhichKeyModal />
+// <SearchBox
+//   isSearchBoxOpen={isSearchBoxOpen}
+//   searchIndex={searchIndex}
+//   docs={docs()}
+// />
+
+// function Column(props: { children: any }) {
+//   return (
+//     <div class='flex flex-col w-full h-full overflow-hidden'>
+//       {props.children}
+//     </div>
+//   )
+// }
+
+export function Search(
   props: {
     isSearchBoxOpen: Accessor<boolean>
     searchIndex: Index<any>

@@ -1,5 +1,41 @@
 import { Editor } from '@tiptap/core'
-import './knotCaret.css'
+import './styles/knotCaret.css'
+
+// TODO: Move this function to utils?
+/**
+ * Get the global position of the default caret and return it as an object.
+ *
+ * @returns the global position of the default caret or undefined
+ */
+export function getDefaultCaretRect() {
+  let r
+
+  if (document.activeElement && document.activeElement.id === 'document') {
+    r = document.getSelection()?.getRangeAt(0)
+  }
+
+  if (!r) {
+    return
+  }
+
+  const node = r.startContainer
+  const content = node.textContent
+  const offset = r.startOffset
+  const pageOffset = { x: window.pageXOffset, y: window.pageYOffset }
+  let rect, r2, start, end
+  if (offset > 0) {
+    start = offset - 1, end = offset
+  } else if (content?.length === 0) {
+    start = offset, end = offset + 1
+  } else {
+    start = offset, end = offset
+  }
+  r2 = document.createRange()
+  r2.setStart(node, start)
+  r2.setEnd(node, end)
+  rect = r2.getBoundingClientRect()
+  return { x: rect.right + pageOffset.x, y: rect.top, height: rect.height }
+}
 
 // TODO: Pause animation when user is typing
 const blinkAnimation = [
@@ -25,8 +61,6 @@ const blinkTiming = {
 // TODO: Want this caret to moves like a slime or something
 // Should not animated all the time but only when cursor is moved.
 // Idea is, the trailing afterimage is proportional to the distance.
-// TODO: Make caret listen to focus state of editor
-// and only show when editor is focused
 export function createKnotCaret(opts: { editor: Editor }) {
   const { editor } = opts
   const scrollDom = editor.view.dom.parentElement
@@ -65,7 +99,6 @@ export function createKnotCaret(opts: { editor: Editor }) {
   return caret
 }
 
-// FIX: caret is not positioned correctly when the editor is scrolled
 /**
  * KnotCaret is a custom element that is used to customize the caret of the editor.
  * @class knotCaret
@@ -102,7 +135,7 @@ export class KnotCaret extends HTMLElement {
     delay: number
   }) {
     const { duration, delay } = opts || { duration: 0.0, delay: 0.0 }
-    const { x, y, height } = this.#getDefaultCaretRect()
+    const { x, y, height } = getDefaultCaretRect()
       || { x: 0, y: 0, height: 0 }
     this.style.height = height + 'px'
     this.style.transition =
@@ -112,43 +145,6 @@ export class KnotCaret extends HTMLElement {
     this.x = x
     this.y = y
     return this
-  }
-
-  /**
-   * Get the global position of the default caret and return it as an object.
-   * private method
-   *
-   * @returns the global position of the default caret or undefined
-   * @memberof knotCaret
-   */
-  #getDefaultCaretRect(): { x: number; y: number; height: number } | undefined {
-    let r
-
-    if (document.activeElement && document.activeElement.id === 'document') {
-      r = document.getSelection()?.getRangeAt(0)
-    }
-
-    if (!r) {
-      return
-    }
-
-    const node = r.startContainer
-    const content = node.textContent
-    const offset = r.startOffset
-    const pageOffset = { x: window.pageXOffset, y: window.pageYOffset }
-    let rect, r2, start, end
-    if (offset > 0) {
-      start = offset - 1, end = offset
-    } else if (content?.length === 0) {
-      start = offset, end = offset + 1
-    } else {
-      start = offset, end = offset
-    }
-    r2 = document.createRange()
-    r2.setStart(node, start)
-    r2.setEnd(node, end)
-    rect = r2.getBoundingClientRect()
-    return { x: rect.right + pageOffset.x, y: rect.top, height: rect.height }
   }
 
   hide() {

@@ -2,7 +2,7 @@ import { createContext, createSignal, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import tinykeys, { KeyBindingMap } from 'tinykeys'
 
-import { editorShortcuts } from './editorShortcuts'
+import { editorShortcuts } from '../shortcuts/editorShortcuts'
 import {
   ALT,
   ALT_OSMOD,
@@ -14,7 +14,7 @@ import {
   OSMOD_SHIFT,
   SHIFT,
   SHIFT_OSMOD,
-} from './keynameConstants'
+} from './keyNames'
 
 type WkState = ReturnType<typeof createWhichkeyState>
 type WkKeymaps = {
@@ -104,7 +104,7 @@ function listenOnKeyup(keybinding: KeyBindingMap) {
   tinykeys(window, keybinding, { event: 'keyup' })
 }
 
-export function createWkKeyListeners(
+export function createWhichKeyListener(
   setPressedKey: (key: string) => void,
 ) {
   listenOnKeydown({

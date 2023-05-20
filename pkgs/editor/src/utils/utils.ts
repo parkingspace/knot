@@ -42,11 +42,6 @@ export function fillEmptyHeading(dom: Element, content: string) {
   }
 }
 
-const docIs = {
-  1: { title: 'foo', content: ['foo', 'bar'] },
-  2: { title: 'bar', content: ['foo', 'bar'] },
-}
-
 function headingFocusStore() {
   const [headingStates, setHeadingStates] = createStore<HeadingState[]>([])
 

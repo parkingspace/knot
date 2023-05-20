@@ -1,22 +1,18 @@
 import { Editor } from '@tiptap/core'
-import { KnotCaret } from './knotCaret'
-import './typewriter.css'
+import { getDefaultCaretRect } from './knotCaret'
+import './styles/typewriter.css'
 
 export function createTypewriter({
   editor,
-  caret,
 }: {
   editor: Editor
-  caret: KnotCaret
 }) {
   const scrollDom = editor.view.dom.parentElement
   if (!scrollDom) {
     throw new Error('Scroll dom not found')
   }
   const tw = new Typewriter(scrollDom)
-  editor.on('selectionUpdate', () => {
-    tw.scroll(caret.y)
-  })
+  editor.on('selectionUpdate', () => tw.scroll(getDefaultCaretRect()?.y || 0))
   return tw
 }
 
