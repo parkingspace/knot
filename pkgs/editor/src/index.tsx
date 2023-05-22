@@ -24,7 +24,7 @@ export function Editor() {
   const [userEditorFeatures] = createResource(getUserEditorFeatures)
 
   const editorStyle = clsx(
-    'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0',
+    'prose dark:prose-invert max-w-none lg:prose-md md:max-w-4xl leading-relaxed text-editorFg outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0 focus:outline-none',
   )
 
   onMount(() => {
@@ -56,7 +56,7 @@ export function Editor() {
         isSidebarOpen={sidebar.isSidebarOpen}
         toggleSidebar={sidebar.toggleSidebar}
       />
-      <div class='flex flex-col h-full overflow-hidden'>
+      <div class='flex flex-col h-full overflow-hidden bg-editorBg'>
         <Header
           isSidebarOpen={sidebar.isSidebarOpen}
           toggleSidebar={sidebar.toggleSidebar}

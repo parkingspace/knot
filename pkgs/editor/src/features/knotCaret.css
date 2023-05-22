@@ -11,11 +11,5 @@
   pointer-events: none;
   border-radius: 0.5rem;
   z-index: 999;
-  /* background: linear-gradient( */
-  /*   0.25turn, */
-  /*   rgb(255 255 255 / 100%), */
-  /*   rgb(100 200 200 / 50%) */
-  /* ); */
-  /* TODO: Choose a color, make it as a variable */
-  background-color: rgb(31 41 55);
+  background-color: var(--caret-color);
 }

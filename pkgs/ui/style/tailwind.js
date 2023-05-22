@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const twColors = require('tailwindcss/colors')
 
 module.exports = function(context) {
   const config = {
@@ -8,15 +9,34 @@ module.exports = function(context) {
       '../../apps/web/src/**/*.{ts,tsx}',
     ],
     theme: {
+      colors: {
+        inherit: twColors.inherit,
+        transparent: twColors.transparent,
+        current: twColors.current,
+        black: twColors.black,
+        white: twColors.white,
+        gray: twColors.neutral,
+        stone: twColors.stone,
+      },
       extend: {
+        colors: {
+          editorFg: 'var(--editor-fg)',
+          editorBg: 'var(--editor-bg)',
+          sidebarBg: 'var(--sidebar-bg)',
+          iconFg: 'var(--icon-fg)',
+          iconBg: 'var(--icon-bg)',
+        },
+        width: {
+          sidebar: 'var(--sidebar-width)',
+        },
         fontFamily: {
           sans: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans],
         },
         padding: {
-          'editor': 'var(--editor-padding)',
+          editor: 'var(--editor-padding)',
         },
         gridTemplateColumns: {
-          'with-sidebar': '280px 1fr',
+          'with-sidebar': 'var(--sidebar-width) 1fr',
           'without-sidebar': '0px 1fr',
         },
       },

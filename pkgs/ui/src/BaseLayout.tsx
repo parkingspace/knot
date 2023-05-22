@@ -9,10 +9,9 @@ type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 const BaseLayout: Component = (props) => {
   return (
     <div
-      class={clsx(
-        'grid grid-cols-with-sidebar h-full transition-[grid]',
-        { 'grid-cols-without-sidebar': !props.isSidebarOpen() },
-      )}
+      class={clsx('grid grid-cols-with-sidebar h-full', {
+        'grid-cols-without-sidebar': !props.isSidebarOpen(),
+      })}
     >
       {props.children}
     </div>
