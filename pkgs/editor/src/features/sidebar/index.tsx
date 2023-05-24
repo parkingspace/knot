@@ -83,9 +83,9 @@ export function initSidebar() {
         {(heading, idx) => {
           const headingClass = clsx(
             'flex gap-x-2 items-center p-2 text-sm transition-colors ease-in-out',
-            'hover:bg-neutral-500 hover:text-white',
+            'hover:bg-gray-500 hover:text-white',
             {
-              'bg-neutral-200 font-semibold': heading.hasFocus,
+              'bg-gray-200 font-semibold': heading.hasFocus,
               'bg-stone-100': !heading.hasFocus,
               'pl-4': heading.node.attrs.level === 1,
               'pl-6': heading.node.attrs.level === 2,

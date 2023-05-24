@@ -2,14 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
-#root {
-  overflow: hidden;
-  height: 100vh;
-}
+@layer base {
+  html,
+  body,
+  #root {
+    overflow: hidden;
+    height: 100vh;
+  }
 
-:root {
-  --editor-padding: 4rem calc(96px + env(safe-area-inset-right, 96px)) 10rem
-    calc(96px + env(safe-area-inset-left, 96px));
+  :root {
+    /* colors */
+    --editor-fg: theme("colors.gray.700");
+    --editor-bg: theme("colors.white");
+
+    --sidebar-bg: theme("colors.stone.100");
+
+    --icon-fg: theme("colors.gray.600");
+    --icon-bg: theme("colors.gray.200");
+
+    --caret-color: theme("colors.gray.900");
+
+    /* layout */
+    --editor-padding: 4rem calc(96px + env(safe-area-inset-right, 96px)) 10rem
+      calc(96px + env(safe-area-inset-left, 96px));
+
+    --sidebar-width: 280px;
+  }
+
+  :root[data-theme="dark"] {
+    --editor-fg: theme("colors.gray.200");
+    --editor-bg: theme("colors.gray.900");
+
+    --sidebar-bg: theme("colors.gray.800");
+
+    --icon-fg: theme("colors.gray.300");
+    --icon-bg: theme("colors.gray.700");
+
+    --caret-color: theme("colors.gray.200");
+  }
 }

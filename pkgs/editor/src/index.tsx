@@ -27,7 +27,7 @@ export const useKnotEditor = () => {
 const KnotEditorProvider = (props: { children: any }) => {
   let editorRef: HTMLDivElement
   const editorStyle = clsx(
-    'prose max-w-none lg:prose-md lg:max-w-4xl leading-relaxed text-gray-700 outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0',
+    'prose dark:prose-invert max-w-none lg:prose-md md:max-w-4xl leading-relaxed text-editorFg outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0 focus:outline-none',
   )
   const { getAllHeadings } = useDocumentManager()
 

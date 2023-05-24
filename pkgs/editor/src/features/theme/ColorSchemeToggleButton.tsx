@@ -20,6 +20,7 @@ export const ColorSchemeToggleButton = () => {
   createEffect(() => {
     const root = document.documentElement
     root.classList.toggle('dark', theme() === 'dark')
+    root.dataset.theme = theme()
     if (theme() === 'light') {
       localStorage.setItem('theme', 'light')
     } else {
