@@ -37,15 +37,14 @@ export function getDefaultCaretRect() {
   return { x: rect.right + pageOffset.x, y: rect.top, height: rect.height }
 }
 
-// TODO: Pause animation when user is typing
-const blink = {
+const blinkFrames = {
   opacity: [0, 1],
-  offset: [0.2, 0.9],
-  easing: ['ease-out', 'ease-out'],
+  offset: [0.7, 1],
+  easing: 'ease-out',
 }
 
-const timing = {
-  duration: 900,
+const blinkOptions = {
+  duration: 1200,
   iterations: Infinity,
 }
 
@@ -62,14 +61,15 @@ export function initCaret() {
   const [caretStyle, setCaretStyle] = createSignal('')
 
   createEffect(() => {
-    const s = clsx(
-      'absolute w-1 bg-stone-900 rounded-sm pointer-events-none block',
-      {
-        'visible': show(),
-        'invisible': !show(),
-      },
+    setCaretStyle(
+      clsx(
+        'absolute w-1 bg-caretColor z-50 rounded-sm pointer-events-none block',
+        {
+          'visible': show(),
+          'invisible': !show(),
+        },
+      ),
     )
-    setCaretStyle(s)
   })
 
   onMount(() => {
@@ -79,7 +79,7 @@ export function initCaret() {
   })
 
   function initBlinkAnimation() {
-    caretBlinkAnimation = caretRef.animate(blink, timing)
+    caretBlinkAnimation = caretRef.animate(blinkFrames, blinkOptions)
   }
 
   function removeDefaultCaret() {
@@ -102,9 +102,11 @@ export function initCaret() {
       || { x: 0, y: 0, height: 0 }
 
     caretRef.style.height = height + 'px'
+    caretRef.style.transition
     caretRef.style.transition =
-      `transform ${duration}s cubic-bezier(0.22, 0.68, 0, 1.21) ${delay}s`
-    caretRef.style.transform = `translate(${x}px, ${y}px)`
+      `transform ${duration}s cubic-bezier(0.22, 0.68, 0, 1.21) ${delay}s,
+       height .1s ease-in-out 0s`
+    caretRef.style.transform = `matrix(1, 0, 0, 1, ${x}, ${y})`
   }
 
   editor.on('focus', () => {
@@ -119,6 +121,14 @@ export function initCaret() {
   editor.on('selectionUpdate', () => {
     move({ duration: 0.2, delay: 0 })
     hideOnSelection()
+  })
+  editor.on('transaction', () => {
+    if (caretBlinkAnimation.playState === 'paused') {
+      setTimeout(() => caretBlinkAnimation.play(), 1000)
+    } else {
+      caretBlinkAnimation.currentTime = 1200
+      caretBlinkAnimation.pause()
+    }
   })
 
   function hideOnSelection() {

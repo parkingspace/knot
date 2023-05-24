@@ -19,15 +19,13 @@ module.exports = function(context) {
         stone: twColors.stone,
       },
       extend: {
-        transitionProperty: {
-          'height': 'height',
-        },
         colors: {
           editorFg: 'var(--editor-fg)',
           editorBg: 'var(--editor-bg)',
           sidebarBg: 'var(--sidebar-bg)',
           iconFg: 'var(--icon-fg)',
           iconBg: 'var(--icon-bg)',
+          caretColor: 'var(--caret-color)',
         },
         width: {
           sidebar: 'var(--sidebar-width)',

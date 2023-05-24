@@ -12,7 +12,7 @@ import {
 } from 'solid-js'
 import { BaseLayout, Button, Icon } from 'ui'
 import { useDocumentManager } from '../../documentManager'
-import type { HeadingState } from '../../headingFocusState'
+import type { HeadingFocusState } from '../../types/headingStates'
 
 type SidebarState = ReturnType<typeof createSidebarState>
 
@@ -53,7 +53,7 @@ export function SidebarProvider(props: { children: any; when: boolean }) {
 type SidebarProps = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>
   toggleSidebar: () => void
-  headingStates: HeadingState[]
+  headingStates: HeadingFocusState[]
 }
 export function initSidebar() {
   const { headingStates } = useDocumentManager()
@@ -61,18 +61,9 @@ export function initSidebar() {
 
   return (
     <div
-      class={clsx(
-        'flex',
-        'flex-col',
-        'bg-stone-100',
-        'min-w-[280px]',
-        'transition-all',
-        'ease-in-out',
-        'dark:bg-stone-800',
-        {
-          '-translate-x-full opacity-0 invisible cursor-none': !isSidebarOpen(),
-        },
-      )}
+      class={clsx('flex', 'flex-col', 'bg-sidebarBg', 'min-w-sidebar', {
+        '-translate-x-full opacity-0 invisible cursor-none': !isSidebarOpen(),
+      })}
     >
       <div class='flex justify-end p-2'>
         <Button onclick={toggleSidebar} size={'icon'}>
