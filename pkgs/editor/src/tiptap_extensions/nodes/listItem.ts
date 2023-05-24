@@ -1,5 +1,5 @@
 import ListItem from '@tiptap/extension-list-item'
-import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
+import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
 
 export default ListItem
   .extend({

@@ -1,5 +1,5 @@
 import Paragraph from '@tiptap/extension-paragraph'
-import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
+import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
 
 export default Paragraph
   .extend({

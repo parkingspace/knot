@@ -1,19 +1,16 @@
-import { Editor } from '@tiptap/core'
-import { getDefaultCaretRect } from './knotCaret'
-import './styles/typewriter.css'
+import { useKnotEditor } from '../..'
+import { getDefaultCaretRect } from '../caret'
 
-export function createTypewriter({
-  editor,
-}: {
-  editor: Editor
-}) {
+export function initTypewriter() {
+  const { editor } = useKnotEditor()
   const scrollDom = editor.view.dom.parentElement
   if (!scrollDom) {
     throw new Error('Scroll dom not found')
   }
   const tw = new Typewriter(scrollDom)
   editor.on('selectionUpdate', () => tw.scroll(getDefaultCaretRect()?.y || 0))
-  return tw
+
+  return <></>
 }
 
 export class Typewriter {
@@ -21,8 +18,6 @@ export class Typewriter {
   scroll: (y: number) => void
   constructor(scrollDom: HTMLElement) {
     this.scrollDom = scrollDom
-    // TODO: Maybe use smooth scroll library?
-    // https://idiotwu.github.io/smooth-scrollbar/
     this.scroll = (y) => {
       const amount = y - window.innerHeight / 2
       this.scrollDom.scrollBy({

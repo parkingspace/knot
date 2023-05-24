@@ -9,6 +9,9 @@ module.exports = function(context) {
     ],
     theme: {
       extend: {
+        transitionProperty: {
+          'height': 'height',
+        },
         fontFamily: {
           sans: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans],
         },

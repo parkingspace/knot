@@ -1,8 +1,17 @@
-import { createContext, createSignal, onMount, useContext } from 'solid-js'
+// TODO: move css file to tailwind
+import './whichkey.css'
+import {
+  createContext,
+  createSignal,
+  For,
+  onMount,
+  Show,
+  useContext,
+} from 'solid-js'
 import { createStore } from 'solid-js/store'
 import tinykeys, { KeyBindingMap } from 'tinykeys'
 
-import { editorShortcuts } from '../shortcuts/editorShortcuts'
+import { editorShortcuts } from '../shortcut/editorShortcuts'
 import {
   ALT,
   ALT_OSMOD,
@@ -27,7 +36,14 @@ type WkKeymapStore = {
 
 const WhichkeyStateContext = createContext<WkState>()
 
-export const useWhichkeyState = () => useContext(WhichkeyStateContext)
+export const useWhichkeyState = () => {
+  const context = useContext(WhichkeyStateContext)
+  console.trace('useWhichkeyState', context)
+  if (!context) {
+    throw new Error('useWhichkeyState must be used within WKProvider')
+  }
+  return context
+}
 
 export function WhichkeyStateProvider(props: { children: any }) {
   const wk = createWhichkeyState()
@@ -104,43 +120,65 @@ function listenOnKeyup(keybinding: KeyBindingMap) {
   tinykeys(window, keybinding, { event: 'keyup' })
 }
 
-export function createWhichKeyListener(
-  setPressedKey: (key: string) => void,
-) {
-  listenOnKeydown({
-    ['Tab']: (e) => e.preventDefault(),
-    [ALT]: () => setPressedKey(ALT),
-    [SHIFT]: () => setPressedKey(SHIFT),
-    [OSMOD]: () => setPressedKey(MOD),
-    [OSMOD_SHIFT]: () => setPressedKey(MOD_SHIFT),
-    [SHIFT_OSMOD]: () => setPressedKey(MOD_SHIFT),
-    [OSMOD_ALT]: () => setPressedKey(MOD_ALT),
-    [ALT_OSMOD]: () => setPressedKey(MOD_ALT),
+export function initWhichkey() {
+  const { setPressedKey, pressedKey, wkKeymap } = useWhichkeyState()
+  onMount(() => {
+    listenOnKeydown({
+      ['Tab']: (e) => e.preventDefault(),
+      [ALT]: () => setPressedKey(ALT),
+      [SHIFT]: () => setPressedKey(SHIFT),
+      [OSMOD]: () => setPressedKey(MOD),
+      [OSMOD_SHIFT]: () => setPressedKey(MOD_SHIFT),
+      [SHIFT_OSMOD]: () => setPressedKey(MOD_SHIFT),
+      [OSMOD_ALT]: () => setPressedKey(MOD_ALT),
+      [ALT_OSMOD]: () => setPressedKey(MOD_ALT),
+    })
+    listenOnKeyup({
+      [OSMOD_SHIFT]: (e) => {
+        if (e.key === SHIFT && e.ctrlKey) {
+          setPressedKey(MOD)
+        }
+      },
+      [SHIFT_OSMOD]: (e) => {
+        if (e.key === OSMOD && e.shiftKey) {
+          setPressedKey(SHIFT)
+        }
+      },
+      [OSMOD_ALT]: (e) => {
+        if (e.key === ALT && e.ctrlKey) {
+          setPressedKey(MOD)
+        }
+      },
+      [ALT_OSMOD]: (e) => {
+        if (e.key === OSMOD && e.altKey) {
+          setPressedKey(ALT)
+        }
+      },
+      [OSMOD]: () => setPressedKey(''),
+      [SHIFT]: () => setPressedKey(''),
+      [ALT]: () => setPressedKey(''),
+    })
   })
 
-  listenOnKeyup({
-    [OSMOD_SHIFT]: (e) => {
-      if (e.key === SHIFT && e.ctrlKey) {
-        setPressedKey(MOD)
-      }
-    },
-    [SHIFT_OSMOD]: (e) => {
-      if (e.key === OSMOD && e.shiftKey) {
-        setPressedKey(SHIFT)
-      }
-    },
-    [OSMOD_ALT]: (e) => {
-      if (e.key === ALT && e.ctrlKey) {
-        setPressedKey(MOD)
-      }
-    },
-    [ALT_OSMOD]: (e) => {
-      if (e.key === OSMOD && e.altKey) {
-        setPressedKey(ALT)
-      }
-    },
-    [OSMOD]: () => setPressedKey(''),
-    [SHIFT]: () => setPressedKey(''),
-    [ALT]: () => setPressedKey(''),
-  })
+  return (
+    <Show when={pressedKey()}>
+      <div class='WhichKey'>
+        <span>{pressedKey()}</span>
+        <For
+          each={wkKeymap[pressedKey()]}
+          fallback={
+            <p>
+              <span>No keymaps are found</span>
+            </p>
+          }
+        >
+          {(map) => (
+            <p>
+              <span>{map.key}</span> <span>{map.description}</span>
+            </p>
+          )}
+        </For>
+      </div>
+    </Show>
+  )
 }

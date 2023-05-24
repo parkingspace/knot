@@ -1,9 +1,11 @@
 import { Node } from '@tiptap/pm/model'
 import type { EditorState, Transaction } from '@tiptap/pm/state'
 import type { EditorView } from '@tiptap/pm/view'
-import { createRoot } from 'solid-js'
+import { createContext, createRoot, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import type { HeadingState } from '../headingFocusStore'
+import searchIndex from './search'
+import { HeadingFocusState } from './types/headingStates'
+
 
 export function isHeading(node: Element) {
   return node.nodeName.includes('H')
@@ -42,14 +44,14 @@ export function fillEmptyHeading(dom: Element, content: string) {
   }
 }
 
-function headingFocusStore() {
-  const [headingStates, setHeadingStates] = createStore<HeadingState[]>([])
+function documentManager() {
+  const [headingStates, setHeadingStates] = createStore<HeadingFocusState[]>([])
+  let searchableDocs: { 'title': string; 'content': string[] }[] = []
 
   function getAllHeadings(editorState: EditorState) {
     let lastHeading: Node | undefined
     let headingNodes: Array<Node> = []
     let contents: Array<string> = []
-    let docs: { 'title': string; 'content': string[] }[] = []
 
     let currentHeading: Node | undefined
     let headingIndex = -1
@@ -61,7 +63,7 @@ function headingFocusStore() {
           headingNodes.push(node)
           currentHeading = node
           headingIndex += 1
-          docs[headingIndex] = {
+          searchableDocs[headingIndex] = {
             title: headingNodes[headingIndex].textContent,
             content: [],
           }
@@ -72,8 +74,8 @@ function headingFocusStore() {
         }
         if (node.type.name === 'paragraph') {
           contents.push(node.textContent)
-          docs[headingIndex].content = [
-            ...docs[headingIndex].content,
+          searchableDocs[headingIndex].content = [
+            ...searchableDocs[headingIndex].content,
             node.textContent,
           ]
         }
@@ -92,13 +94,13 @@ function headingFocusStore() {
     return {
       toggleLastHeadingFocus: () => toggleHeadingFocus(lastHeading),
       headings: headingNodes,
-      docs: docs,
+      searchableDocs,
     }
   }
 
   function toggleHeadingFocus(targetHeading: Node | undefined) {
     if (!targetHeading) {
-      return
+      return chains
     }
     setHeadingStates((headings) =>
       headings.map((heading) => {
@@ -114,11 +116,46 @@ function headingFocusStore() {
         }
       })
     )
+    return chains
   }
-  return {
+
+  function setSearchIndex() {
+    searchableDocs.forEach((doc, index) => {
+      searchIndex.add(index, {
+        title: doc.title,
+        content: doc.content.join(' '),
+      })
+    })
+  }
+
+  const chains = {
     headingStates,
+    searchableDocs,
     getAllHeadings,
+    setSearchIndex,
   }
+
+  return chains
 }
 
-export const headingManager = () => createRoot(headingFocusStore)
+type DocumentManager = ReturnType<typeof documentManager>
+
+const DocumentManagerContext = createContext<DocumentManager>()
+
+export const DocumentManagerProvider = (props: { children: any }) => {
+  return (
+    <DocumentManagerContext.Provider value={documentManager()}>
+      {props.children}
+    </DocumentManagerContext.Provider>
+  )
+}
+
+export const useDocumentManager = () => {
+  const context = useContext(DocumentManagerContext)
+  if (!context) {
+    throw new Error(
+      'useDocumentManager must be used within a DocumentManagerProvider',
+    )
+  }
+  return context
+}
