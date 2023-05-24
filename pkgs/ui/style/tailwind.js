@@ -19,6 +19,9 @@ module.exports = function(context) {
         stone: twColors.stone,
       },
       extend: {
+        transitionProperty: {
+          'height': 'height',
+        },
         colors: {
           editorFg: 'var(--editor-fg)',
           editorBg: 'var(--editor-bg)',
