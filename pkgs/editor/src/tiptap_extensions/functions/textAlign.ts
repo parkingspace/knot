@@ -1,5 +1,5 @@
 import TextAlign from '@tiptap/extension-text-align'
-import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
+import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
 
 export default TextAlign
   .extend({

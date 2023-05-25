@@ -1,69 +1,82 @@
 import './editor.css'
+import type { Editor } from '@tiptap/core'
 import clsx from 'clsx'
-import { createTiptapEditor } from 'solid-tiptap'
-import { BaseLayout, TextArea } from 'ui'
-import { Header, Sidebar } from './interface'
+import { createEditor } from 'solid-tiptap'
+import { TextArea } from 'ui'
+import { SidebarProvider } from './features/sidebar'
 
-import { createResource, onMount } from 'solid-js'
-import { WhichKeyModal } from './features/keymap/whichkeyModal'
-import { useWhichkeyState } from './features/keymap/whichkeyStore'
-import {
-  getUserEditorFeatures,
-  initEditorFeatures,
-} from './features/toggleFeature'
-import { useSidebarState } from './interface/Sidebar'
+import { createContext, Show, useContext } from 'solid-js'
+import { DocumentManagerProvider, useDocumentManager } from './documentManager'
+import { Features, useUserConfig } from './features'
 import extensions from './tiptap_extensions'
-import { headingManager } from './utils/utils'
 
-export function Editor() {
+const KnotEditorContext = createContext<{
+  editor: Editor
+  editorRef: HTMLDivElement
+}>()
+
+export const useKnotEditor = () => {
+  const context = useContext(KnotEditorContext)
+  console.trace('useKnotEditor', context)
+  if (!context) {
+    throw new Error('useKnotEditor must be used within KnotEditorProvider')
+  }
+  return context
+}
+
+const KnotEditorProvider = (props: { children: any }) => {
   let editorRef: HTMLDivElement
-
-  const wk = useWhichkeyState()
-  const sidebar = useSidebarState()
-  const { headingStates, getAllHeadings } = headingManager()
-  const [userEditorFeatures] = createResource(getUserEditorFeatures)
-
   const editorStyle = clsx(
-    'prose dark:prose-invert max-w-none lg:prose-md md:max-w-4xl leading-relaxed text-editorFg outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0 focus:outline-none',
+    'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0 focus:outline-none bg-editorBg',
   )
+  const { getAllHeadings } = useDocumentManager()
 
-  onMount(() => {
-    createTiptapEditor(() => ({
-      element: editorRef,
-      extensions: extensions,
-      editorProps: {
-        attributes: {
-          id: 'document',
-          class: editorStyle,
-        },
+  const editor = createEditor(() => ({
+    element: editorRef,
+    extensions: extensions,
+    editorProps: {
+      attributes: {
+        id: 'document',
+        class: editorStyle,
       },
-      onCreate({ editor }) {
-        editor.view.dom.spellcheck = false
-
-        const features = userEditorFeatures()
-        features && initEditorFeatures(features, editor, wk?.setPressedKey)
-      },
-      onTransaction({ editor }) {
-        getAllHeadings(editor.state).toggleLastHeadingFocus()
-      },
-    }))
-  })
+    },
+    onTransaction({ editor }) {
+      getAllHeadings(editor.state)
+        .toggleLastHeadingFocus()
+        .setSearchIndex()
+    },
+  }))
 
   return (
-    <BaseLayout isSidebarOpen={sidebar.isSidebarOpen}>
-      <Sidebar
-        headingStates={headingStates}
-        isSidebarOpen={sidebar.isSidebarOpen}
-        toggleSidebar={sidebar.toggleSidebar}
-      />
-      <div class='flex flex-col h-full overflow-hidden bg-editorBg'>
-        <Header
-          isSidebarOpen={sidebar.isSidebarOpen}
-          toggleSidebar={sidebar.toggleSidebar}
-        />
-        <TextArea ref={editorRef!} />
-      </div>
-      <WhichKeyModal />
-    </BaseLayout>
+    <>
+      <Show when={editor()}>
+        <KnotEditorContext.Provider
+          value={{
+            editor: editor()!,
+            editorRef: editorRef!,
+          }}
+        >
+          {props.children}
+        </KnotEditorContext.Provider>
+      </Show>
+      <TextArea ref={editorRef!} />
+    </>
+  )
+}
+
+export function KnotEditor() {
+  const enabledFeatures = useUserConfig().filter((feature) => feature.enabled)
+  const sidebarEnabled = enabledFeatures.some((feature) =>
+    feature.name === 'sidebar'
+  )
+
+  return (
+    <SidebarProvider when={sidebarEnabled}>
+      <DocumentManagerProvider>
+        <KnotEditorProvider>
+          <Features features={enabledFeatures} />
+        </KnotEditorProvider>
+      </DocumentManagerProvider>
+    </SidebarProvider>
   )
 }

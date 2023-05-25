@@ -1,5 +1,5 @@
 import BulletList from '@tiptap/extension-bullet-list'
-import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
+import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
 
 const bulletlist = BulletList
   .extend({

@@ -1,5 +1,5 @@
-import { Editor } from 'editor'
+import { KnotEditor } from 'editor'
 
 export default function App() {
-  return <Editor />
+  return <KnotEditor />
 }

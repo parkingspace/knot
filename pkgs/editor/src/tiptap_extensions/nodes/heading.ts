@@ -1,5 +1,5 @@
 import Heading from '@tiptap/extension-heading'
-import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
+import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
 
 export default Heading
   .extend({

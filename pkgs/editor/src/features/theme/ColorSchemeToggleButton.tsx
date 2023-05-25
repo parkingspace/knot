@@ -14,7 +14,7 @@ function getTheme(): Theme {
   return theme
 }
 
-export const ColorSchemeToggle = () => {
+export const ColorSchemeToggleButton = () => {
   const [theme, setTheme] = createSignal<Theme>(getTheme())
 
   createEffect(() => {

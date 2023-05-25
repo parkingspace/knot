@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Accessor, JSX, ParentComponent } from 'solid-js'
+import { Accessor, JSX } from 'solid-js'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement> & {
   isSidebarOpen: Accessor<boolean>

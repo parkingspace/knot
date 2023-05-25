@@ -25,6 +25,7 @@ module.exports = function(context) {
           sidebarBg: 'var(--sidebar-bg)',
           iconFg: 'var(--icon-fg)',
           iconBg: 'var(--icon-bg)',
+          caretColor: 'var(--caret-color)',
         },
         width: {
           sidebar: 'var(--sidebar-width)',

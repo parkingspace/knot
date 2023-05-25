@@ -1,5 +1,5 @@
 import OrderedList from '@tiptap/extension-ordered-list'
-import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
+import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
 
 const orderedList = OrderedList
   .extend({

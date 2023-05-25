@@ -1,5 +1,5 @@
 import Color from '@tiptap/extension-color'
-import { applyEditorShortcuts } from '../../features/keymap/editorShortcuts'
+import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
 
 export default Color
   .extend({

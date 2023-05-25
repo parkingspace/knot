@@ -10,15 +10,10 @@ import {
   Switch,
   useContext,
 } from 'solid-js'
-import { Button, Icon } from 'ui'
-import type { HeadingState } from '../headingFocusStore'
+import { BaseLayout, Button, Icon } from 'ui'
+import { useDocumentManager } from '../../documentManager'
+import type { HeadingFocusState } from '../../types/headingStates'
 
-type propType = JSX.HTMLAttributes<HTMLDivElement> & {
-  isSidebarOpen: Accessor<boolean>
-  toggleSidebar: () => void
-  headingStates: HeadingState[]
-}
-type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 type SidebarState = ReturnType<typeof createSidebarState>
 
 const SidebarContext = createContext<SidebarState>()
@@ -41,30 +36,41 @@ export function createSidebarState() {
   return { isSidebarOpen, setIsSidebarOpen, toggleSidebar }
 }
 
-export function SidebarProvider(props: { children: any }) {
+export function SidebarProvider(props: { children: any; when: boolean }) {
   const sidebar = createSidebarState()
+  if (!props.when) {
+    return props.children
+  }
   return (
     <SidebarContext.Provider value={sidebar}>
-      {props.children}
+      <BaseLayout isSidebarOpen={sidebar.isSidebarOpen}>
+        {props.children}
+      </BaseLayout>
     </SidebarContext.Provider>
   )
 }
 
-const Sidebar: Component = (props) => {
+type SidebarProps = JSX.HTMLAttributes<HTMLDivElement> & {
+  isSidebarOpen: Accessor<boolean>
+  toggleSidebar: () => void
+  headingStates: HeadingFocusState[]
+}
+export function initSidebar() {
+  const { headingStates } = useDocumentManager()
+  const { isSidebarOpen, toggleSidebar } = useSidebarState()
+
   return (
     <div
       class={clsx('flex', 'flex-col', 'bg-sidebarBg', 'min-w-sidebar', {
-        '-translate-x-full opacity-0 invisible cursor-none': !props
-          .isSidebarOpen(),
+        '-translate-x-full opacity-0 invisible cursor-none': !isSidebarOpen(),
       })}
     >
-      {props.children}
       <div class='flex justify-end p-2'>
-        <Button onclick={props.toggleSidebar} size={'icon'}>
+        <Button onclick={toggleSidebar} size={'icon'}>
           <Icon name='IconLayoutSidebarLeftCollapse' />
         </Button>
       </div>
-      <For each={props.headingStates} fallback={null}>
+      <For each={headingStates} fallback={null}>
         {(heading, idx) => {
           const headingClass = clsx(
             'flex gap-x-2 items-center p-2 text-sm transition-colors ease-in-out',
@@ -106,5 +112,3 @@ const Sidebar: Component = (props) => {
     </div>
   )
 }
-
-export { Sidebar }
