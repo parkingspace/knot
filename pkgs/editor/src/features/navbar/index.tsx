@@ -8,7 +8,11 @@ import { ColorSchemeToggleButton } from '../theme/ColorSchemeToggleButton'
 export const initNavbar = () => {
   const { isSidebarOpen, toggleSidebar } = useSidebarState()
   return (
-    <div class='fixed flex p-2 justify-between'>
+    <div
+      class={clsx('fixed z-50 flex p-2 justify-between right-0', {
+        'w-full': !isSidebarOpen(),
+      })}
+    >
       <div
         class={clsx('flex flex-row opacity-0 transition-opacity delay-300', {
           'opacity-100': !isSidebarOpen(),
@@ -23,7 +27,9 @@ export const initNavbar = () => {
           </Button>
         </Show>
       </div>
-      <ColorSchemeToggleButton />
+      <div class='pr-4'>
+        <ColorSchemeToggleButton />
+      </div>
     </div>
   )
 }

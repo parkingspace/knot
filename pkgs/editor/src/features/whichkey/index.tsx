@@ -2,6 +2,7 @@
 import './whichkey.css'
 import {
   createContext,
+  createEffect,
   createSignal,
   For,
   onMount,
@@ -122,42 +123,45 @@ function listenOnKeyup(keybinding: KeyBindingMap) {
 
 export function initWhichkey() {
   const { setPressedKey, pressedKey, wkKeymap } = useWhichkeyState()
-  onMount(() => {
-    listenOnKeydown({
-      ['Tab']: (e) => e.preventDefault(),
-      [ALT]: () => setPressedKey(ALT),
-      [SHIFT]: () => setPressedKey(SHIFT),
-      [OSMOD]: () => setPressedKey(MOD),
-      [OSMOD_SHIFT]: () => setPressedKey(MOD_SHIFT),
-      [SHIFT_OSMOD]: () => setPressedKey(MOD_SHIFT),
-      [OSMOD_ALT]: () => setPressedKey(MOD_ALT),
-      [ALT_OSMOD]: () => setPressedKey(MOD_ALT),
-    })
-    listenOnKeyup({
-      [OSMOD_SHIFT]: (e) => {
-        if (e.key === SHIFT && e.ctrlKey) {
-          setPressedKey(MOD)
-        }
-      },
-      [SHIFT_OSMOD]: (e) => {
-        if (e.key === OSMOD && e.shiftKey) {
-          setPressedKey(SHIFT)
-        }
-      },
-      [OSMOD_ALT]: (e) => {
-        if (e.key === ALT && e.ctrlKey) {
-          setPressedKey(MOD)
-        }
-      },
-      [ALT_OSMOD]: (e) => {
-        if (e.key === OSMOD && e.altKey) {
-          setPressedKey(ALT)
-        }
-      },
-      [OSMOD]: () => setPressedKey(''),
-      [SHIFT]: () => setPressedKey(''),
-      [ALT]: () => setPressedKey(''),
-    })
+
+  listenOnKeydown({
+    ['Tab']: (e) => e.preventDefault(),
+    [ALT]: () => setPressedKey(ALT),
+    [SHIFT]: () => setPressedKey(SHIFT),
+    [OSMOD]: () => setPressedKey(MOD),
+    [OSMOD_SHIFT]: () => setPressedKey(MOD_SHIFT),
+    [SHIFT_OSMOD]: () => setPressedKey(MOD_SHIFT),
+    [OSMOD_ALT]: () => setPressedKey(MOD_ALT),
+    [ALT_OSMOD]: () => setPressedKey(MOD_ALT),
+  })
+  listenOnKeyup({
+    [OSMOD_SHIFT]: (e) => {
+      if (e.key === SHIFT && e.ctrlKey) {
+        setPressedKey(MOD)
+      }
+    },
+    [SHIFT_OSMOD]: (e) => {
+      if (e.key === OSMOD && e.shiftKey) {
+        setPressedKey(SHIFT)
+      }
+    },
+    [OSMOD_ALT]: (e) => {
+      if (e.key === ALT && e.ctrlKey) {
+        setPressedKey(MOD)
+      }
+    },
+    [ALT_OSMOD]: (e) => {
+      if (e.key === OSMOD && e.altKey) {
+        setPressedKey(ALT)
+      }
+    },
+    [OSMOD]: () => setPressedKey(''),
+    [SHIFT]: () => setPressedKey(''),
+    [ALT]: () => setPressedKey(''),
+  })
+
+  createEffect(() => {
+    console.log('pressedKey', pressedKey())
   })
 
   return (
