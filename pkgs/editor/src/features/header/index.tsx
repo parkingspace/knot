@@ -4,8 +4,8 @@ import { Button, Icon } from 'ui'
 import { useSidebarState } from '../sidebar'
 import { ColorSchemeToggleButton } from '../theme/ColorSchemeToggleButton'
 
-// TODO: Add breadcrumbs to the nav
-export const initNavbar = () => {
+// TODO: Add breadcrumbs to the header
+export const initHeader = () => {
   const { isSidebarOpen, toggleSidebar } = useSidebarState()
   return (
     <div

@@ -2,7 +2,7 @@ import { createContext, For, useContext } from 'solid-js'
 import { useKnotEditor } from '..'
 
 import { initCaret } from './caret'
-import { initNavbar } from './navbar'
+import { initHeader } from './header'
 import { initSearch } from './search'
 import { initSidebar } from './sidebar'
 import { initTypewriter } from './typewriter'
@@ -39,9 +39,9 @@ export function fetchUserConfig() {
       init: initSearch,
     },
     {
-      name: 'navbar',
+      name: 'header',
       enabled: true,
-      init: initNavbar,
+      init: initHeader,
     },
   ]
 }
