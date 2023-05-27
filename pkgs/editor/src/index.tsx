@@ -5,9 +5,9 @@ import { createEditor } from 'solid-tiptap'
 import { TextArea } from 'ui'
 import { SidebarProvider } from './features/sidebar'
 
-import { createContext, Show, useContext } from 'solid-js'
+import { createContext, For, Show, useContext } from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
-import { Features, useUserConfig } from './features'
+import { Feature, Features, useUserConfig } from './features'
 import extensions from './tiptap_extensions'
 
 const KnotEditorContext = createContext<{
@@ -65,16 +65,22 @@ const KnotEditorProvider = (props: { children: any }) => {
 }
 
 export function KnotEditor() {
-  const enabledFeatures = useUserConfig().filter((feature) => feature.enabled)
-  const sidebarEnabled = enabledFeatures.some((feature) =>
-    feature.name === 'sidebar'
-  )
+  // const enabledFeatures = useUserConfig().filter((feature) => feature.enabled)
+  // const sidebarEnabled = enabledFeatures.some((feature) =>
+  //   feature.name === 'sidebar'
+  // )
+
+  const sidebarEnabled = true
 
   return (
     <SidebarProvider when={sidebarEnabled}>
       <DocumentManagerProvider>
         <KnotEditorProvider>
-          <Features features={enabledFeatures} />
+          <Features>
+            <Feature name='caret' />
+            <Feature name='sidebar' />
+            <Feature name='header' />
+          </Features>
         </KnotEditorProvider>
       </DocumentManagerProvider>
     </SidebarProvider>
