@@ -57,17 +57,6 @@ export function fetchUserConfig(featureName: FeatureName) {
   return features[featureName]
 }
 
-const UserConfigContext = createContext<UserConfigurations>(fetchUserConfig())
-export const UserConfigProvider = (props: { children: any }) => {
-  const config = fetchUserConfig()
-  return (
-    <UserConfigContext.Provider value={config}>
-      {props.children}
-    </UserConfigContext.Provider>
-  )
-}
-export const useUserConfig = () => useContext(UserConfigContext)
-
 interface FeaturesProps {
   children: JSXElement
 }
@@ -75,30 +64,23 @@ interface FeaturesProps {
 export function Features(props: FeaturesProps) {
   const features = children(() => props.children)
   const evaluatedFeatures = features.toArray() as unknown as FeatureProps[]
+
+  const { editor } = useKnotEditor()
+  editor.view.dom.spellcheck = false
+
   return (
     <>
       <For each={evaluatedFeatures}>
         {(feature) => {
-          return (fetchUserConfig(feature.name).init())
+          return (
+            <Show when={fetchUserConfig(feature.name).enabled}>
+              {fetchUserConfig(feature.name).init()}
+            </Show>
+          )
         }}
       </For>
     </>
   )
-  //   props: {
-  //     features: UserConfigurations
-  //   },
-  // ) {
-  //   const { features } = props
-  //   const { editor } = useKnotEditor()
-  //   editor.view.dom.spellcheck = false
-  //
-  //   console.log(features)
-  //
-  //   return (
-  //     <For each={features}>
-  //       {(feature) => feature.init()}
-  //     </For>
-  //   )
 }
 
 interface FeatureProps {
