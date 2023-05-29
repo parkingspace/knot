@@ -1,15 +1,17 @@
-name: CI
+name: Staging
 
 on:
   push:
     branches:
-      - "main"
+      - "staging"
     paths:
       - "apps/**"
       - "pkgs/**"
       - ".github/**"
   pull_request:
-    types: [opened, synchronize]
+    branches:
+      - "staging"
+    types: [synchronize]
 
 jobs:
   build-web:
@@ -39,7 +41,7 @@ jobs:
     name: Deploy web app
     needs: build-web
     runs-on: ubuntu-latest
-    environment: production
+    environment: stage
     steps:
       - uses: actions/checkout@v3
 
@@ -52,34 +54,7 @@ jobs:
       - name: 🌏 Deploy web
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
-          domain: "ps-knot.surge.sh"
+          domain: "ps-knot-stage.surge.sh"
           project: "dist/web"
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
-
-  create-badge:
-    needs: build-web
-    name: Create badge
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Count Typescript lines
-        run: >-
-          echo "ts_loc=$(find .
-          -type f
-          -not -path './node_modules/**'
-          -regex '.*\.\(ts\|tsx\)$'
-          -exec grep -c ^ {} \;
-          | awk '{total += $1} END{print total}')"
-          >> $GITHUB_ENV
-
-      - name: Create Loc Badge
-        uses: schneegans/dynamic-badges-action@v1.6.0
-        with:
-          auth: ${{ secrets.BADGE_GIST_SECRET }}
-          gistID: ff4c2b4dc91f66a4b5fb2b62059a3c7e
-          filename: knot-badges.json
-          namedLogo: typescript
-          label: LoC
-          message: ${{ env.ts_loc }}
-          color: blue
