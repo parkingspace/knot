@@ -1,6 +1,4 @@
 import clsx from 'clsx'
-import type { Index } from 'flexsearch'
-import type { Accessor } from 'solid-js'
 import {
   createContext,
   createEffect,
@@ -10,6 +8,7 @@ import {
   Show,
 } from 'solid-js'
 import tinykeys from 'tinykeys'
+import { useKnotEditor } from '../..'
 import { useDocumentManager } from '../../documentManager'
 import searchIndex from '../../search'
 
@@ -45,6 +44,7 @@ export function initSearch() {
   const [selectedIndex, setSelectedIndex] = createSignal(0)
   const [matchedDocs, setMatchedDocs] = createSignal<any[]>([])
   const { searchableDocs } = useDocumentManager()
+  const { editor } = useKnotEditor()
 
   const [show, setShow] = createSignal(false)
 
@@ -63,6 +63,7 @@ export function initSearch() {
       },
     }, { event: 'keydown' })
   }
+
   function setSelectShortcut() {
     tinykeys(window, {
       'Tab': (e) => {
@@ -98,7 +99,7 @@ export function initSearch() {
   })
 
   createEffect(() => {
-    const searchedDocs = setMatchedDocs(
+    setMatchedDocs(
       searchResults().flatMap((r) =>
         r.result.map((id: number) => searchableDocs[id])
       ),
@@ -121,6 +122,21 @@ export function initSearch() {
           <input
             id='search-box'
             type='text'
+            onkeydown={(e) => {
+              if (e.key === 'Enter') {
+                const searchResult = matchedDocs()[selectedIndex()]
+
+                editor
+                  .chain()
+                  .insertContent(searchResult.title)
+                  .setHeading({ level: 1 })
+                  .enter()
+                  .insertContent(searchResult.content.join(' '))
+                  .run()
+
+                setShow(false)
+              }
+            }}
             onInput={async ({ currentTarget }) => {
               const searchResults = await searchIndex.search(
                 currentTarget.value,

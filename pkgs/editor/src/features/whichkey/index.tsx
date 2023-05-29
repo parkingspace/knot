@@ -39,7 +39,6 @@ const WhichkeyStateContext = createContext<WkState>()
 
 export const useWhichkeyState = () => {
   const context = useContext(WhichkeyStateContext)
-  console.trace('useWhichkeyState', context)
   if (!context) {
     throw new Error('useWhichkeyState must be used within WKProvider')
   }
@@ -158,10 +157,6 @@ export function initWhichkey() {
     [OSMOD]: () => setPressedKey(''),
     [SHIFT]: () => setPressedKey(''),
     [ALT]: () => setPressedKey(''),
-  })
-
-  createEffect(() => {
-    console.log('pressedKey', pressedKey())
   })
 
   return (

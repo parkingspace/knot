@@ -2,7 +2,6 @@ import type { Editor } from '@tiptap/core'
 
 export function applyEditorShortcuts(that: any) {
   if (!editorShortcuts[that.name]) {
-    console.log('No shortcuts for node: ', that.name)
     return {}
   }
 
