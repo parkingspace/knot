@@ -1,12 +1,4 @@
-import {
-  children,
-  Component,
-  createContext,
-  For,
-  JSXElement,
-  Show,
-  useContext,
-} from 'solid-js'
+import { children, Component, For, JSXElement, Show } from 'solid-js'
 import { useKnotEditor } from '..'
 
 import { initCaret } from './caret'
@@ -23,7 +15,6 @@ type FeatureName =
   | 'sidebar'
   | 'search'
   | 'header'
-type UserConfigurations = ReturnType<typeof fetchUserConfig>
 
 // TODO: store it into localStorage and allow user to change
 export function fetchUserConfig(featureName: FeatureName) {

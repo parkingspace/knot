@@ -5,7 +5,7 @@ import { createEditor } from 'solid-tiptap'
 import { TextArea } from 'ui'
 import { SidebarProvider } from './features/sidebar'
 
-import { createContext, For, Show, useContext } from 'solid-js'
+import { createContext, Show, useContext } from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
 import { Feature, Features } from './features'
 import extensions from './tiptap_extensions'
@@ -17,7 +17,6 @@ const KnotEditorContext = createContext<{
 
 export const useKnotEditor = () => {
   const context = useContext(KnotEditorContext)
-  console.trace('useKnotEditor', context)
   if (!context) {
     throw new Error('useKnotEditor must be used within KnotEditorProvider')
   }
@@ -46,6 +45,7 @@ const KnotEditorProvider = (props: { children: any }) => {
         .setSearchIndex()
     },
   }))
+
 
   return (
     <>
