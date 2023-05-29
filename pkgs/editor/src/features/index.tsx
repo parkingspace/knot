@@ -8,44 +8,53 @@ import { initSidebar } from './sidebar'
 import { initTypewriter } from './typewriter'
 import { initWhichkey } from './whichkey'
 
-type FeatureName =
-  | 'caret'
-  | 'whichkey'
-  | 'typewriter'
-  | 'sidebar'
-  | 'search'
-  | 'header'
+interface FeatureConfigTypes {
+  'caret': typeof initCaret
+  'whichkey': typeof initWhichkey
+  'typewriter': typeof initTypewriter
+  'sidebar': typeof initSidebar
+  'search': typeof initSearch
+  'header': typeof initHeader
+}
 
-// TODO: store it into localStorage and allow user to change
-export function fetchUserConfig(featureName: FeatureName) {
-  const features = {
-    caret: {
-      enabled: true,
-      init: initCaret,
-    },
-    whichkey: {
-      enabled: true,
-      init: initWhichkey,
-    },
-    typewriter: {
-      enabled: true,
-      init: initTypewriter,
-    },
-    sidebar: {
-      enabled: true,
-      init: initSidebar,
-    },
-    search: {
-      enabled: true,
-      init: initSearch,
-    },
-    header: {
-      enabled: true,
-      init: initHeader,
-    },
-  }
+interface FeatureConfig<FeatureName extends keyof FeatureConfigTypes> {
+  enabled: boolean
+  init: FeatureConfigTypes[FeatureName]
+}
 
-  return features[featureName]
+const features: {
+  [FeatureName in keyof FeatureConfigTypes]: FeatureConfig<FeatureName>
+} = {
+  caret: {
+    enabled: true,
+    init: initCaret,
+  },
+  whichkey: {
+    enabled: true,
+    init: initWhichkey,
+  },
+  typewriter: {
+    enabled: true,
+    init: initTypewriter,
+  },
+  sidebar: {
+    enabled: true,
+    init: initSidebar,
+  },
+  search: {
+    enabled: true,
+    init: initSearch,
+  },
+  header: {
+    enabled: true,
+    init: initHeader,
+  },
+}
+
+export function fetchUserConfig<FeatureName extends keyof FeatureConfigTypes>(
+  featureName: FeatureName,
+): FeatureConfig<FeatureName> {
+  return features[featureName] as FeatureConfig<FeatureName>
 }
 
 interface FeaturesProps {
@@ -75,7 +84,7 @@ export function Features(props: FeaturesProps) {
 }
 
 interface FeatureProps {
-  name: FeatureName
+  name: keyof FeatureConfigTypes
 }
 
 export const Feature: Component<FeatureProps> = (props) => {
