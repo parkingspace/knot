@@ -56,10 +56,15 @@ jobs:
 
       - name: Determine domain address
         id: domain
-        with:
-          cond: ${{ inputs.deploy-target == 'production' }}
-          if_true: "ps-knot.surge.sh"
-          if_false: "knot-staging.surge.sh"
+        env:
+          DEPLOY_TARGET: ${{ inputs.deploy-target }}
+        steps:
+          - run: |
+              if [[ "$DEPLOY_TARGET" == "production" ]]; then
+                echo "value=ps-knot.surge.sh" >> "$GITHUB_OUTPUT"
+              else
+                echo "value=ps-knot-stage.surge.sh" >> "$GITHUB_OUTPUT"
+              fi
 
       - name: 🌏 Deploy web
         uses: dswistowski/surge-sh-action@v1.0.1
