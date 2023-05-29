@@ -1,5 +1,10 @@
 import { children, Component, For, JSXElement, Show } from 'solid-js'
 import { useKnotEditor } from '..'
+import type {
+  FeatureConfig,
+  FeatureConfigTypes,
+  Features,
+} from '../types/configTypes'
 
 import { initCaret } from './caret'
 import { initHeader } from './header'
@@ -7,49 +12,6 @@ import { initSearch } from './search'
 import { initSidebar } from './sidebar'
 import { initTypewriter } from './typewriter'
 import { initWhichkey } from './whichkey'
-
-interface FeatureConfigTypes {
-  'caret': typeof initCaret
-  'whichkey': typeof initWhichkey
-  'typewriter': typeof initTypewriter
-  'sidebar': typeof initSidebar
-  'search': typeof initSearch
-  'header': typeof initHeader
-}
-
-interface FeatureConfig<FeatureName extends keyof FeatureConfigTypes> {
-  enabled: boolean
-  init: FeatureConfigTypes[FeatureName]
-}
-
-const features: {
-  [FeatureName in keyof FeatureConfigTypes]: FeatureConfig<FeatureName>
-} = {
-  caret: {
-    enabled: true,
-    init: initCaret,
-  },
-  whichkey: {
-    enabled: true,
-    init: initWhichkey,
-  },
-  typewriter: {
-    enabled: true,
-    init: initTypewriter,
-  },
-  sidebar: {
-    enabled: true,
-    init: initSidebar,
-  },
-  search: {
-    enabled: true,
-    init: initSearch,
-  },
-  header: {
-    enabled: true,
-    init: initHeader,
-  },
-}
 
 export function fetchUserConfig<FeatureName extends keyof FeatureConfigTypes>(
   featureName: FeatureName,
