@@ -1,11 +1,10 @@
 import { Node } from '@tiptap/pm/model'
 import type { EditorState, Transaction } from '@tiptap/pm/state'
 import type { EditorView } from '@tiptap/pm/view'
-import { createContext, createRoot, useContext } from 'solid-js'
+import { createContext, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import searchIndex from './search'
-import { HeadingFocusState } from './types/headingStates'
-
+import type { HeadingFocusState } from './types/headingStates'
 
 export function isHeading(node: Element) {
   return node.nodeName.includes('H')

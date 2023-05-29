@@ -1,74 +1,83 @@
-import { createContext, For, useContext } from 'solid-js'
+import { children, Component, For, JSXElement, Show } from 'solid-js'
 import { useKnotEditor } from '..'
 
 import { initCaret } from './caret'
-import { initNavbar } from './navbar'
+import { initHeader } from './header'
 import { initSearch } from './search'
 import { initSidebar } from './sidebar'
 import { initTypewriter } from './typewriter'
 import { initWhichkey } from './whichkey'
 
-type UserConfigurations = ReturnType<typeof fetchUserConfig>
+type FeatureName =
+  | 'caret'
+  | 'whichkey'
+  | 'typewriter'
+  | 'sidebar'
+  | 'search'
+  | 'header'
 
 // TODO: store it into localStorage and allow user to change
-export function fetchUserConfig() {
-  return [
-    {
-      name: 'caret',
+export function fetchUserConfig(featureName: FeatureName) {
+  const features = {
+    caret: {
       enabled: true,
       init: initCaret,
     },
-    {
-      name: 'whichkey',
+    whichkey: {
       enabled: true,
       init: initWhichkey,
     },
-    {
-      name: 'typewriter',
+    typewriter: {
       enabled: true,
       init: initTypewriter,
     },
-    {
-      name: 'sidebar',
+    sidebar: {
       enabled: true,
       init: initSidebar,
     },
-    {
-      name: 'search',
+    search: {
       enabled: true,
       init: initSearch,
     },
-    {
-      name: 'navbar',
+    header: {
       enabled: true,
-      init: initNavbar,
+      init: initHeader,
     },
-  ]
+  }
+
+  return features[featureName]
 }
 
-const UserConfigContext = createContext<UserConfigurations>(fetchUserConfig())
-export const UserConfigProvider = (props: { children: any }) => {
-  const config = fetchUserConfig()
-  return (
-    <UserConfigContext.Provider value={config}>
-      {props.children}
-    </UserConfigContext.Provider>
-  )
+interface FeaturesProps {
+  children: JSXElement
 }
-export const useUserConfig = () => useContext(UserConfigContext)
 
-export function Features(
-  props: {
-    features: UserConfigurations
-  },
-) {
-  const { features } = props
+export function Features(props: FeaturesProps) {
+  const features = children(() => props.children)
+  const evaluatedFeatures = features.toArray() as unknown as FeatureProps[]
+
   const { editor } = useKnotEditor()
   editor.view.dom.spellcheck = false
 
   return (
-    <For each={features}>
-      {(feature) => feature.init()}
-    </For>
+    <>
+      <For each={evaluatedFeatures}>
+        {(feature) => {
+          return (
+            <Show when={fetchUserConfig(feature.name).enabled}>
+              {fetchUserConfig(feature.name).init()}
+            </Show>
+          )
+        }}
+      </For>
+    </>
   )
+}
+
+interface FeatureProps {
+  name: FeatureName
+}
+
+export const Feature: Component<FeatureProps> = (props) => {
+  return props as unknown as JSXElement
 }
