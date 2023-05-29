@@ -17,6 +17,7 @@ jobs:
   call-deployment-on-merge:
     if: github.event.pull_request.merged
     uses: ./.github/workflows/deployment.yaml
+    secrets: inherit
     with:
       discord-message: "PR merged to staging"
       deploy-target: "staging"
@@ -24,6 +25,7 @@ jobs:
   call-deployment-on-push:
     if: github.event_name == 'push'
     uses: ./.github/workflows/deployment.yaml
+    secrets: inherit
     with:
       discord-message: "Push detected on staging"
       deploy-target: "staging"

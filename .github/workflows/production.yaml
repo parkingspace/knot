@@ -4,12 +4,13 @@ on:
   pull_request:
     branches:
       - production
-    types: [opened, synchronize, closed]
+    types: [opened, closed]
 
 jobs:
   call-deployment:
     if: github.event.pull_request.merged
     uses: ./.github/workflows/deployment.yaml
+    secrets: inherit
     with:
       discord-message: "PR merged to production"
       deploy-target: "production"
@@ -19,4 +20,4 @@ jobs:
     uses: ./.github/workflows/discord.yaml
     secrets: inherit
     with:
-      message: "PR requested to production"
+      message: "PR opened to production"
