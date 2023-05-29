@@ -1,0 +1,98 @@
+name: Deployment
+
+on:
+  workflow_call:
+    inputs:
+      discord-message:
+        required: false
+        type: string
+      deploy-target:
+        required: true
+        type: string
+
+jobs:
+  call-discord:
+    if: ${{ inputs.discord-message }}
+    uses: ./.github/workflows/discord.yaml
+    with:
+      message: ${{ inputs.discord-message }}
+
+  build-web:
+    name: Build web app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 🔧 Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 17
+
+      - name: 📥 Install pnpm
+        uses: ./.github/actions/pnpm-install
+
+      - name: 🚧 Build & Test
+        run: pnpm web build && pnpm web test
+
+      - name:  Upload web build
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: dist/web
+
+  deploy-web:
+    name: Deploy web app
+    needs: build-web
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.deploy-target }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name:  Download web build
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: dist/web
+
+      - name: Determine domain address
+        id: domain
+        with:
+          cond: ${{ inputs.deploy-target == 'production' }}
+          if_true: "ps-knot.surge.sh"
+          if_false: "knot-staging.surge.sh"
+
+      - name: 🌏 Deploy web
+        uses: dswistowski/surge-sh-action@v1.0.1
+        with:
+          project: "dist/web"
+          domain: ${{ steps.domain.outputs.value }}
+          login: ${{ secrets.surge_login }}
+          token: ${{ secrets.surge_token }}
+
+  create-badge:
+    if: ${{ inputs.deploy-target == 'production' }}
+    needs: build-web
+    name: Create badge
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Count Typescript lines
+        run: >-
+          echo "ts_loc=$(find .
+          -type f
+          -not -path './node_modules/**'
+          -regex '.*\.\(ts\|tsx\)$'
+          -exec grep -c ^ {} \;
+          | awk '{total += $1} END{print total}')"
+          >> $GITHUB_ENV
+
+      - name: Create Loc Badge
+        uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.BADGE_GIST_SECRET }}
+          gistID: ff4c2b4dc91f66a4b5fb2b62059a3c7e
+          filename: knot-badges.json
+          namedLogo: typescript
+          label: LoC
+          message: ${{ env.ts_loc }}
+          color: blue

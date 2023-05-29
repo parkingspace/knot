@@ -14,70 +14,24 @@ on:
       - "staging"
 
 jobs:
-  discord-notification:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send a Discord notification on pull_request
-        uses: sarisia/actions-status-discord@v1
-        if: github.event_name == 'pull_request'
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "Pull request detected on Staging"
-          description: ${{ github.event.description }}
-          url: "https://github.com/parkingspace/knot"
-          username: GitHubBot
+  call-deployment-on-merge:
+    if: github.event.pull_request.merged
+    uses: ./.github/workflows/deployment.yaml
+    with:
+      discord-message: "PR merged to staging"
+      deploy-target: "staging"
 
-      - name: Send a Discord notification on push
-        uses: sarisia/actions-status-discord@v1
-        if: github.event_name == 'push'
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "Push Detected on Staging"
-          description: ${{ github.event.description }}
-          url: "https://github.com/parkingspace/knot"
-          username: GitHubBot
+  call-deployment-on-push:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/deployment.yaml
+    with:
+      discord-message: "Push detected on staging"
+      deploy-target: "staging"
 
-  build-web:
-    name: Build web app
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: 🔧 Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 17
-
-      - name: 📥 Install pnpm
-        uses: ./.github/actions/pnpm-install
-
-      - name: 🚧 Build & Test
-        run: pnpm web build && pnpm web test
-
-      - name:  Upload web build
-        uses: actions/upload-artifact@v3
-        with:
-          name: web-build
-          path: dist/web
-
-  deploy-web:
-    name: Deploy web app
-    needs: build-web
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - uses: actions/checkout@v3
-
-      - name:  Download web build
-        uses: actions/download-artifact@v3
-        with:
-          name: web-build
-          path: dist/web
-
-      - name: 🌏 Deploy web on Staging
-        uses: dswistowski/surge-sh-action@v1.0.1
-        with:
-          domain: "ps-knot-stage.surge.sh"
-          project: "dist/web"
-          login: ${{ secrets.surge_login }}
-          token: ${{ secrets.surge_token }}
+  call-discord-on-PR:
+    if: |
+      github.event.pull_request.merged != true && 
+      github.event_name != 'push'
+    uses: ./.github/workflows/discord.yaml
+    with:
+      message: "PR requested to staging"
