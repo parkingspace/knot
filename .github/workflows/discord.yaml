@@ -1,21 +1,25 @@
-name: Push
+name: Discord
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    secrets:
+      DISCORD_WEBHOOK:
+        required: true
+    inputs:
+      message:
+        required: true
+        type: string
 
 jobs:
-  discord:
+  discord-notification:
     runs-on: ubuntu-latest
-
     steps:
       - name: Send a Discord notification on push
         uses: sarisia/actions-status-discord@v1
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "New Push Detected"
+          title: ${{ inputs.discord-message }}
           description: ${{ github.event.description }}
           url: "https://github.com/parkingspace/knot"
           username: GitHubBot

@@ -1,0 +1,40 @@
+name: Staging
+
+on:
+  push:
+    branches:
+      - "staging"
+    paths:
+      - "apps/**"
+      - "pkgs/**"
+      - ".github/**"
+
+  pull_request:
+    branches:
+      - "staging"
+
+jobs:
+  call-deployment-on-merge:
+    if: github.event.pull_request.merged
+    uses: ./.github/workflows/deployment.yaml
+    secrets: inherit
+    with:
+      discord-message: "PR merged to staging"
+      deploy-target: "staging"
+
+  call-deployment-on-push:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/deployment.yaml
+    secrets: inherit
+    with:
+      discord-message: "Push detected on staging"
+      deploy-target: "staging"
+
+  call-discord-on-PR:
+    if: |
+      github.event.pull_request.merged != true && 
+      github.event_name != 'push'
+    uses: ./.github/workflows/discord.yaml
+    secrets: inherit
+    with:
+      message: "PR requested to staging"

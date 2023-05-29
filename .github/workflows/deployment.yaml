@@ -1,17 +1,23 @@
-name: CI
+name: Deployment
 
 on:
-  push:
-    branches:
-      - "main"
-    paths:
-      - "apps/**"
-      - "pkgs/**"
-      - ".github/**"
-  pull_request:
-    types: [opened, synchronize]
+  workflow_call:
+    inputs:
+      discord-message:
+        required: false
+        type: string
+      deploy-target:
+        required: true
+        type: string
 
 jobs:
+  call-discord:
+    if: ${{ inputs.discord-message }}
+    uses: ./.github/workflows/discord.yaml
+    secrets: inherit
+    with:
+      message: ${{ inputs.discord-message }}
+
   build-web:
     name: Build web app
     runs-on: ubuntu-latest
@@ -39,7 +45,7 @@ jobs:
     name: Deploy web app
     needs: build-web
     runs-on: ubuntu-latest
-    environment: production
+    environment: ${{ inputs.deploy-target }}
     steps:
       - uses: actions/checkout@v3
 
@@ -49,15 +55,27 @@ jobs:
           name: web-build
           path: dist/web
 
+      - name: Determine domain address
+        id: domain
+        env:
+          DEPLOY_TARGET: ${{ inputs.deploy-target }}
+        run: |
+          if [[ "$DEPLOY_TARGET" == "production" ]]; then
+            echo "value=ps-knot.surge.sh" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=ps-knot-stage.surge.sh" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 🌏 Deploy web
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
-          domain: "ps-knot.surge.sh"
           project: "dist/web"
+          domain: ${{ steps.domain.outputs.value }}
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
 
   create-badge:
+    if: ${{ inputs.deploy-target == 'production' }}
     needs: build-web
     name: Create badge
     runs-on: ubuntu-latest
