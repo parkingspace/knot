@@ -1,19 +1,21 @@
 name: Production
 
 on:
-  push:
-    branches:
-      - "production"
-    paths:
-      - "apps/**"
-      - "pkgs/**"
-      - ".github/**"
   pull_request:
     branches:
-      - "production"
-    types: [synchronize]
+      - production
+    types:
+      - closed
 
 jobs:
+  if_not_merged:
+    if: github.event.pull_request.merged == false
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Don't run jobs after since merge is rejected"
+        exit 1
+
   discord-notification:
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +24,7 @@ jobs:
         if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "New Push Detected on Main"
+          title: "New code merged on production"
           description: ${{ github.event.description }}
           url: "https://github.com/parkingspace/knot"
           username: GitHubBot

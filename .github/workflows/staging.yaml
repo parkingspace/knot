@@ -8,12 +8,35 @@ on:
       - "apps/**"
       - "pkgs/**"
       - ".github/**"
+
   pull_request:
     branches:
       - "staging"
-    types: [synchronize]
 
 jobs:
+  discord-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send a Discord notification on pull_request
+        uses: sarisia/actions-status-discord@v1
+        if: github.event_name == 'pull_request'
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Pull request detected on Staging"
+          description: ${{ github.event.description }}
+          url: "https://github.com/parkingspace/knot"
+          username: GitHubBot
+
+      - name: Send a Discord notification on push
+        uses: sarisia/actions-status-discord@v1
+        if: github.event_name == 'push'
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Push Detected on Staging"
+          description: ${{ github.event.description }}
+          url: "https://github.com/parkingspace/knot"
+          username: GitHubBot
+
   build-web:
     name: Build web app
     runs-on: ubuntu-latest
@@ -41,7 +64,7 @@ jobs:
     name: Deploy web app
     needs: build-web
     runs-on: ubuntu-latest
-    environment: stage
+    environment: staging
     steps:
       - uses: actions/checkout@v3
 
@@ -51,7 +74,7 @@ jobs:
           name: web-build
           path: dist/web
 
-      - name: 🌏 Deploy web
+      - name: 🌏 Deploy web on Staging
         uses: dswistowski/surge-sh-action@v1.0.1
         with:
           domain: "ps-knot-stage.surge.sh"
