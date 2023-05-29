@@ -58,13 +58,12 @@ jobs:
         id: domain
         env:
           DEPLOY_TARGET: ${{ inputs.deploy-target }}
-        steps:
-          - run: |
-              if [[ "$DEPLOY_TARGET" == "production" ]]; then
-                echo "value=ps-knot.surge.sh" >> "$GITHUB_OUTPUT"
-              else
-                echo "value=ps-knot-stage.surge.sh" >> "$GITHUB_OUTPUT"
-              fi
+        run: |
+          if [[ "$DEPLOY_TARGET" == "production" ]]; then
+            echo "value=ps-knot.surge.sh" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=ps-knot-stage.surge.sh" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: 🌏 Deploy web
         uses: dswistowski/surge-sh-action@v1.0.1
