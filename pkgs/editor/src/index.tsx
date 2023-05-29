@@ -46,7 +46,6 @@ const KnotEditorProvider = (props: { children: any }) => {
     },
   }))
 
-
   return (
     <>
       <Show when={editor()}>
