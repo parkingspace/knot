@@ -5,6 +5,7 @@ import type {
   FeatureConfigTypes,
   Features,
 } from '../types/configTypes'
+import { useConfigStore } from './configStore'
 
 import { initCaret } from './caret'
 import { initHeader } from './header'
@@ -16,6 +17,35 @@ import { initWhichkey } from './whichkey'
 export function fetchUserConfig<FeatureName extends keyof FeatureConfigTypes>(
   featureName: FeatureName,
 ): FeatureConfig<FeatureName> {
+  const userConfig = useConfigStore()
+
+  const features: Features = {
+    caret: {
+      enabled: userConfig.features.caret.enabled,
+      init: initCaret,
+    },
+    whichkey: {
+      enabled: userConfig.features.whichkey.enabled,
+      init: initWhichkey,
+    },
+    typewriter: {
+      enabled: userConfig.features.typewriter.enabled,
+      init: initTypewriter,
+    },
+    sidebar: {
+      enabled: userConfig.features.sidebar.enabled,
+      init: initSidebar,
+    },
+    search: {
+      enabled: userConfig.features.search.enabled,
+      init: initSearch,
+    },
+    header: {
+      enabled: userConfig.features.header.enabled,
+      init: initHeader,
+    },
+  }
+
   return features[featureName] as FeatureConfig<FeatureName>
 }
 
@@ -24,6 +54,7 @@ interface FeaturesProps {
 }
 
 export function Features(props: FeaturesProps) {
+  const userConfig = useConfigStore()
   const features = children(() => props.children)
   const evaluatedFeatures = features.toArray() as unknown as FeatureProps[]
 
@@ -37,6 +68,9 @@ export function Features(props: FeaturesProps) {
           return (
             <Show when={fetchUserConfig(feature.name).enabled}>
               {fetchUserConfig(feature.name).init()}
+              <button onClick={() => userConfig.toggleFeature(feature.name)}>
+                toggle {feature.name}
+              </button>
             </Show>
           )
         }}
