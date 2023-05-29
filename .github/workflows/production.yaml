@@ -17,5 +17,6 @@ jobs:
   call-discord:
     if: github.event.pull_request.merged != true
     uses: ./.github/workflows/discord.yaml
+    secrets: inherit
     with:
       message: "PR requested to production"

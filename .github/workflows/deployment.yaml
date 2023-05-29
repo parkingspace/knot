@@ -14,6 +14,7 @@ jobs:
   call-discord:
     if: ${{ inputs.discord-message }}
     uses: ./.github/workflows/discord.yaml
+    secrets: inherit
     with:
       message: ${{ inputs.discord-message }}
 

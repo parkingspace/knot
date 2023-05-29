@@ -33,5 +33,6 @@ jobs:
       github.event.pull_request.merged != true && 
       github.event_name != 'push'
     uses: ./.github/workflows/discord.yaml
+    secrets: inherit
     with:
       message: "PR requested to staging"

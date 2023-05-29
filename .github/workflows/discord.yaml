@@ -2,6 +2,9 @@ name: Discord
 
 on:
   workflow_call:
+    secrets:
+      DISCORD_WEBHOOK:
+        required: true
     inputs:
       message:
         required: true
