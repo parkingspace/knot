@@ -13,6 +13,7 @@ import {
 import { BaseLayout, Button, Icon } from 'ui'
 import { useDocumentManager } from '../../documentManager'
 import type { HeadingFocusState } from '../../types/headingStates'
+import { useSidebarStore } from './store'
 
 type SidebarState = ReturnType<typeof createSidebarState>
 
@@ -58,15 +59,17 @@ type SidebarProps = JSX.HTMLAttributes<HTMLDivElement> & {
 export function initSidebar() {
   const { headingStates } = useDocumentManager()
   const { isSidebarOpen, toggleSidebar } = useSidebarState()
+  const sidebarState = useSidebarStore()
 
   return (
     <div
       class={clsx('flex', 'flex-col', 'bg-sidebarBg', 'min-w-sidebar', {
-        '-translate-x-full opacity-0 invisible cursor-none': !isSidebarOpen(),
+        '-translate-x-full opacity-0 invisible cursor-none': !sidebarState
+          .isOpen,
       })}
     >
       <div class='flex justify-end p-2'>
-        <Button onclick={toggleSidebar} size={'icon'}>
+        <Button onclick={sidebarState.toggle} size={'icon'}>
           <Icon name='IconLayoutSidebarLeftCollapse' />
         </Button>
       </div>

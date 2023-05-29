@@ -56,11 +56,13 @@
     "npm": "^9.6.5",
     "solid-js": "latest",
     "solid-tiptap": "^0.5.1",
+    "solid-zustand": "^1.5.0",
     "tinykeys": "^1.4.0",
     "ui": "workspace:*",
     "y-prosemirror": "^1.2.1",
     "y-websocket": "^1.5.0",
-    "yjs": "^13.5.53"
+    "yjs": "^13.5.53",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@solidjs/testing-library": "^0.7.0",
