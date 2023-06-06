@@ -56,7 +56,6 @@
     "npm": "^9.6.5",
     "solid-js": "latest",
     "solid-tiptap": "^0.5.1",
-    "solid-zustand": "^1.5.0",
     "tinykeys": "^1.4.0",
     "ui": "workspace:*",
     "y-prosemirror": "^1.2.1",
