@@ -1,11 +1,7 @@
 import { children, Component, For, JSXElement, Show } from 'solid-js'
 import { useKnotEditor } from '..'
-import type {
-  FeatureConfig,
-  FeatureConfigTypes,
-  Features,
-} from '../types/configTypes'
-import { useConfigStore } from './configStore'
+import type { FeatureName, Features, FeatureTypes } from '../types/configTypes'
+import { useFeatureConfig } from './configStore'
 
 import { initCaret } from './caret'
 import { initHeader } from './header'
@@ -14,64 +10,43 @@ import { initSidebar } from './sidebar'
 import { initTypewriter } from './typewriter'
 import { initWhichkey } from './whichkey'
 
-export function fetchUserConfig<FeatureName extends keyof FeatureConfigTypes>(
-  featureName: FeatureName,
-): FeatureConfig<FeatureName> {
-  const userConfig = useConfigStore()
-
-  const features: Features = {
-    caret: {
-      enabled: userConfig.features.caret.enabled,
-      init: initCaret,
-    },
-    whichkey: {
-      enabled: userConfig.features.whichkey.enabled,
-      init: initWhichkey,
-    },
-    typewriter: {
-      enabled: userConfig.features.typewriter.enabled,
-      init: initTypewriter,
-    },
-    sidebar: {
-      enabled: userConfig.features.sidebar.enabled,
-      init: initSidebar,
-    },
-    search: {
-      enabled: userConfig.features.search.enabled,
-      init: initSearch,
-    },
-    header: {
-      enabled: userConfig.features.header.enabled,
-      init: initHeader,
-    },
-  }
-
-  return features[featureName] as FeatureConfig<FeatureName>
-}
-
 interface FeaturesProps {
   children: JSXElement
 }
 
+function getFeatureComponent<FeatureName extends keyof FeatureTypes>(
+  name: FeatureName,
+): FeatureTypes[FeatureName] {
+  const components = {
+    caret: initCaret,
+    header: initHeader,
+    search: initSearch,
+    sidebar: initSidebar,
+    typewriter: initTypewriter,
+    whichkey: initWhichkey,
+  }
+
+  return components[name]
+}
+
 export function Features(props: FeaturesProps) {
-  const userConfig = useConfigStore()
+  const { featureState, toggleFeature } = useFeatureConfig()
   const features = children(() => props.children)
-  const evaluatedFeatures = features.toArray() as unknown as FeatureProps[]
+  const featuresArray = features.toArray() as unknown as FeatureProps[]
 
   const { editor } = useKnotEditor()
   editor.view.dom.spellcheck = false
 
   return (
     <>
-      <For each={evaluatedFeatures}>
+      <For each={featuresArray}>
         {(feature) => {
           return (
-            <Show when={fetchUserConfig(feature.name).enabled}>
-              {fetchUserConfig(feature.name).init()}
-              <button onClick={() => userConfig.toggleFeature(feature.name)}>
-                toggle {feature.name}
-              </button>
-            </Show>
+            <>
+              <Show when={featureState[feature.name].enabled}>
+                {getFeatureComponent(feature.name)()}
+              </Show>
+            </>
           )
         }}
       </For>
@@ -80,7 +55,7 @@ export function Features(props: FeaturesProps) {
 }
 
 interface FeatureProps {
-  name: keyof FeatureConfigTypes
+  name: FeatureName
 }
 
 export const Feature: Component<FeatureProps> = (props) => {
