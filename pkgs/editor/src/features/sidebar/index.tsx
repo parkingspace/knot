@@ -58,7 +58,6 @@ type SidebarProps = JSX.HTMLAttributes<HTMLDivElement> & {
 }
 export function initSidebar() {
   const { headingStates } = useDocumentManager()
-  const { isSidebarOpen, toggleSidebar } = useSidebarState()
   const sidebarState = useSidebarStore()
 
   return (

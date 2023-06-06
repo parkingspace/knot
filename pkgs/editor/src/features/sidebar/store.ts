@@ -1,14 +1,8 @@
-import create from 'solid-zustand'
+import { createStore } from 'solid-js/store'
 
-interface SidebarState {
-  isOpen: boolean
-  toggle: () => void
-}
-
-export const useSidebarStore = create<SidebarState>()((set) => ({
+const [sidebarState, setSidebarState] = createStore({
   isOpen: true,
-  toggle: () =>
-    set(state => ({
-      isOpen: !state.isOpen,
-    })),
-}))
+  toggle: () => setSidebarState((state) => ({ isOpen: !state.isOpen })),
+})
+
+export const useSidebarStore = () => sidebarState

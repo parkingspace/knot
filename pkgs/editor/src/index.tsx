@@ -8,6 +8,7 @@ import { SidebarProvider } from './features/sidebar'
 import { createContext, Show, useContext } from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
 import { Feature, Features } from './features'
+import { useFeatureConfig } from './features/configStore'
 import extensions from './tiptap_extensions'
 
 const KnotEditorContext = createContext<{
@@ -64,8 +65,8 @@ const KnotEditorProvider = (props: { children: any }) => {
 }
 
 export function KnotEditor() {
-  // TODO: get this from user config
-  const sidebarEnabled = true
+  const { featureState } = useFeatureConfig()
+  const sidebarEnabled = featureState.sidebar.enabled
 
   return (
     <SidebarProvider when={sidebarEnabled}>
