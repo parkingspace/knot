@@ -1,26 +1,20 @@
-import { initCaret } from '../features/caret'
-import { initHeader } from '../features/header'
-import { initSearch } from '../features/search'
-import { initSidebar } from '../features/sidebar'
-import { initTypewriter } from '../features/typewriter'
-import { initWhichkey } from '../features/whichkey'
+import { JSXElement } from 'solid-js'
 
-export interface FeatureConfigTypes {
-  'caret': typeof initCaret
-  'whichkey': typeof initWhichkey
-  'typewriter': typeof initTypewriter
-  'sidebar': typeof initSidebar
-  'search': typeof initSearch
-  'header': typeof initHeader
+export interface FeatureTypes {
+  'caret': () => JSXElement
+  'whichkey': () => JSXElement
+  'typewriter': () => JSXElement
+  'sidebar': () => JSXElement
+  'search': () => JSXElement
+  'header': () => JSXElement
 }
 
-export type FeatureName = keyof FeatureConfigTypes
+export type FeatureName = keyof FeatureTypes
 
-export interface FeatureConfig<FeatureName extends keyof FeatureConfigTypes> {
+export interface FeatureConfig {
   enabled: boolean
-  init: FeatureConfigTypes[FeatureName]
 }
 
 export type Features = {
-  [FeatureName in keyof FeatureConfigTypes]: FeatureConfig<FeatureName>
+  [FeatureName in keyof FeatureTypes]: FeatureConfig
 }
