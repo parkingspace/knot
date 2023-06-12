@@ -2,13 +2,14 @@ import './editor.css'
 import type { Editor } from '@tiptap/core'
 import clsx from 'clsx'
 import { createEditor } from 'solid-tiptap'
-import { TextArea } from 'ui'
+import { BaseLayout, TextArea } from 'ui'
 import { SidebarProvider } from './features/sidebar'
 
 import { createContext, Show, useContext } from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
 import { Feature, Features } from './features'
 import { useFeatureConfig } from './features/configStore'
+import { useSidebarStore } from './features/sidebar/store'
 import extensions from './tiptap_extensions'
 
 const KnotEditorContext = createContext<{
@@ -30,6 +31,7 @@ const KnotEditorProvider = (props: { children: any }) => {
     'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0 focus:outline-none bg-editorBg',
   )
   const { getAllHeadings } = useDocumentManager()
+  const sidebar = useSidebarStore()
 
   const editor = createEditor(() => ({
     element: editorRef,
@@ -48,7 +50,7 @@ const KnotEditorProvider = (props: { children: any }) => {
   }))
 
   return (
-    <>
+    <BaseLayout isSidebarOpen={() => sidebar.isOpen}>
       <Show when={editor()}>
         <KnotEditorContext.Provider
           value={{
@@ -60,28 +62,16 @@ const KnotEditorProvider = (props: { children: any }) => {
         </KnotEditorContext.Provider>
       </Show>
       <TextArea ref={editorRef!} />
-    </>
+    </BaseLayout>
   )
 }
 
 export function KnotEditor() {
-  const { featureState } = useFeatureConfig()
-  const sidebarEnabled = featureState.sidebar.enabled
-
   return (
-    <SidebarProvider when={sidebarEnabled}>
-      <DocumentManagerProvider>
-        <KnotEditorProvider>
-          <Features>
-            <Feature name='caret' />
-            <Feature name='sidebar' />
-            <Feature name='header' />
-            <Feature name='whichkey' />
-            <Feature name='search' />
-            <Feature name='typewriter' />
-          </Features>
-        </KnotEditorProvider>
-      </DocumentManagerProvider>
-    </SidebarProvider>
+    <DocumentManagerProvider>
+      <KnotEditorProvider>
+        <Features />
+      </KnotEditorProvider>
+    </DocumentManagerProvider>
   )
 }

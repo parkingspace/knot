@@ -1,31 +1,23 @@
 import clsx from 'clsx'
 import { Accessor, Show } from 'solid-js'
 import { Button, Icon } from 'ui'
-import { useSidebarState } from '../sidebar'
+import { useSidebarStore } from '../sidebar/store'
 import { ColorSchemeToggleButton } from '../theme/ColorSchemeToggleButton'
 
 // TODO: Add breadcrumbs to the header
 export const initHeader = () => {
-  const { isSidebarOpen, toggleSidebar } = useSidebarState()
+  // const { isOpen, toggle } = useSidebarStore()
   return (
     <div
       class={clsx('fixed z-50 flex p-2 justify-between right-0', {
-        'w-full': !isSidebarOpen(),
+        // 'w-full': !isOpen,
       })}
     >
       <div
         class={clsx('flex flex-row opacity-0 transition-opacity delay-300', {
-          'opacity-100': !isSidebarOpen(),
+          // 'opacity-100': !isOpen,
         })}
       >
-        <Show when={!isSidebarOpen()}>
-          <Button
-            onclick={toggleSidebar}
-            size={'icon'}
-          >
-            <Icon name='IconLayoutSidebarLeftExpand' />
-          </Button>
-        </Show>
       </div>
       <div class='pr-4'>
         <ColorSchemeToggleButton />
