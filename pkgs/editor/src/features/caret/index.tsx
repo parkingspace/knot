@@ -61,12 +61,14 @@ export function initCaret() {
   const [caretStyle, setCaretStyle] = createSignal('')
 
   createEffect(() => {
+    console.log('caret style')
+    const visible = show()
     setCaretStyle(
       clsx(
         'absolute w-1 bg-caretColor z-50 rounded-sm pointer-events-none block',
         {
-          'visible': show(),
-          'invisible': !show(),
+          'visible': visible,
+          'invisible': !visible,
         },
       ),
     )
@@ -80,7 +82,7 @@ export function initCaret() {
 
   function initBlinkAnimation() {
     caretRef ??= document.getElementById('caret') as HTMLSpanElement
-    console.log("caret ref", caretRef)
+    console.log('caret ref', caretRef)
     caretBlinkAnimation = caretRef.animate(blinkFrames, blinkOptions)
   }
 
