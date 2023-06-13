@@ -4,7 +4,14 @@ import clsx from 'clsx'
 import { createEditor } from 'solid-tiptap'
 import { BaseLayout, TextArea } from 'ui'
 
-import { createContext, onMount, Show, useContext } from 'solid-js'
+import {
+  createContext,
+  createEffect,
+  createSignal,
+  onMount,
+  Show,
+  useContext,
+} from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
 import { Features } from './features'
 import { useSidebarStore } from './features/sidebar/store'
@@ -27,29 +34,24 @@ const KnotEditorProvider = (props: { children: any }) => {
   const editorStyle = clsx(
     'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full h-full p-editor prose-p:m-0 focus:outline-none bg-editorBg overflow-y-auto',
   )
-  let editor: () => Editor | undefined = () => undefined
   const { getAllHeadings } = useDocumentManager()
   const sidebar = useSidebarStore()
 
-  onMount(() => {
-    console.log('editor provider is mounted')
-    editor = createEditor(() => ({
-      element: document.querySelector('#text-area')! as HTMLElement,
-      extensions: extensions,
-      editorProps: {
-        attributes: {
-          id: 'document',
-          class: editorStyle,
-        },
+  const editor = createEditor(() => ({
+    element: document.querySelector('#text-area')! as HTMLElement,
+    extensions: extensions,
+    editorProps: {
+      attributes: {
+        id: 'document',
+        class: editorStyle,
       },
-      onTransaction({ editor }) {
-        getAllHeadings(editor.state)
-          .toggleLastHeadingFocus()
-          .setSearchIndex()
-      },
-    }))
-    console.log('editor is', editor())
-  })
+    },
+    onTransaction({ editor }) {
+      getAllHeadings(editor.state)
+        .toggleLastHeadingFocus()
+        .setSearchIndex()
+    },
+  }))
 
   return (
     <BaseLayout isSidebarOpen={() => sidebar.isOpen}>
