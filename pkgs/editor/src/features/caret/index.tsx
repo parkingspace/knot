@@ -87,6 +87,7 @@ export function initCaret() {
   }
 
   function addScrollListener(scrollDom: HTMLElement | null) {
+    console.log('scrollDom', scrollDom)
     if (!scrollDom) {
       throw new Error('Scroll dom not found \n:) inside initCaret function')
     }
