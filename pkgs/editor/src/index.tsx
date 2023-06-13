@@ -3,12 +3,10 @@ import type { Editor } from '@tiptap/core'
 import clsx from 'clsx'
 import { createEditor } from 'solid-tiptap'
 import { BaseLayout, TextArea } from 'ui'
-import { SidebarProvider } from './features/sidebar'
 
 import { createContext, Show, useContext } from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
-import { Feature, Features } from './features'
-import { useFeatureConfig } from './features/configStore'
+import { Features } from './features'
 import { useSidebarStore } from './features/sidebar/store'
 import extensions from './tiptap_extensions'
 

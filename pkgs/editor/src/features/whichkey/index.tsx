@@ -1,8 +1,5 @@
-// TODO: move css file to tailwind
-import './whichkey.css'
 import {
   createContext,
-  createEffect,
   createSignal,
   For,
   onMount,
@@ -12,6 +9,7 @@ import {
 import { createStore } from 'solid-js/store'
 import tinykeys, { KeyBindingMap } from 'tinykeys'
 
+import clsx from 'clsx'
 import { editorShortcuts } from '../shortcut/editorShortcuts'
 import {
   ALT,
@@ -21,10 +19,19 @@ import {
   MOD_SHIFT,
   OSMOD,
   OSMOD_ALT,
+  OSMOD_NAME,
   OSMOD_SHIFT,
   SHIFT,
   SHIFT_OSMOD,
+  USER_OS,
 } from './keyNames'
+
+type ListeningKey =
+  | typeof ALT
+  | typeof SHIFT
+  | typeof MOD
+  | typeof MOD_SHIFT
+  | typeof MOD_ALT
 
 type WkState = ReturnType<typeof createWhichkeyState>
 type WkKeymaps = {
@@ -71,11 +78,11 @@ const keyAppendMap: {
     { key: ALT, description: '...' },
   ],
   [ALT]: [
-    { key: MOD, description: '...' },
+    { key: OSMOD_NAME, description: '...' },
   ],
 }
 
-const createWkKeymap = (pk: string) => {
+const createWkKeymap = (pk: ListeningKey) => {
   return [
     ...keyAppendMap[pk] || [],
     ...Object
@@ -161,8 +168,14 @@ export function initWhichkey() {
 
   return (
     <Show when={pressedKey()}>
-      <div class='WhichKey'>
-        <span>{pressedKey()}</span>
+      <div
+        class={clsx(
+          'z-50 absolute flex flex-col gap-1 bottom-0 right-0 p-3 bg-sidebarBg text-editorFg border-editorFg rounded border m-5 text-sm select-none',
+        )}
+      >
+        <span class='text-center border-0 inline-block min-w-3 p-1'>
+          {pressedKey().replace('Mod', OSMOD_NAME)}
+        </span>
         <For
           each={wkKeymap[pressedKey()]}
           fallback={
@@ -172,8 +185,9 @@ export function initWhichkey() {
           }
         >
           {(map) => (
-            <p>
-              <span>{map.key}</span> <span>{map.description}</span>
+            <p class='flex flex-row justify-between py-1'>
+              <span class='min-w-[2em] p-[0.2em] mr-5'>{map.key}</span>
+              <span class='p-[0.2em]'>{map.description}</span>
             </p>
           )}
         </For>

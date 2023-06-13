@@ -1,13 +1,6 @@
-import {
-  children,
-  Component,
-  createSignal,
-  For,
-  JSXElement,
-  Show,
-} from 'solid-js'
+import { createSignal } from 'solid-js'
 import { useKnotEditor } from '..'
-import type { FeatureName, Features, FeatureTypes } from '../types/configTypes'
+import type { Features } from '../types/configTypes'
 import { useFeatureConfig } from './configStore'
 
 import clsx from 'clsx'
@@ -30,7 +23,8 @@ function FeatureToggleModal(props: {
         'hidden': !props.show,
       })}
     >
-      <div onclick={props.toggle} class='absolute inset-0 bg-black opacity-50'></div>
+      <div onclick={props.toggle} class='absolute inset-0 bg-black opacity-50'>
+      </div>
       <div class='relative bg-white rounded-lg w-1/2'>
         <div class='p-4'>
           <div class='flex flex-col justify-between'>
