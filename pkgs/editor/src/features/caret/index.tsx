@@ -79,6 +79,8 @@ export function initCaret() {
   })
 
   function initBlinkAnimation() {
+    caretRef ??= document.getElementById('caret') as HTMLSpanElement
+    console.log("caret ref", caretRef)
     caretBlinkAnimation = caretRef.animate(blinkFrames, blinkOptions)
   }
 
