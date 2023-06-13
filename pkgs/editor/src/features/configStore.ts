@@ -1,9 +1,9 @@
-import { onMount } from 'solid-js'
+import { createEffect, onMount } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import type { FeatureName, Features } from '../types/configTypes'
 
 const defaultFeatures: Features = {
-  'caret': { enabled: false },
+  'caret': { enabled: true },
   'whichkey': { enabled: true },
   'typewriter': { enabled: true },
   'sidebar': { enabled: true },
@@ -11,24 +11,32 @@ const defaultFeatures: Features = {
   'header': { enabled: true },
 }
 
-export function useFeatureConfig() {
-  const localState = localStorage.getItem('features')
-  const [featureState, setFeatureState] = createStore<Features>(
-    defaultFeatures,
-    // localState ? JSON.parse(localState) : defaultFeatures,
-  )
+const localState = localStorage.getItem('features')
+  ? JSON.parse(localStorage.getItem('features') as string) as Features
+  : null
 
-  onMount(() => {
-    localStorage.setItem('features', JSON.stringify(featureState))
-  })
+const [featureConfig, setFeatureConfig] = createStore({
+  features: localState ?? defaultFeatures,
+  toggle: (feature: FeatureName) =>
+    setFeatureConfig((prev: {
+      features: Features
+      toggle: (feature: FeatureName) => void
+    }) => ({
+      features: {
+        ...prev.features,
+        [feature]: { enabled: !prev.features[feature].enabled },
+      },
+    })),
+})
 
-  const toggleFeature = (feature: FeatureName) => {
-    setFeatureState((prev: Features) => ({
-      ...prev,
-      [feature]: { enabled: !prev[feature].enabled },
-    }))
-    localStorage.setItem('features', JSON.stringify(featureState))
+createEffect(() => {
+  console.log('feature state is changed and set localStorage', featureConfig)
+  if (!featureConfig.features.caret.enabled) {
+    document.getElementById('root')!.style.caretColor = ''
   }
+  localStorage.setItem('features', JSON.stringify(featureConfig.features))
+})
 
-  return { featureState, toggleFeature }
+export function useFeatureConfig() {
+  return featureConfig
 }

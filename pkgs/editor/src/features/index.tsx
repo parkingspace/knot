@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
 import { useKnotEditor } from '..'
 import type { Features } from '../types/configTypes'
 import { useFeatureConfig } from './configStore'
@@ -17,7 +17,10 @@ function FeatureToggleModal(props: {
   show: boolean
   toggle: () => void
 }) {
-  const { featureState, toggleFeature } = useFeatureConfig()
+  const featureConfig = useFeatureConfig()
+
+  console.log('when used in toggleModal', featureConfig)
+  console.log('when destructured', featureConfig.features)
 
   return (
     <div
@@ -38,38 +41,40 @@ function FeatureToggleModal(props: {
             <div class='font-semibold mb-3'>Settings</div>
             <div class='flex flex-row gap-x-2 justify-between'>
               caret
-              <Button onclick={() => toggleFeature('caret')}>
-                {featureState.caret.enabled ? 'Disable' : 'Enable'}
+              <Button onclick={() => featureConfig.toggle('caret')}>
+                {featureConfig.features.caret.enabled ? 'Disable' : 'Enable'}
               </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               header
-              <Button onclick={() => toggleFeature('header')}>
-                {featureState.header.enabled ? 'Disable' : 'Enable'}
+              <Button onclick={() => featureConfig.toggle('header')}>
+                {featureConfig.features.header.enabled ? 'Disable' : 'Enable'}
               </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               search
-              <Button onclick={() => toggleFeature('search')}>
-                {featureState.search.enabled ? 'Disable' : 'Enable'}
+              <Button onclick={() => featureConfig.toggle('search')}>
+                {featureConfig.features.search.enabled ? 'Disable' : 'Enable'}
               </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               sidebar
-              <Button onclick={() => toggleFeature('sidebar')}>
-                {featureState.sidebar.enabled ? 'Disable' : 'Enable'}
+              <Button onclick={() => featureConfig.toggle('sidebar')}>
+                {featureConfig.features.sidebar.enabled ? 'Disable' : 'Enable'}
               </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               typewriter
-              <Button onclick={() => toggleFeature('typewriter')}>
-                {featureState.typewriter.enabled ? 'Disable' : 'Enable'}
+              <Button onclick={() => featureConfig.toggle('typewriter')}>
+                {featureConfig.features.typewriter.enabled
+                  ? 'Disable'
+                  : 'Enable'}
               </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               whichkey
-              <Button onclick={() => toggleFeature('whichkey')}>
-                {featureState.whichkey.enabled ? 'Disable' : 'Enable'}
+              <Button onclick={() => featureConfig.toggle('whichkey')}>
+                {featureConfig.features.whichkey.enabled ? 'Disable' : 'Enable'}
               </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
@@ -84,9 +89,12 @@ function FeatureToggleModal(props: {
 }
 
 export function Features() {
-  const { featureState, toggleFeature } = useFeatureConfig()
-  const { caret, header, search, sidebar, typewriter, whichkey } = featureState
-  console.log("caret feature enabled?", caret.enabled)
+  const featureConfig = useFeatureConfig()
+
+  createEffect(() => {
+    console.log('caret is changed', featureConfig.features.caret.enabled)
+  })
+
   const [showModal, setShowModal] = createSignal(false)
   const toggle = () => setShowModal(!showModal())
 
@@ -102,12 +110,12 @@ export function Features() {
         </Button>
       </div>
 
-      {caret.enabled && initCaret()}
-      {header.enabled && initHeader()}
-      {search.enabled && initSearch()}
-      {sidebar.enabled && initSidebar()}
-      {typewriter.enabled && initTypewriter()}
-      {whichkey.enabled && initWhichkey()}
+      {featureConfig.features.caret.enabled && initCaret()}
+      {featureConfig.features.header.enabled && initHeader()}
+      {featureConfig.features.search.enabled && initSearch()}
+      {featureConfig.features.sidebar.enabled && initSidebar()}
+      {featureConfig.features.typewriter.enabled && initTypewriter()}
+      {featureConfig.features.whichkey.enabled && initWhichkey()}
     </>
   )
 }
