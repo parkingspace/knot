@@ -27,7 +27,7 @@ export const useKnotEditor = () => {
 const KnotEditorProvider = (props: { children: any }) => {
   let editorRef: HTMLDivElement
   const editorStyle = clsx(
-    'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0 focus:outline-none bg-editorBg',
+    'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full h-full p-editor prose-p:m-0 focus:outline-none bg-editorBg overflow-y-auto',
   )
   const { getAllHeadings } = useDocumentManager()
   const sidebar = useSidebarStore()
