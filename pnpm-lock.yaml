@@ -59,7 +59,7 @@ importers:
         version: 4.5.3
       vite:
         specifier: latest
-        version: 4.3.9(@types/node@18.15.11)
+        version: 4.3.9(@types/node@20.3.1)
       vite-plugin-solid:
         specifier: latest
         version: 2.7.0(solid-js@1.7.6)(vite@4.3.9)
@@ -240,7 +240,7 @@ importers:
         version: 4.5.3
       vite:
         specifier: latest
-        version: 4.3.9(@types/node@18.15.11)
+        version: 4.3.9(@types/node@20.3.1)
       vite-plugin-solid:
         specifier: latest
         version: 2.7.0(solid-js@1.7.6)(vite@4.3.9)
@@ -278,8 +278,8 @@ importers:
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.3.1)
       '@types/node':
-        specifier: ^18.15.11
-        version: 18.15.11
+        specifier: ^20.3.1
+        version: 20.3.1
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.21)
@@ -297,7 +297,7 @@ importers:
         version: 4.5.3
       vite:
         specifier: latest
-        version: 4.3.9(@types/node@18.15.11)
+        version: 4.3.9(@types/node@20.3.1)
       vite-plugin-solid:
         specifier: latest
         version: 2.7.0(solid-js@1.7.6)(vite@4.3.9)
@@ -915,7 +915,7 @@ packages:
       '@jest/schemas': 29.4.3
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.15.11
+      '@types/node': 20.3.1
       '@types/yargs': 17.0.24
       chalk: 4.1.2
     dev: true
@@ -1732,6 +1732,10 @@ packages:
 
   /@types/node@18.15.11:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
+    dev: true
+
+  /@types/node@20.3.1:
+    resolution: {integrity: sha512-EhcH/wvidPy1WeML3TtYFGR83UzjxeWRen9V402T8aUGYsCHOmfoisV3ZSg03gAFIbLq8TnWOJ0f4cALtnSEUg==}
     dev: true
 
   /@types/object.omit@3.0.0:
@@ -3076,7 +3080,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.5.0
-      '@types/node': 18.15.11
+      '@types/node': 20.3.1
       chalk: 4.1.2
       ci-info: 3.8.0
       graceful-fs: 4.2.11
@@ -4577,7 +4581,7 @@ packages:
       merge-anything: 5.1.4
       solid-js: 1.7.6
       solid-refresh: 0.5.2(solid-js@1.7.6)
-      vite: 4.3.9(@types/node@18.15.11)
+      vite: 4.3.9(@types/node@20.3.1)
       vitefu: 0.2.4(vite@4.3.9)
     transitivePeerDependencies:
       - supports-color
@@ -4616,6 +4620,39 @@ packages:
       fsevents: 2.3.2
     dev: true
 
+  /vite@4.3.9(@types/node@20.3.1):
+    resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 20.3.1
+      esbuild: 0.17.17
+      postcss: 8.4.23
+      rollup: 3.21.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
   /vitefu@0.2.4(vite@4.3.9):
     resolution: {integrity: sha512-fanAXjSaf9xXtOOeno8wZXIhgia+CZury481LsDaV++lSvcU2R9Ch2bPh3PYFyoHW+w9LqAeYRISVQjUIew14g==}
     peerDependencies:
@@ -4624,7 +4661,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.3.9(@types/node@18.15.11)
+      vite: 4.3.9(@types/node@20.3.1)
     dev: true
 
   /vitest@0.32.0(@vitest/ui@0.29.8)(jsdom@21.1.1):
