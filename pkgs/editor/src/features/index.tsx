@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from 'solid-js'
+import { createEffect, createSignal, onMount } from 'solid-js'
 import { useKnotEditor } from '..'
 import type { Features } from '../types/configTypes'
 import { useFeatureConfig } from './configStore'
@@ -90,6 +90,9 @@ function FeatureToggleModal(props: {
 
 export function Features() {
   const featureConfig = useFeatureConfig()
+  onMount(() => {
+    console.log('features is mounted')
+  })
 
   createEffect(() => {
     console.log('caret is changed', featureConfig.features.caret.enabled)
