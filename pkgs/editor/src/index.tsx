@@ -2,37 +2,43 @@ import './editor.css'
 import type { Editor } from '@tiptap/core'
 import clsx from 'clsx'
 import { createEditor } from 'solid-tiptap'
-import { TextArea } from 'ui'
-import { SidebarProvider } from './features/sidebar'
+import { BaseLayout, TextArea } from 'ui'
 
-import { createContext, For, Show, useContext } from 'solid-js'
+import {
+  createContext,
+  createEffect,
+  createSignal,
+  onMount,
+  Show,
+  useContext,
+} from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
-import { Feature, Features } from './features'
+import { Features } from './features'
+import { useSidebarStore } from './features/sidebar/store'
 import extensions from './tiptap_extensions'
 
 const KnotEditorContext = createContext<{
   editor: Editor
-  editorRef: HTMLDivElement
 }>()
 
 export const useKnotEditor = () => {
   const context = useContext(KnotEditorContext)
-  console.trace('useKnotEditor', context)
   if (!context) {
+    console.log('use knot editor context', context)
     throw new Error('useKnotEditor must be used within KnotEditorProvider')
   }
   return context
 }
 
 const KnotEditorProvider = (props: { children: any }) => {
-  let editorRef: HTMLDivElement
   const editorStyle = clsx(
-    'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full min-h-full h-fit p-editor prose-p:m-0 focus:outline-none bg-editorBg',
+    'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full h-full p-editor prose-p:m-0 focus:outline-none bg-editorBg overflow-y-auto',
   )
   const { getAllHeadings } = useDocumentManager()
+  const sidebar = useSidebarStore()
 
   const editor = createEditor(() => ({
-    element: editorRef,
+    element: document.querySelector('#text-area')! as HTMLElement,
     extensions: extensions,
     editorProps: {
       attributes: {
@@ -48,40 +54,27 @@ const KnotEditorProvider = (props: { children: any }) => {
   }))
 
   return (
-    <>
-      <Show when={editor()}>
+    <BaseLayout isSidebarOpen={() => sidebar.isOpen}>
+      <Show when={editor()} fallback={<div>loading ...</div>}>
         <KnotEditorContext.Provider
           value={{
             editor: editor()!,
-            editorRef: editorRef!,
           }}
         >
           {props.children}
         </KnotEditorContext.Provider>
       </Show>
-      <TextArea ref={editorRef!} />
-    </>
+      <TextArea />
+    </BaseLayout>
   )
 }
 
 export function KnotEditor() {
-  // TODO: get this from user config
-  const sidebarEnabled = true
-
   return (
-    <SidebarProvider when={sidebarEnabled}>
-      <DocumentManagerProvider>
-        <KnotEditorProvider>
-          <Features>
-            <Feature name='caret' />
-            <Feature name='sidebar' />
-            <Feature name='header' />
-            <Feature name='whichkey' />
-            <Feature name='search' />
-            <Feature name='typewriter' />
-          </Features>
-        </KnotEditorProvider>
-      </DocumentManagerProvider>
-    </SidebarProvider>
+    <DocumentManagerProvider>
+      <KnotEditorProvider>
+        <Features />
+      </KnotEditorProvider>
+    </DocumentManagerProvider>
   )
 }

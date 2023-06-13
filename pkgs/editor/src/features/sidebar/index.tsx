@@ -13,8 +13,9 @@ import {
 import { BaseLayout, Button, Icon } from 'ui'
 import { useDocumentManager } from '../../documentManager'
 import type { HeadingFocusState } from '../../types/headingStates'
+import { useSidebarStore } from './store'
 
-type SidebarState = ReturnType<typeof createSidebarState>
+type SidebarState = ReturnType<typeof useSidebarStore>
 
 const SidebarContext = createContext<SidebarState>()
 
@@ -37,13 +38,13 @@ export function createSidebarState() {
 }
 
 export function SidebarProvider(props: { children: any; when: boolean }) {
-  const sidebar = createSidebarState()
+  const sidebar = useSidebarStore()
   if (!props.when) {
     return props.children
   }
   return (
     <SidebarContext.Provider value={sidebar}>
-      <BaseLayout isSidebarOpen={sidebar.isSidebarOpen}>
+      <BaseLayout isSidebarOpen={() => sidebar.isOpen}>
         {props.children}
       </BaseLayout>
     </SidebarContext.Provider>
@@ -57,17 +58,23 @@ type SidebarProps = JSX.HTMLAttributes<HTMLDivElement> & {
 }
 export function initSidebar() {
   const { headingStates } = useDocumentManager()
-  const { isSidebarOpen, toggleSidebar } = useSidebarState()
+  const { isOpen, toggle } = useSidebarStore()
 
   return (
     <div
-      class={clsx('flex', 'flex-col', 'bg-sidebarBg', 'min-w-sidebar', {
-        '-translate-x-full opacity-0 invisible cursor-none': !isSidebarOpen(),
-      })}
+      class={clsx('flex', 'flex-col', 'bg-sidebarBg', 'min-w-sidebar')}
     >
-      <div class='flex justify-end p-2'>
-        <Button onclick={toggleSidebar} size={'icon'}>
-          <Icon name='IconLayoutSidebarLeftCollapse' />
+      <div
+        class={clsx('flex justify-end p-2', {
+          'fixed z-50': !isOpen,
+        })}
+      >
+        <Button onclick={toggle} size={'icon'}>
+          <Icon
+            name={isOpen
+              ? 'IconLayoutSidebarLeftCollapse'
+              : 'IconLayoutSidebarLeftExpand'}
+          />
         </Button>
       </div>
       <For each={headingStates} fallback={null}>

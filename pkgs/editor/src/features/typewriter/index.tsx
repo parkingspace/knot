@@ -3,9 +3,9 @@ import { getDefaultCaretRect } from '../caret'
 
 export function initTypewriter() {
   const { editor } = useKnotEditor()
-  const scrollDom = editor.view.dom.parentElement
+  const scrollDom = editor.view.dom
   if (!scrollDom) {
-    throw new Error('Scroll dom not found')
+    throw new Error('Scroll dom not found on initTypewriter')
   }
   const tw = new Typewriter(scrollDom)
   editor.on('selectionUpdate', () => tw.scroll(getDefaultCaretRect()?.y || 0))

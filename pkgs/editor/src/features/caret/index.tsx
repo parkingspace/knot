@@ -61,24 +61,30 @@ export function initCaret() {
   const [caretStyle, setCaretStyle] = createSignal('')
 
   createEffect(() => {
+    console.log('caret style')
+    const visible = show()
     setCaretStyle(
       clsx(
         'absolute w-1 bg-caretColor z-50 rounded-sm pointer-events-none block',
         {
-          'visible': show(),
-          'invisible': !show(),
+          'visible': visible,
+          'invisible': !visible,
         },
       ),
     )
   })
 
   onMount(() => {
-    addScrollListener(editor.view.dom.parentElement)
+    addScrollListener(editor.view.dom)
+    console.log('caretRef', caretRef)
+    caretRef = document.getElementById('caret') as HTMLSpanElement
+    console.log('caretRef', caretRef)
     removeDefaultCaret()
     initBlinkAnimation()
   })
 
   function initBlinkAnimation() {
+    console.log('caret ref', caretRef)
     caretBlinkAnimation = caretRef.animate(blinkFrames, blinkOptions)
   }
 
@@ -122,6 +128,7 @@ export function initCaret() {
     move({ duration: 0.2, delay: 0 })
     hideOnSelection()
   })
+
   editor.on('transaction', () => {
     if (caretBlinkAnimation.playState === 'paused') {
       setTimeout(() => caretBlinkAnimation.play(), 1000)
@@ -149,7 +156,6 @@ export function initCaret() {
     <span
       id='caret'
       class={caretStyle()}
-      ref={caretRef!}
     />
   )
 }

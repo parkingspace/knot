@@ -2,7 +2,6 @@ import type { Editor } from '@tiptap/core'
 
 export function applyEditorShortcuts(that: any) {
   if (!editorShortcuts[that.name]) {
-    console.log('No shortcuts for node: ', that.name)
     return {}
   }
 
@@ -27,7 +26,7 @@ export const editorShortcuts: EditorShortcuts = {
   'paragraph': [{
     keys: 'Mod-Alt-0',
     command: (t) => t.editor.commands.setParagraph(),
-    description: 'Transforms node to paragraph',
+    description: 'to paragraph',
   }],
   'listItem': [{
     keys: 'Enter',
@@ -68,12 +67,12 @@ export const editorShortcuts: EditorShortcuts = {
   'orderedList': [{
     keys: 'Mod-Shift-7',
     command: t => t.editor.commands.toggleOrderedList(),
-    description: 'toggle an ordered list',
+    description: 'toggle ordered list',
   }],
   'bulletList': [{
     keys: 'Mod-Shift-8',
     command: t => t.editor.commands.toggleBulletList(),
-    description: 'toggle a bullet list',
+    description: 'toggle bullet list',
   }],
   'hardBreak': [{
     keys: 'Mod-Shift-Enter',
@@ -83,22 +82,22 @@ export const editorShortcuts: EditorShortcuts = {
   'bold': [{
     keys: 'Mod-b',
     command: t => t.editor.commands.toggleBold(),
-    description: 'toggle the bold mark',
+    description: 'toggle bold',
   }],
   'code': [{
     keys: 'Mod-e',
     command: t => t.editor.commands.toggleCode(),
-    description: 'toggle inline code mark',
+    description: 'toggle inline code',
   }],
   'italic': [{
     keys: 'Mod-i',
     command: t => t.editor.commands.toggleItalic(),
-    description: 'toggle the italic mark',
+    description: 'toggle italic',
   }],
   'underline': [{
     keys: 'Mod-u',
     command: t => t.editor.commands.toggleUnderline(),
-    description: 'toggle an underline mark',
+    description: 'toggle underline',
   }],
   // TODO: toggle link needs to wrap with custom ui to set href
   // 'link': [{
@@ -109,22 +108,22 @@ export const editorShortcuts: EditorShortcuts = {
   'strike': [{
     keys: 'Mod-Shift-x',
     command: t => t.editor.commands.toggleStrike(),
-    description: 'toggle Strike mark',
+    description: 'toggle strike',
   }],
   'subscript': [{
     keys: 'Mod-,',
     command: t => t.editor.commands.toggleSubscript(),
-    description: 'toggle subscript mark',
+    description: 'toggle subscript',
   }],
   'superscript': [{
     keys: 'Mod-.',
     command: t => t.editor.commands.toggleSuperscript(),
-    description: 'toggle superscript mark',
+    description: 'toggle superscript',
   }],
   'highlight': [{
     keys: 'Mod-Shift-h',
     command: t => t.editor.commands.toggleHighlight(),
-    description: 'toggle a text highlight',
+    description: 'toggle highlight',
   }],
   'color': [
     {
@@ -144,34 +143,34 @@ export const editorShortcuts: EditorShortcuts = {
     {
       keys: 'Mod-z',
       command: t => t.editor.commands.undo(),
-      description: 'undo the last change',
+      description: 'undo',
     },
     {
       keys: 'Mod-Shift-z',
       command: t => t.editor.commands.redo(),
-      description: 'redo the last change',
+      description: 'redo',
     },
   ],
   'textAlign': [
     {
       keys: 'Mod-Shift-h',
       command: t => t.editor.commands.setTextAlign('left'),
-      description: 'align text to left',
+      description: 'align left',
     },
     {
       keys: 'Mod-Shift-;',
       command: t => t.editor.commands.setTextAlign('center'),
-      description: 'align text to center',
+      description: 'align center',
     },
     {
       keys: 'Mod-Shift-l',
       command: t => t.editor.commands.setTextAlign('right'),
-      description: 'align text to right',
+      description: 'align right',
     },
     {
       keys: 'Mod-Shift-k',
       command: t => t.editor.commands.setTextAlign('justify'),
-      description: 'align text justify',
+      description: 'align justify',
     },
   ],
 }

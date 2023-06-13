@@ -1,16 +1,19 @@
 import clsx from 'clsx'
-import { Accessor, JSX } from 'solid-js'
+import { Accessor, JSX, onMount } from 'solid-js'
 
 type propType = JSX.HTMLAttributes<HTMLDivElement>
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 const TextArea: Component = (props) => {
+  onMount(() => {
+    console.log('text area is mounted')
+  })
   return (
     <div
+      id='text-area'
       class={clsx(
-        'w-full flex flex-1 h-screen max-h-full justify-center overflow-x-hidden overflow-auto',
+        'w-full flex flex-1 h-screen max-h-full justify-center overflow-hidden',
       )}
-      ref={props.ref}
     >
       {props.children}
     </div>
