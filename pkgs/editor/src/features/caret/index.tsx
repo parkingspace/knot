@@ -77,12 +77,13 @@ export function initCaret() {
   onMount(() => {
     addScrollListener(editor.view.dom)
     console.log('caretRef', caretRef)
-    // removeDefaultCaret()
-    // initBlinkAnimation()
+    caretRef = document.getElementById('caret') as HTMLSpanElement
+    console.log('caretRef', caretRef)
+    removeDefaultCaret()
+    initBlinkAnimation()
   })
 
   function initBlinkAnimation() {
-    caretRef ??= document.getElementById('caret') as HTMLSpanElement
     console.log('caret ref', caretRef)
     caretBlinkAnimation = caretRef.animate(blinkFrames, blinkOptions)
   }
@@ -154,7 +155,6 @@ export function initCaret() {
     <span
       id='caret'
       class={caretStyle()}
-      ref={caretRef!}
     />
   )
 }
