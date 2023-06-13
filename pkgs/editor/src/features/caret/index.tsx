@@ -76,8 +76,9 @@ export function initCaret() {
 
   onMount(() => {
     addScrollListener(editor.view.dom)
-    removeDefaultCaret()
-    initBlinkAnimation()
+    console.log('caretRef', caretRef)
+    // removeDefaultCaret()
+    // initBlinkAnimation()
   })
 
   function initBlinkAnimation() {
