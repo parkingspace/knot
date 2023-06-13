@@ -27,32 +27,33 @@ const KnotEditorProvider = (props: { children: any }) => {
   const editorStyle = clsx(
     'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full h-full p-editor prose-p:m-0 focus:outline-none bg-editorBg overflow-y-auto',
   )
+  let editor: () => Editor | undefined = () => undefined
   const { getAllHeadings } = useDocumentManager()
   const sidebar = useSidebarStore()
 
-  const editor = createEditor(() => ({
-    element: document.querySelector('#text-area')! as HTMLElement,
-    extensions: extensions,
-    editorProps: {
-      attributes: {
-        id: 'document',
-        class: editorStyle,
-      },
-    },
-    onTransaction({ editor }) {
-      getAllHeadings(editor.state)
-        .toggleLastHeadingFocus()
-        .setSearchIndex()
-    },
-  }))
-
   onMount(() => {
+    console.log('editor provider is mounted')
+    editor = createEditor(() => ({
+      element: document.querySelector('#text-area')! as HTMLElement,
+      extensions: extensions,
+      editorProps: {
+        attributes: {
+          id: 'document',
+          class: editorStyle,
+        },
+      },
+      onTransaction({ editor }) {
+        getAllHeadings(editor.state)
+          .toggleLastHeadingFocus()
+          .setSearchIndex()
+      },
+    }))
     console.log('editor is', editor())
   })
 
   return (
     <BaseLayout isSidebarOpen={() => sidebar.isOpen}>
-      <Show when={editor()}>
+      <Show when={editor()} fallback={<div>loading ...</div>}>
         <KnotEditorContext.Provider
           value={{
             editor: editor()!,
