@@ -4,10 +4,12 @@ import type { Features } from '../types/configTypes'
 import { useFeatureConfig } from './configStore'
 
 import clsx from 'clsx'
+import { Button, Icon } from 'ui'
 import { initCaret } from './caret'
 import { initHeader } from './header'
 import { initSearch } from './search'
 import { initSidebar } from './sidebar'
+import { ColorSchemeToggleButton } from './theme/ColorSchemeToggleButton'
 import { initTypewriter } from './typewriter'
 import { initWhichkey } from './whichkey'
 
@@ -19,51 +21,60 @@ function FeatureToggleModal(props: {
 
   return (
     <div
-      class={clsx('fixed inset-0 z-50 flex items-center justify-center', {
-        'hidden': !props.show,
-      })}
+      class={clsx(
+        'fixed inset-0 z-50 flex items-center justify-center backdrop-blur',
+        {
+          'hidden': !props.show,
+        },
+      )}
     >
-      <div onclick={props.toggle} class='absolute inset-0 bg-black opacity-50'>
-      </div>
-      <div class='relative bg-white rounded-lg w-1/2'>
-        <div class='p-4'>
-          <div class='flex flex-col justify-between'>
-            <div class='font-semibold'>Features</div>
+      <div
+        onclick={props.toggle}
+        class='absolute inset-0 bg-black opacity-50'
+      />
+      <div class='relative bg-editorBg text-editorFg rounded-lg w-1/2'>
+        <div class='p-6'>
+          <div class='flex flex-col justify-between gap-2'>
+            <div class='font-semibold mb-3'>Settings</div>
             <div class='flex flex-row gap-x-2 justify-between'>
               caret
-              <button onclick={() => toggleFeature('caret')}>
+              <Button onclick={() => toggleFeature('caret')}>
                 {featureState.caret.enabled ? 'Disable' : 'Enable'}
-              </button>
+              </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               header
-              <button onclick={() => toggleFeature('header')}>
+              <Button onclick={() => toggleFeature('header')}>
                 {featureState.header.enabled ? 'Disable' : 'Enable'}
-              </button>
+              </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               search
-              <button onclick={() => toggleFeature('search')}>
+              <Button onclick={() => toggleFeature('search')}>
                 {featureState.search.enabled ? 'Disable' : 'Enable'}
-              </button>
+              </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               sidebar
-              <button onclick={() => toggleFeature('sidebar')}>
+              <Button onclick={() => toggleFeature('sidebar')}>
                 {featureState.sidebar.enabled ? 'Disable' : 'Enable'}
-              </button>
+              </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               typewriter
-              <button onclick={() => toggleFeature('typewriter')}>
+              <Button onclick={() => toggleFeature('typewriter')}>
                 {featureState.typewriter.enabled ? 'Disable' : 'Enable'}
-              </button>
+              </Button>
             </div>
             <div class='flex flex-row gap-x-2 justify-between'>
               whichkey
-              <button onclick={() => toggleFeature('whichkey')}>
+              <Button onclick={() => toggleFeature('whichkey')}>
                 {featureState.whichkey.enabled ? 'Disable' : 'Enable'}
-              </button>
+              </Button>
+            </div>
+            <div class='flex flex-row gap-x-2 justify-between'>
+              dark mode
+              <ColorSchemeToggleButton />
             </div>
           </div>
         </div>
@@ -84,10 +95,10 @@ export function Features() {
   return (
     <>
       <FeatureToggleModal show={showModal()} toggle={toggle} />
-      <div class='fixed bottom-0 left-0 z-50 text-editorFg p-4 font-semibold'>
-        <button onclick={() => toggle()}>
-          Feature
-        </button>
+      <div class='fixed top-0 right-0 z-50 text-editorFg p-4 font-semibold'>
+        <Button onclick={() => toggle()} size='icon'>
+          <Icon name='IconSettings' />
+        </Button>
       </div>
 
       {caret.enabled && initCaret()}

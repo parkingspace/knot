@@ -20,7 +20,6 @@ export const initHeader = () => {
       >
       </div>
       <div class='pr-4'>
-        <ColorSchemeToggleButton />
       </div>
     </div>
   )
