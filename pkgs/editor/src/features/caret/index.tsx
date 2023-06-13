@@ -53,7 +53,9 @@ export function initCaret() {
   let caretBlinkAnimation: Animation
 
   const { editor } = useKnotEditor()
+  console.log('right after use editor called', editor)
   if (!editor) {
+    console.log('when editor is not exists before onMount', editor)
     throw new Error('Editor not found \n:) inside initCaret function')
   }
 
@@ -73,6 +75,8 @@ export function initCaret() {
   })
 
   onMount(() => {
+    console.log('editor when onMount hook is', editor)
+    console.log('editor view dom when onMount hook is', editor.view.dom)
     addScrollListener(editor.view.dom.parentElement)
     removeDefaultCaret()
     initBlinkAnimation()
@@ -87,7 +91,6 @@ export function initCaret() {
   }
 
   function addScrollListener(scrollDom: HTMLElement | null) {
-    console.log('scrollDom', scrollDom)
     if (!scrollDom) {
       throw new Error('Scroll dom not found \n:) inside initCaret function')
     }
