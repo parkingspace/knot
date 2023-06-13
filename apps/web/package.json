@@ -8,7 +8,7 @@
     "lint": "dprint fmt"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.2.0",
+    "@tauri-apps/api": "^1.3.0",
     "editor": "workspace:*",
     "solid-js": "latest",
     "ui": "workspace:*"
