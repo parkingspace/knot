@@ -86,6 +86,7 @@ function FeatureToggleModal(props: {
 export function Features() {
   const { featureState, toggleFeature } = useFeatureConfig()
   const { caret, header, search, sidebar, typewriter, whichkey } = featureState
+  console.log("caret feature enabled?", caret.enabled)
   const [showModal, setShowModal] = createSignal(false)
   const toggle = () => setShowModal(!showModal())
 

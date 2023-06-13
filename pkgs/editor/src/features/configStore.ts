@@ -14,7 +14,8 @@ const defaultFeatures: Features = {
 export function useFeatureConfig() {
   const localState = localStorage.getItem('features')
   const [featureState, setFeatureState] = createStore<Features>(
-    localState ? JSON.parse(localState) : defaultFeatures,
+    defaultFeatures,
+    // localState ? JSON.parse(localState) : defaultFeatures,
   )
 
   onMount(() => {
