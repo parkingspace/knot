@@ -18,6 +18,7 @@ const KnotEditorContext = createContext<{
 export const useKnotEditor = () => {
   const context = useContext(KnotEditorContext)
   if (!context) {
+    console.log("use knot editor context", context)
     throw new Error('useKnotEditor must be used within KnotEditorProvider')
   }
   return context
