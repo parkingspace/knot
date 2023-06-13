@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { createEditor } from 'solid-tiptap'
 import { BaseLayout, TextArea } from 'ui'
 
-import { createContext, Show, useContext } from 'solid-js'
+import { createContext, onMount, Show, useContext } from 'solid-js'
 import { DocumentManagerProvider, useDocumentManager } from './documentManager'
 import { Features } from './features'
 import { useSidebarStore } from './features/sidebar/store'
@@ -12,13 +12,12 @@ import extensions from './tiptap_extensions'
 
 const KnotEditorContext = createContext<{
   editor: Editor
-  editorRef: HTMLDivElement
 }>()
 
 export const useKnotEditor = () => {
   const context = useContext(KnotEditorContext)
   if (!context) {
-    console.log("use knot editor context", context)
+    console.log('use knot editor context', context)
     throw new Error('useKnotEditor must be used within KnotEditorProvider')
   }
   return context
@@ -48,20 +47,24 @@ const KnotEditorProvider = (props: { children: any }) => {
     },
   }))
 
+  onMount(() => {
+    console.log('editor is', editor())
+    console.log('editorRef is ', editorRef)
+  })
+
   return (
-    <BaseLayout isSidebarOpen={() => sidebar.isOpen}>
+    <>
       <Show when={editor()}>
         <KnotEditorContext.Provider
           value={{
             editor: editor()!,
-            editorRef: editorRef!,
           }}
         >
           {props.children}
         </KnotEditorContext.Provider>
       </Show>
       <TextArea ref={editorRef!} />
-    </BaseLayout>
+    </>
   )
 }
 
