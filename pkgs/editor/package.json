@@ -73,6 +73,6 @@
     "typescript": "^4.5.2",
     "vite": "latest",
     "vite-plugin-solid": "latest",
-    "vitest": "^0.29.8"
+    "vitest": "^0.32.0"
   }
 }
