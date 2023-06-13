@@ -3,7 +3,7 @@ import { createStore } from 'solid-js/store'
 import type { FeatureName, Features } from '../types/configTypes'
 
 const defaultFeatures: Features = {
-  'caret': { enabled: true },
+  'caret': { enabled: false },
   'whichkey': { enabled: true },
   'typewriter': { enabled: true },
   'sidebar': { enabled: true },

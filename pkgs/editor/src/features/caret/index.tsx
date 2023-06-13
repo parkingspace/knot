@@ -128,6 +128,7 @@ export function initCaret() {
     move({ duration: 0.2, delay: 0 })
     hideOnSelection()
   })
+
   editor.on('transaction', () => {
     if (caretBlinkAnimation.playState === 'paused') {
       setTimeout(() => caretBlinkAnimation.play(), 1000)
