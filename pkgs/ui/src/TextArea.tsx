@@ -8,7 +8,7 @@ const TextArea: Component = (props) => {
   return (
     <div
       class={clsx(
-        'w-full flex flex-1 h-screen max-h-full justify-center overflow-x-hidden overflow-auto',
+        'w-full flex flex-1 h-screen max-h-full justify-center overflow-hidden',
       )}
       ref={props.ref}
     >

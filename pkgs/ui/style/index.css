@@ -15,6 +15,7 @@
     --editor-fg: theme("colors.gray.700");
     --editor-bg: theme("colors.white");
 
+    --scrollbar-thumb: theme(colors.gray.700 / 70%);
     --sidebar-bg: theme("colors.stone.100");
 
     --icon-fg: theme("colors.gray.600");
@@ -33,11 +34,37 @@
     --editor-fg: theme("colors.gray.200");
     --editor-bg: theme("colors.gray.900");
 
+    --scrollbar-thumb: theme(colors.gray.200 / 70%);
     --sidebar-bg: theme("colors.gray.800");
 
     --icon-fg: theme("colors.gray.300");
     --icon-bg: theme("colors.gray.700");
 
     --caret-color: theme("colors.gray.200");
+  }
+
+  /* scrollbar styling */
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--editor-bg);
+    border-radius: 5px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 14px;
   }
 }
