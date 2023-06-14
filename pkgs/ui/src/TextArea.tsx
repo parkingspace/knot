@@ -11,6 +11,7 @@ const TextArea: Component = (props) => {
   return (
     <div
       id='text-area'
+      ref={props.ref}
       class={clsx(
         'w-full flex flex-1 h-screen max-h-full justify-center overflow-hidden',
       )}

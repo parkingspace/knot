@@ -19,6 +19,9 @@ module.exports = function(context) {
         stone: twColors.stone,
       },
       extend: {
+        transitionProperty: {
+          'width': 'width',
+        },
         colors: {
           editorFg: 'var(--editor-fg)',
           editorBg: 'var(--editor-bg)',
@@ -43,7 +46,6 @@ module.exports = function(context) {
       },
     },
     plugins: [
-      require('@kobalte/tailwindcss'),
       require('@tailwindcss/typography'),
     ],
   }

@@ -24,8 +24,8 @@
     --caret-color: theme("colors.gray.900");
 
     /* layout */
-    --editor-padding: 4rem calc(96px + env(safe-area-inset-right, 96px)) 10rem
-      calc(96px + env(safe-area-inset-left, 96px));
+    --editor-padding: 4rem env(safe-area-inset-right) 10rem
+      calc(10% + env(safe-area-inset-left));
 
     --sidebar-width: 280px;
   }

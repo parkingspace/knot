@@ -19,9 +19,6 @@ function FeatureToggleModal(props: {
 }) {
   const featureConfig = useFeatureConfig()
 
-  console.log('when used in toggleModal', featureConfig)
-  console.log('when destructured', featureConfig.features)
-
   return (
     <div
       class={clsx(
@@ -90,13 +87,6 @@ function FeatureToggleModal(props: {
 
 export function Features() {
   const featureConfig = useFeatureConfig()
-  onMount(() => {
-    console.log('features is mounted')
-  })
-
-  createEffect(() => {
-    console.log('caret is changed', featureConfig.features.caret.enabled)
-  })
 
   const [showModal, setShowModal] = createSignal(false)
   const toggle = () => setShowModal(!showModal())
@@ -107,7 +97,7 @@ export function Features() {
   return (
     <>
       <FeatureToggleModal show={showModal()} toggle={toggle} />
-      <div class='fixed top-0 right-0 z-50 text-editorFg p-4 font-semibold'>
+      <div class='fixed top-0 right-0 z-50 text-editorFg p-2 font-semibold'>
         <Button onclick={() => toggle()} size='icon'>
           <Icon name='IconSettings' />
         </Button>

@@ -2,12 +2,11 @@ import './editor.css'
 import type { Editor } from '@tiptap/core'
 import clsx from 'clsx'
 import { createEditor } from 'solid-tiptap'
-import { BaseLayout, TextArea } from 'ui'
+import { TextArea } from 'ui'
 
 import {
   createContext,
   createEffect,
-  createSignal,
   onMount,
   Show,
   useContext,
@@ -31,14 +30,24 @@ export const useKnotEditor = () => {
 }
 
 const KnotEditorProvider = (props: { children: any }) => {
+  let textAreaRef: HTMLDivElement
   const editorStyle = clsx(
-    'prose dark:prose-invert max-w-none lg:prose-md leading-relaxed text-editorFg outline-transparent w-full h-full p-editor prose-p:m-0 focus:outline-none bg-editorBg overflow-y-auto',
+    'prose dark:prose-invert',
+    'lg:prose-md',
+    'max-w-none',
+    'leading-relaxed',
+    'text-editorFg bg-editorBg outline-transparent',
+    'w-full h-full',
+    'p-editor',
+    'prose-p:m-0',
+    'focus:outline-none',
+    'overflow-y-auto',
   )
   const { getAllHeadings } = useDocumentManager()
   const sidebar = useSidebarStore()
 
   const editor = createEditor(() => ({
-    element: document.querySelector('#text-area')! as HTMLElement,
+    element: textAreaRef,
     extensions: extensions,
     editorProps: {
       attributes: {
@@ -53,9 +62,41 @@ const KnotEditorProvider = (props: { children: any }) => {
     },
   }))
 
+  let editorDom: HTMLElement
+
+  onMount(() => {
+    if (!editor()) {
+      return
+    }
+    editorDom = editor()!.view.dom
+  })
+
+  createEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 640px)').matches
+    console.log('is mobile', isMobile)
+    if (isMobile) return
+    const sidebarWidth = 280
+    const editorDefaultPadding = editorDom.clientWidth / 10
+
+    editorDom.animate({
+      paddingLeft: !sidebar.isOpen
+        ? [
+          `${editorDefaultPadding + sidebarWidth}px`,
+          `${editorDefaultPadding}px`,
+        ]
+        : [
+          `${editorDefaultPadding}px`,
+          `${editorDefaultPadding + sidebarWidth}px`,
+        ],
+    }, {
+      duration: 150,
+      fill: 'forwards',
+    })
+  })
+
   return (
-    <BaseLayout isSidebarOpen={() => sidebar.isOpen}>
-      <Show when={editor()} fallback={<div>loading ...</div>}>
+    <>
+      <Show when={editor()}>
         <KnotEditorContext.Provider
           value={{
             editor: editor()!,
@@ -64,8 +105,8 @@ const KnotEditorProvider = (props: { children: any }) => {
           {props.children}
         </KnotEditorContext.Provider>
       </Show>
-      <TextArea />
-    </BaseLayout>
+      <TextArea ref={textAreaRef!} />
+    </>
   )
 }
 

@@ -13,7 +13,7 @@ const BaseLayout: Component = (props) => {
   return (
     <div
       class={clsx('grid grid-cols-with-sidebar h-full', {
-        'grid-cols-without-sidebar': !props.isSidebarOpen(),
+        // 'grid-cols-without-sidebar': !props.isSidebarOpen(),
       })}
     >
       {props.children}
