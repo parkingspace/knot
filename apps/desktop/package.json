@@ -12,6 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "web": "workspace:*",
-    "@tauri-apps/cli": "^1.2.3"
+    "@tauri-apps/cli": "^1.4.0"
   }
 }
