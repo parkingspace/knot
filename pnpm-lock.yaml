@@ -16,7 +16,7 @@ importers:
         version: 8.0.3
       turbo:
         specifier: latest
-        version: 1.9.6
+        version: 1.10.3
 
   apps/desktop:
     devDependencies:
@@ -37,7 +37,7 @@ importers:
         version: link:../../pkgs/editor
       solid-js:
         specifier: latest
-        version: 1.7.3
+        version: 1.7.6
       ui:
         specifier: workspace:*
         version: link:../../pkgs/ui
@@ -62,13 +62,13 @@ importers:
         version: 4.3.9(@types/node@20.3.1)
       vite-plugin-solid:
         specifier: latest
-        version: 2.7.0(solid-js@1.7.3)(vite@4.3.9)
+        version: 2.7.0(solid-js@1.7.6)(vite@4.3.9)
 
   pkgs/editor:
     dependencies:
       '@tiptap/core':
         specifier: ^2.0.1
-        version: 2.0.1(@tiptap/pm@2.0.1)
+        version: 2.0.1(@tiptap/pm@2.0.3)
       '@tiptap/extension-blockquote':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
@@ -77,25 +77,25 @@ importers:
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/extension-bubble-menu':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-bullet-list':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/extension-character-count':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-code':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/extension-code-block':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-code-block-lowlight':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/extension-code-block@2.0.3)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/extension-code-block@2.0.3)(@tiptap/pm@2.0.3)
       '@tiptap/extension-collaboration':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)(y-prosemirror@1.2.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)(y-prosemirror@1.2.1)
       '@tiptap/extension-collaboration-cursor':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)(y-prosemirror@1.2.1)
@@ -107,19 +107,19 @@ importers:
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/extension-dropcursor':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-floating-menu':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-focus':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-font-family':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/extension-text-style@2.0.3)
       '@tiptap/extension-gapcursor':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-hard-break':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
@@ -131,13 +131,13 @@ importers:
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/extension-history':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-italic':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/extension-link':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-list-item':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
@@ -149,7 +149,7 @@ importers:
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/extension-placeholder':
         specifier: ^2.0.3
-        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
+        version: 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
       '@tiptap/extension-strike':
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
@@ -175,8 +175,8 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3(@tiptap/core@2.0.1)
       '@tiptap/pm':
-        specifier: ^2.0.1
-        version: 2.0.1(@tiptap/core@2.0.1)
+        specifier: ^2.0.3
+        version: 2.0.3(@tiptap/core@2.0.1)
       clsx:
         specifier: ^1.2.1
         version: 1.2.1
@@ -194,10 +194,10 @@ importers:
         version: 9.6.5
       solid-js:
         specifier: latest
-        version: 1.7.3
+        version: 1.7.6
       solid-tiptap:
         specifier: ^0.5.1
-        version: 0.5.1(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)(solid-js@1.7.3)
+        version: 0.5.1(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)(solid-js@1.7.6)
       tinykeys:
         specifier: ^1.4.0
         version: 1.4.0
@@ -219,7 +219,7 @@ importers:
     devDependencies:
       '@solidjs/testing-library':
         specifier: ^0.7.0
-        version: 0.7.0(solid-js@1.7.3)
+        version: 0.7.0(solid-js@1.7.6)
       '@testing-library/jest-dom':
         specifier: ^5.16.5
         version: 5.16.5
@@ -246,7 +246,7 @@ importers:
         version: 4.3.9(@types/node@20.3.1)
       vite-plugin-solid:
         specifier: latest
-        version: 2.7.0(solid-js@1.7.3)(vite@4.3.9)
+        version: 2.7.0(solid-js@1.7.6)(vite@4.3.9)
       vitest:
         specifier: ^0.32.0
         version: 0.32.0(@vitest/ui@0.32.0)(jsdom@21.1.1)
@@ -260,13 +260,13 @@ importers:
         version: 4.5.13
       '@kobalte/core':
         specifier: ^0.8.2
-        version: 0.8.2(solid-js@1.7.3)
+        version: 0.8.2(solid-js@1.7.6)
       '@kobalte/tailwindcss':
         specifier: ^0.5.0
         version: 0.5.0(tailwindcss@3.3.1)
       '@tabler/icons-solidjs':
         specifier: ^2.17.0
-        version: 2.17.0(solid-js@1.7.3)
+        version: 2.17.0(solid-js@1.7.6)
       class-variance-authority:
         specifier: ^0.5.3
         version: 0.5.3(typescript@4.5.3)
@@ -275,7 +275,7 @@ importers:
         version: 1.2.1
       solid-js:
         specifier: latest
-        version: 1.7.3
+        version: 1.7.6
     devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.9
@@ -303,7 +303,7 @@ importers:
         version: 4.3.9(@types/node@20.3.1)
       vite-plugin-solid:
         specifier: latest
-        version: 2.7.0(solid-js@1.7.3)(vite@4.3.9)
+        version: 2.7.0(solid-js@1.7.6)(vite@4.3.9)
 
 packages:
 
@@ -317,13 +317,6 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
-    dev: true
-
-  /@babel/code-frame@7.18.6:
-    resolution: {integrity: sha512-TDCmlK5eOvH+eH7cdAFlNXeVJqWIQ7gW9tY1GJIpUtFb6CmjVyq2VM3u71bOyR8CRihcCgMUYoDNyLXao3+70Q==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/highlight': 7.18.6
     dev: true
 
   /@babel/code-frame@7.21.4:
@@ -958,7 +951,7 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
 
-  /@kobalte/core@0.8.2(solid-js@1.7.3):
+  /@kobalte/core@0.8.2(solid-js@1.7.6):
     resolution: {integrity: sha512-EoBYKpYa3+Csr5Zh7l3aY3yAg7fk1O3ZM9lGyD1mdQ1FutTuwTkyj8z1CvSSj1Klb+rBL+X1N662Occ8Bmsi2w==}
     peerDependencies:
       solid-js: ^1.6.15
@@ -967,8 +960,8 @@ packages:
       '@internationalized/date': 3.2.0
       '@internationalized/number': 3.2.0
       '@internationalized/string': 3.1.0
-      '@kobalte/utils': 0.6.1(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@kobalte/utils': 0.6.1(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
   /@kobalte/tailwindcss@0.5.0(tailwindcss@3.3.1):
@@ -979,18 +972,18 @@ packages:
       tailwindcss: 3.3.1(postcss@8.4.21)
     dev: false
 
-  /@kobalte/utils@0.6.1(solid-js@1.7.3):
+  /@kobalte/utils@0.6.1(solid-js@1.7.6):
     resolution: {integrity: sha512-YvBqe9t9j0iYFUHfKXSMLQKM3s5+nL72RvT9b75W+IOxUpSpN4rdaI8C2j97k3LsEt7qY4ktJdt8lPM1rr8JXw==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      '@solid-primitives/event-listener': 2.2.10(solid-js@1.7.3)
-      '@solid-primitives/keyed': 1.2.0(solid-js@1.7.3)
-      '@solid-primitives/media': 2.1.6(solid-js@1.7.3)
-      '@solid-primitives/props': 3.1.4(solid-js@1.7.3)
-      '@solid-primitives/refs': 1.0.2(solid-js@1.7.3)
-      '@solid-primitives/utils': 5.5.2(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@solid-primitives/event-listener': 2.2.10(solid-js@1.7.6)
+      '@solid-primitives/keyed': 1.2.0(solid-js@1.7.6)
+      '@solid-primitives/media': 2.1.6(solid-js@1.7.6)
+      '@solid-primitives/props': 3.1.4(solid-js@1.7.6)
+      '@solid-primitives/refs': 1.0.2(solid-js@1.7.6)
+      '@solid-primitives/utils': 5.5.2(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
   /@linaria/core@3.0.0-beta.13:
@@ -1059,95 +1052,95 @@ packages:
     resolution: {integrity: sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==}
     dev: true
 
-  /@solid-primitives/event-listener@2.2.10(solid-js@1.7.3):
+  /@solid-primitives/event-listener@2.2.10(solid-js@1.7.6):
     resolution: {integrity: sha512-rWBCeF1NRAmLJtVo2wpY9vF3IAQ8VAxGnFDOUqROSdYhUfiCeM7Hw3PKkGCELwNQzZK1W1z+MjzB7fctpjX4Sg==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      '@solid-primitives/utils': 6.2.0(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@solid-primitives/utils': 6.2.0(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/keyed@1.2.0(solid-js@1.7.3):
+  /@solid-primitives/keyed@1.2.0(solid-js@1.7.6):
     resolution: {integrity: sha512-0DuTeJdxWjCTu73XnDZs24JzfXckBnpvCfQ6Mf/kTPKkMZJh7tjkBnZEk48ckrE9xmwat9stIdfrBmZctsepIw==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      solid-js: 1.7.3
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/media@2.1.6(solid-js@1.7.3):
+  /@solid-primitives/media@2.1.6(solid-js@1.7.6):
     resolution: {integrity: sha512-7yixsXmhZfbsAxk/glmTFWcacXhudYsbc/9kbC7EbaE+Jnd6i0HZmmQEkV+s/rZ32e5sE9dAHvlhPtiLbQb7Jg==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      '@solid-primitives/event-listener': 2.2.10(solid-js@1.7.3)
-      '@solid-primitives/rootless': 1.3.2(solid-js@1.7.3)
-      '@solid-primitives/static-store': 0.0.2(solid-js@1.7.3)
-      '@solid-primitives/utils': 6.2.0(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@solid-primitives/event-listener': 2.2.10(solid-js@1.7.6)
+      '@solid-primitives/rootless': 1.3.2(solid-js@1.7.6)
+      '@solid-primitives/static-store': 0.0.2(solid-js@1.7.6)
+      '@solid-primitives/utils': 6.2.0(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/props@3.1.4(solid-js@1.7.3):
+  /@solid-primitives/props@3.1.4(solid-js@1.7.6):
     resolution: {integrity: sha512-RiwOZXbqb3RMmkznyfI63gwAB/iVHPk8AWN55oIEBRkjzgpuqRXIzdbsSQVy23jMbkRs91tRtzxQ/g6eoWLnuQ==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      '@solid-primitives/utils': 6.2.0(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@solid-primitives/utils': 6.2.0(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/refs@1.0.2(solid-js@1.7.3):
+  /@solid-primitives/refs@1.0.2(solid-js@1.7.6):
     resolution: {integrity: sha512-qnqQRdYbsENlVx86QCfftRKGZ/9zUJMGK9U85xDRymocEyeUXxdxgq0FeyGhvgg4A25spJVwHmuZUGY0aMBBLA==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      '@solid-primitives/utils': 6.2.0(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@solid-primitives/utils': 6.2.0(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/rootless@1.3.2(solid-js@1.7.3):
+  /@solid-primitives/rootless@1.3.2(solid-js@1.7.6):
     resolution: {integrity: sha512-R1rncXOUcB/i3PyvKhSWcsocPRe1n3HsMIO717RpWFd2knUF8+b0cGgRDEoneGaV/a5kq4cqH3csa66klxuM3A==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      '@solid-primitives/utils': 6.2.0(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@solid-primitives/utils': 6.2.0(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/static-store@0.0.2(solid-js@1.7.3):
+  /@solid-primitives/static-store@0.0.2(solid-js@1.7.6):
     resolution: {integrity: sha512-JR51MmoZbFWE7fmzm0NnfS4RuLHpzXpPqAb7RJu3fHDGHp+q7v4KylseULcailINzDIosHQXbpiDQlj2Lx9zbQ==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      '@solid-primitives/utils': 6.2.0(solid-js@1.7.3)
-      solid-js: 1.7.3
+      '@solid-primitives/utils': 6.2.0(solid-js@1.7.6)
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/utils@5.5.2(solid-js@1.7.3):
+  /@solid-primitives/utils@5.5.2(solid-js@1.7.6):
     resolution: {integrity: sha512-L52ig3eHKU6CqbPCKJIb4lweBuINHBOERcE1duApyKozEN8+zCqEKwD1Qo9ljKeEzJTBGWClxNpwEiNTUWTGvg==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      solid-js: 1.7.3
+      solid-js: 1.7.6
     dev: false
 
-  /@solid-primitives/utils@6.2.0(solid-js@1.7.3):
+  /@solid-primitives/utils@6.2.0(solid-js@1.7.6):
     resolution: {integrity: sha512-T62WlLwKkbmicsw/xpwMQyv9MmZRSaVyutXfS5icc9v0cb8qGMUxRxr5LVvZHYQCZ9DEFboZB0r711xsbVBbeA==}
     peerDependencies:
       solid-js: ^1.6.12
     dependencies:
-      solid-js: 1.7.3
+      solid-js: 1.7.6
     dev: false
 
-  /@solidjs/testing-library@0.7.0(solid-js@1.7.3):
+  /@solidjs/testing-library@0.7.0(solid-js@1.7.6):
     resolution: {integrity: sha512-mTSINHdcLc6rn9xWWJfzPkY0zyKtLb7QAM2CouVw2QvNZ0mgfk3z2tpaprismlE/YLn+I3ij4BqiV3ocvI+hIQ==}
     engines: {node: '>= 14'}
     peerDependencies:
       solid-js: '>=1.0.0'
     dependencies:
       '@testing-library/dom': 9.2.0
-      solid-js: 1.7.3
+      solid-js: 1.7.6
     dev: true
 
   /@swc/helpers@0.4.14:
@@ -1156,13 +1149,13 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@tabler/icons-solidjs@2.17.0(solid-js@1.7.3):
+  /@tabler/icons-solidjs@2.17.0(solid-js@1.7.6):
     resolution: {integrity: sha512-x3jwGewd2SlVHcug82G10wOfrIJH9/FAMris32ewDG30HnTSakQL+ryUfUQXAzPNQhojtZ1b9U8ykZtWioz3Vw==}
     peerDependencies:
       solid-js: ^1.4.7
     dependencies:
       '@tabler/icons': 2.17.0
-      solid-js: 1.7.3
+      solid-js: 1.7.6
     dev: false
 
   /@tabler/icons@2.17.0:
@@ -1287,7 +1280,7 @@ packages:
     resolution: {integrity: sha512-xTEnpUKiV/bMyEsE5bT4oYA0x0Z/colMtxzUY8bKyPXBNLn/e0V4ZjBZkEhms0xE4pv9QsPfSRu9AWS4y5wGvA==}
     engines: {node: '>=14'}
     dependencies:
-      '@babel/code-frame': 7.18.6
+      '@babel/code-frame': 7.21.4
       '@babel/runtime': 7.21.0
       '@types/aria-query': 5.0.1
       aria-query: 5.1.3
@@ -1312,12 +1305,12 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@tiptap/core@2.0.1(@tiptap/pm@2.0.1):
+  /@tiptap/core@2.0.1(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-IY5K17e1YdlJIykCt3NuOyqK/SHyGwk2X7eyLYfZJGJwqzuPuf3y8X1zZQQN53t5UVfsgqsF9RweVEee40o1Aw==}
     peerDependencies:
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
   /@tiptap/extension-blockquote@2.0.3(@tiptap/core@2.0.1):
@@ -1325,7 +1318,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-bold@2.0.3(@tiptap/core@2.0.1):
@@ -1333,17 +1326,17 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
-  /@tiptap/extension-bubble-menu@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-bubble-menu@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-lPt1ELrYCuoQrQEUukqjp9xt38EwgPUwaKHI3wwt2Rbv+C6q1gmRsK1yeO/KqCNmFxNqF2p9ZF9srOnug/RZDQ==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
       tippy.js: 6.3.7
     dev: false
 
@@ -1352,39 +1345,39 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
-  /@tiptap/extension-character-count@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-character-count@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-Ge4aUmgYOmQR/HLPkbQSFKEywyRu6IalHAQmH3laY6LB9qrmT90AoaiFnaVCDpphYFQ7RygnBXJMgjtJ3WpZmw==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
-  /@tiptap/extension-code-block-lowlight@2.0.3(@tiptap/core@2.0.1)(@tiptap/extension-code-block@2.0.3)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-code-block-lowlight@2.0.3(@tiptap/core@2.0.1)(@tiptap/extension-code-block@2.0.3)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-thFXcFdFyHF0/dr9sqBedjj0Vt14k3m52YVc4l65+d65wRuHp4f8suu8T2ZGRJwqLCE3NIrvwQTSHhzjIqJVxQ==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/extension-code-block': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/extension-code-block': 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/extension-code-block': 2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
-  /@tiptap/extension-code-block@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-code-block@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-F4xMy18EwgpyY9f5Te7UuF7UwxRLptOtCq1p2c2DfxBvHDWhAjQqVqcW/sq/I/WuED7FwCnPLyyAasPiVPkLPw==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
   /@tiptap/extension-code@2.0.3(@tiptap/core@2.0.1):
@@ -1392,7 +1385,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-collaboration-cursor@2.0.3(@tiptap/core@2.0.1)(y-prosemirror@1.2.1):
@@ -1401,19 +1394,19 @@ packages:
       '@tiptap/core': ^2.0.0
       y-prosemirror: 1.0.20
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
       y-prosemirror: 1.2.1(prosemirror-model@1.19.0)(prosemirror-state@1.4.2)(prosemirror-view@1.30.1)(y-protocols@1.0.5)(yjs@13.5.53)
     dev: false
 
-  /@tiptap/extension-collaboration@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)(y-prosemirror@1.2.1):
+  /@tiptap/extension-collaboration@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)(y-prosemirror@1.2.1):
     resolution: {integrity: sha512-oA+5Dx+L1GfFrP2tUol8lfKNrLitYgHBaBJbAiqh/QPKVuUiEWgFS2W1oYaSGmwYjzdPCVJqXyQLzSJvEdnBWQ==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
       y-prosemirror: 1.0.20
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
       y-prosemirror: 1.2.1(prosemirror-model@1.19.0)(prosemirror-state@1.4.2)(prosemirror-view@1.30.1)(y-protocols@1.0.5)(yjs@13.5.53)
     dev: false
 
@@ -1423,7 +1416,7 @@ packages:
       '@tiptap/core': ^2.0.0
       '@tiptap/extension-text-style': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
       '@tiptap/extension-text-style': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
@@ -1432,38 +1425,38 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
-  /@tiptap/extension-dropcursor@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-dropcursor@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-McthMrfusn6PjcaynJLheZJcXto8TaIW5iVitYh8qQrDXr31MALC/5GvWuiswmQ8bAXiWPwlLDYE/OJfwtggaw==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
-  /@tiptap/extension-floating-menu@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-floating-menu@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-zN1vRGRvyK3pO2aHRmQSOTpl4UJraXYwKYM009n6WviYKUNm0LPGo+VD4OAtdzUhPXyccnlsTv2p6LIqFty6Bg==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
       tippy.js: 6.3.7
     dev: false
 
-  /@tiptap/extension-focus@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-focus@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-WTJEmbGyHK8F/v1k5/5viLAa7PqtNoWOO4Qt4PBoUPlFDW97QMEh5m8Cvqw/RtbxTiGDHz6T+I5IJsKXGJed/A==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
   /@tiptap/extension-font-family@2.0.3(@tiptap/core@2.0.1)(@tiptap/extension-text-style@2.0.3):
@@ -1472,18 +1465,18 @@ packages:
       '@tiptap/core': ^2.0.0
       '@tiptap/extension-text-style': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
       '@tiptap/extension-text-style': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
-  /@tiptap/extension-gapcursor@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-gapcursor@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-6I9EzzsYOyyqDvDvxIK6Rv3EXB+fHKFj8ntHO8IXmeNJ6pkhOinuXVsW6Yo7TcDYoTj4D5I2MNFAW2rIkgassw==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
   /@tiptap/extension-hard-break@2.0.3(@tiptap/core@2.0.1):
@@ -1491,7 +1484,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-heading@2.0.3(@tiptap/core@2.0.1):
@@ -1499,7 +1492,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-highlight@2.0.3(@tiptap/core@2.0.1):
@@ -1507,17 +1500,17 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
-  /@tiptap/extension-history@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-history@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-00KHIcJ8kivn2ARI6NQYphv2LfllVCXViHGm0EhzDW6NQxCrriJKE3tKDcTFCu7LlC5doMpq9Z6KXdljc4oVeQ==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
   /@tiptap/extension-italic@2.0.3(@tiptap/core@2.0.1):
@@ -1525,17 +1518,17 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
-  /@tiptap/extension-link@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-link@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-H72tXQ5rkVCkAhFaf08fbEU7EBUCK0uocsqOF+4th9sOlrhfgyJtc8Jv5EXPDpxNgG5jixSqWBo0zKXQm9s9eg==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
       linkifyjs: 4.1.1
     dev: false
 
@@ -1544,7 +1537,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-ordered-list@2.0.3(@tiptap/core@2.0.1):
@@ -1552,7 +1545,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-paragraph@2.0.3(@tiptap/core@2.0.1):
@@ -1560,17 +1553,17 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
-  /@tiptap/extension-placeholder@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1):
+  /@tiptap/extension-placeholder@2.0.3(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3):
     resolution: {integrity: sha512-Z42jo0termRAf0S0L8oxrts94IWX5waU4isS2CUw8xCUigYyCFslkhQXkWATO1qRbjNFLKN2C9qvCgGf4UeBrw==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
     dev: false
 
   /@tiptap/extension-strike@2.0.3(@tiptap/core@2.0.1):
@@ -1578,7 +1571,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-subscript@2.0.3(@tiptap/core@2.0.1):
@@ -1586,7 +1579,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-superscript@2.0.3(@tiptap/core@2.0.1):
@@ -1594,7 +1587,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-text-align@2.0.3(@tiptap/core@2.0.1):
@@ -1602,7 +1595,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-text-style@2.0.3(@tiptap/core@2.0.1):
@@ -1610,7 +1603,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-text@2.0.3(@tiptap/core@2.0.1):
@@ -1618,7 +1611,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-typography@2.0.3(@tiptap/core@2.0.1):
@@ -1626,7 +1619,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
   /@tiptap/extension-underline@2.0.3(@tiptap/core@2.0.1):
@@ -1634,15 +1627,15 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
     dev: false
 
-  /@tiptap/pm@2.0.1(@tiptap/core@2.0.1):
-    resolution: {integrity: sha512-Vu6PAVNbIArhNCA3TXC9bX4Qj4duI+3jZhGptTDU+4wLHSjp6p1zM+RKRHFdIIBZG+v9uATWyitrvNd7qHlJdQ==}
+  /@tiptap/pm@2.0.3(@tiptap/core@2.0.1):
+    resolution: {integrity: sha512-I9dsInD89Agdm1QjFRO9dmJtU1ldVSILNPW0pEhv9wYqYVvl4HUj/JMtYNqu2jWrCHNXQcaX/WkdSdvGJtmg5g==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
       prosemirror-changeset: 2.2.0
       prosemirror-collab: 1.3.0
       prosemirror-commands: 1.5.0
@@ -4183,13 +4176,13 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /solid-js@1.7.3:
-    resolution: {integrity: sha512-4hwaF/zV/xbNeBBIYDyu3dcReOZBECbO//mrra6GqOrKy4Soyo+fnKjpZSa0nODm6j1aL0iQRh/7ofYowH+jzw==}
+  /solid-js@1.7.6:
+    resolution: {integrity: sha512-DXVOTjUh/bIAhE0fIqu3ezGLyQaez7v8EOw3uPLIi87DmLjg+hsuCAgKyNIZ+o4jUetOk3ZORccvJmE1yZUk8g==}
     dependencies:
       csstype: 3.1.2
       seroval: 0.5.1
 
-  /solid-refresh@0.5.2(solid-js@1.7.3):
+  /solid-refresh@0.5.2(solid-js@1.7.6):
     resolution: {integrity: sha512-I69HmFj0LsGRJ3n8CEMVjyQFgVtuM2bSjznu2hCnsY+i5oOxh8ioWj00nnHBv0UYD3WpE/Sq4Q3TNw2IKmKN7A==}
     peerDependencies:
       solid-js: ^1.3
@@ -4197,10 +4190,10 @@ packages:
       '@babel/generator': 7.21.4
       '@babel/helper-module-imports': 7.21.4
       '@babel/types': 7.21.4
-      solid-js: 1.7.3
+      solid-js: 1.7.6
     dev: true
 
-  /solid-tiptap@0.5.1(@tiptap/core@2.0.1)(@tiptap/pm@2.0.1)(solid-js@1.7.3):
+  /solid-tiptap@0.5.1(@tiptap/core@2.0.1)(@tiptap/pm@2.0.3)(solid-js@1.7.6):
     resolution: {integrity: sha512-Ced19tF2iJZeZwk1Q5Hne+UaIy3dQxwBLNSfq+IkT3xffMlu2t2YXWSUWadRh85xgPw0hFwHiSEG2SPhhtV/0w==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -4208,9 +4201,9 @@ packages:
       '@tiptap/pm': ^2.0.0-beta.220
       solid-js: ^1.2
     dependencies:
-      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.1)
-      '@tiptap/pm': 2.0.1(@tiptap/core@2.0.1)
-      solid-js: 1.7.3
+      '@tiptap/core': 2.0.1(@tiptap/pm@2.0.3)
+      '@tiptap/pm': 2.0.3(@tiptap/core@2.0.1)
+      solid-js: 1.7.6
     dev: false
 
   /source-map-js@1.0.2:
@@ -4445,65 +4438,65 @@ packages:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
     dev: false
 
-  /turbo-darwin-64@1.9.6:
-    resolution: {integrity: sha512-9jmxyCAcPrJiPD/EmtK2tObrPGblmyORCgNgtcw1iozcfC7kqungWTfbnHrvTNUfUmVhH0sA3BGzshpuslbQHg==}
+  /turbo-darwin-64@1.10.3:
+    resolution: {integrity: sha512-IIB9IomJGyD3EdpSscm7Ip1xVWtYb7D0x7oH3vad3gjFcjHJzDz9xZ/iw/qItFEW+wGFcLSRPd+1BNnuLM8AsA==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64@1.9.6:
-    resolution: {integrity: sha512-5f8ajEi8mOdAZ0AXavu/TzkHGEUi7tw+paefff7KK+XTUrdeyTlf8ULiTI+r97uH1jsYeTeL4JPu9IsEx+bL6g==}
+  /turbo-darwin-arm64@1.10.3:
+    resolution: {integrity: sha512-SBNmOZU9YEB0eyNIxeeQ+Wi0Ufd+nprEVp41rgUSRXEIpXjsDjyBnKnF+sQQj3+FLb4yyi/yZQckB+55qXWEsw==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64@1.9.6:
-    resolution: {integrity: sha512-UrCDMl2Nqd/kxNEJonqvDg8nmZU4UggVQTmqcdYyuOiCA3H98jxggQqZh1VGeF23XDbCWHSQjnbkLeoUvQJWKw==}
+  /turbo-linux-64@1.10.3:
+    resolution: {integrity: sha512-kvAisGKE7xHJdyMxZLvg53zvHxjqPK1UVj4757PQqtx9dnjYHSc8epmivE6niPgDHon5YqImzArCjVZJYpIGHQ==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64@1.9.6:
-    resolution: {integrity: sha512-oOxAT6lNiMpYVZPWzFNsUvC2LQgKYyH4aBnkeoBnjuAUk8BK5AhUWSWl4QlfTcBWW4LnjDPeZQKrbnxvHhPVsw==}
+  /turbo-linux-arm64@1.10.3:
+    resolution: {integrity: sha512-Qgaqln0IYRgyL0SowJOi+PNxejv1I2xhzXOI+D+z4YHbgSx87ox1IsALYBlK8VRVYY8VCXl+PN12r1ioV09j7A==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64@1.9.6:
-    resolution: {integrity: sha512-65UxLL1vb5RItzJYNerO5c+yPMzSnD+GvJxfBZIvAwSnb+4ulhPRHzQOYinVq4PZ2DosBZOorWPRf97POmhvog==}
+  /turbo-windows-64@1.10.3:
+    resolution: {integrity: sha512-rbH9wManURNN8mBnN/ZdkpUuTvyVVEMiUwFUX4GVE5qmV15iHtZfDLUSGGCP2UFBazHcpNHG1OJzgc55GFFrUw==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64@1.9.6:
-    resolution: {integrity: sha512-aF9VzYT+vaKNbZGDccN7AYrNhph4gr6yOFN7GtTr777IwS5FGW7evku7RScsua5r2HwVKvBO2WjyadpbXuoOOQ==}
+  /turbo-windows-arm64@1.10.3:
+    resolution: {integrity: sha512-ThlkqxhcGZX39CaTjsHqJnqVe+WImjX13pmjnpChz6q5HHbeRxaJSFzgrHIOt0sUUVx90W/WrNRyoIt/aafniw==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo@1.9.6:
-    resolution: {integrity: sha512-mLbCIAYNbSm60kVhBiAr+YA1BYpPObS/y7rqw1hjh36ZdJDp35lUSeqdBs6oGt0Y4hnmN4ZeIXu8zMVRR03/vw==}
+  /turbo@1.10.3:
+    resolution: {integrity: sha512-U4gKCWcKgLcCjQd4Pl8KJdfEKumpyWbzRu75A6FCj6Ctea1PIm58W6Ltw1QXKqHrl2pF9e1raAskf/h6dlrPCA==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.9.6
-      turbo-darwin-arm64: 1.9.6
-      turbo-linux-64: 1.9.6
-      turbo-linux-arm64: 1.9.6
-      turbo-windows-64: 1.9.6
-      turbo-windows-arm64: 1.9.6
+      turbo-darwin-64: 1.10.3
+      turbo-darwin-arm64: 1.10.3
+      turbo-linux-64: 1.10.3
+      turbo-linux-arm64: 1.10.3
+      turbo-windows-64: 1.10.3
+      turbo-windows-arm64: 1.10.3
     dev: true
 
   /type-check@0.3.2:
@@ -4604,7 +4597,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-solid@2.7.0(solid-js@1.7.3)(vite@4.3.9):
+  /vite-plugin-solid@2.7.0(solid-js@1.7.6)(vite@4.3.9):
     resolution: {integrity: sha512-avp/Jl5zOp/Itfo67xtDB2O61U7idviaIp4mLsjhCa13PjKNasz+IID0jYTyqUp9SFx6/PmBr6v4KgDppqompg==}
     peerDependencies:
       solid-js: ^1.7.2
@@ -4615,8 +4608,8 @@ packages:
       '@types/babel__core': 7.20.0
       babel-preset-solid: 1.7.3(@babel/core@7.21.4)
       merge-anything: 5.1.4
-      solid-js: 1.7.3
-      solid-refresh: 0.5.2(solid-js@1.7.3)
+      solid-js: 1.7.6
+      solid-refresh: 0.5.2(solid-js@1.7.6)
       vite: 4.3.9(@types/node@20.3.1)
       vitefu: 0.2.4(vite@4.3.9)
     transitivePeerDependencies:
