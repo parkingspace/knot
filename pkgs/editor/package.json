@@ -48,7 +48,7 @@
     "@tiptap/extension-text-style": "^2.0.3",
     "@tiptap/extension-typography": "^2.0.3",
     "@tiptap/extension-underline": "^2.0.3",
-    "@tiptap/pm": "^2.0.1",
+    "@tiptap/pm": "^2.0.4",
     "clsx": "^1.2.1",
     "highlight.js": "^11.7.0",
     "install": "^0.13.0",
