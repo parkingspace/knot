@@ -22,7 +22,7 @@ jobs:
     name: Build web app
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: 🔧 Setup node
         uses: actions/setup-node@v3
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.deploy-target }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name:  Download web build
         uses: actions/download-artifact@v3
@@ -80,7 +80,7 @@ jobs:
     name: Create badge
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Count Typescript lines
         run: >-
           echo "ts_loc=$(find .
