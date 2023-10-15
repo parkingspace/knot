@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import { createEffect, createSignal, onMount } from 'solid-js'
-import { useKnotEditor } from '../..'
+import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
+import { useKnotEditor } from '../../Editor'
 
 /**
  * Get the global position of the default caret and return it as an object.
@@ -10,18 +10,32 @@ import { useKnotEditor } from '../..'
 export function getDefaultCaretRect() {
   let r
 
-  if (document.activeElement && document.activeElement.id === 'document') {
-    r = document.getSelection()?.getRangeAt(0)
-  }
-
-  if (!r) {
+  const s = document.getSelection()
+  if (
+    s?.anchorNode === document.getElementById('caret')
+  ) {
+    console.log('anchorNode is same as default caret')
     return
   }
+
+  if (!s || s?.rangeCount === 0) {
+    console.log('caret range is 0 return')
+    return
+  }
+  r = s.getRangeAt(0)
+
+  if (!r) {
+    console.log('caret range is null return')
+    return
+  }
+
+  console.log('Caret Starts move, Is it nessasary? Fix it later')
 
   const node = r.startContainer
   const content = node.textContent
   const offset = r.startOffset
   const pageOffset = { x: window.pageXOffset, y: window.pageYOffset }
+
   let rect, r2, start, end
   if (offset > 0) {
     start = offset - 1, end = offset
@@ -30,11 +44,14 @@ export function getDefaultCaretRect() {
   } else {
     start = offset, end = offset
   }
+
   r2 = document.createRange()
+
   r2.setStart(node, start)
   r2.setEnd(node, end)
   rect = r2.getBoundingClientRect()
-  return { x: rect.right + pageOffset.x, y: rect.top, height: rect.height }
+
+  return { x: rect.right, y: rect.y, height: rect.height }
 }
 
 const blinkFrames = {
@@ -48,55 +65,63 @@ const blinkOptions = {
   iterations: Infinity,
 }
 
-export function initCaret() {
-  let caretRef: HTMLSpanElement
+export function Caret(props: {
+  editor: any
+}) {
   let caretBlinkAnimation: Animation
 
-  const { editor } = useKnotEditor()
-  if (!editor) {
-    throw new Error('Editor not found \n:) inside initCaret function')
-  }
-
-  const [show, setShow] = createSignal(false)
-  const [caretStyle, setCaretStyle] = createSignal('')
-
-  createEffect(() => {
-    console.log('caret style')
-    const visible = show()
-    setCaretStyle(
-      clsx(
-        'absolute w-1 bg-caretColor z-50 rounded-sm pointer-events-none block',
-        {
-          'visible': visible,
-          'invisible': !visible,
-        },
-      ),
-    )
-  })
+  const editor = useKnotEditor()
 
   onMount(() => {
-    addScrollListener(editor.view.dom)
-    console.log('caretRef', caretRef)
-    caretRef = document.getElementById('caret') as HTMLSpanElement
-    console.log('caretRef', caretRef)
+    const span = document.createElement('span')
+    span.id = 'caret'
+    span.className =
+      'absolute w-1 bg-caretColor z-50 rounded-sm pointer-events-none block'
+    span.style.top = '0px'
+    span.style.left = '0px'
+    span.style.height = '0px'
+    span.style.transition = 'transform 0.0s cubic-bezier(0.4, 0, 0.2, 1) 0.0s'
+
+    document.getElementById('root')!.appendChild(span)
+
+    addScrollListener(document.getElementById('root'))
     removeDefaultCaret()
+    move()
     initBlinkAnimation()
+    console.log('caret is mounted', document.getElementById('caret'))
+  })
+
+  onCleanup(() => {
+    console.log('caret is unmounted')
+    const caret = document.getElementById('caret')!
+
+    removeScrollListener(document.getElementById('root'))
+    caret.remove()
   })
 
   function initBlinkAnimation() {
-    console.log('caret ref', caretRef)
-    caretBlinkAnimation = caretRef.animate(blinkFrames, blinkOptions)
+    caretBlinkAnimation = document.getElementById('caret')!.animate(
+      blinkFrames,
+      blinkOptions,
+    )
   }
 
   function removeDefaultCaret() {
     document.getElementById('root')!.style.caretColor = 'transparent'
   }
 
+  const moveOnScroll = () => move()
   function addScrollListener(scrollDom: HTMLElement | null) {
     if (!scrollDom) {
       throw new Error('Scroll dom not found \n:) inside initCaret function')
     }
-    scrollDom.onscroll = () => move()
+    scrollDom.addEventListener('scroll', moveOnScroll)
+  }
+  function removeScrollListener(scrollDom: HTMLElement | null) {
+    if (!scrollDom) {
+      throw new Error('Scroll dom not found \n:) inside initCaret function')
+    }
+    scrollDom.removeEventListener('scroll', moveOnScroll)
   }
 
   function move(opts?: {
@@ -106,56 +131,27 @@ export function initCaret() {
     const { duration, delay } = opts || { duration: 0.0, delay: 0.0 }
     const { x, y, height } = getDefaultCaretRect()
       || { x: 0, y: 0, height: 0 }
+    const caret = document.getElementById('caret')!
 
-    caretRef.style.height = height + 'px'
-    caretRef.style.transition
-    caretRef.style.transition =
+    caret.style.height = height + 'px'
+    caret.style.top = y + 'px'
+    caret.style.left = x + 'px'
+    caret.style.transition =
       `transform ${duration}s cubic-bezier(0.22, 0.68, 0, 1.21) ${delay}s,
        height .1s ease-in-out 0s`
-    caretRef.style.transform = `matrix(1, 0, 0, 1, ${x}, ${y})`
+
+    // document.getElementById('caret').style.transform = `translate(${x}px, ${y}px)`
+    console.log('caret is moved to', caret.style.top)
   }
 
-  editor.on('focus', () => {
-    setShow(true)
-    move()
-  })
-
-  editor.on('blur', () => {
-    setShow(false)
-  })
-
-  editor.on('selectionUpdate', () => {
-    move({ duration: 0.2, delay: 0 })
-    hideOnSelection()
-  })
-
-  editor.on('transaction', () => {
-    if (caretBlinkAnimation.playState === 'paused') {
-      setTimeout(() => caretBlinkAnimation.play(), 1000)
-    } else {
-      caretBlinkAnimation.currentTime = 1200
-      caretBlinkAnimation.pause()
-    }
-  })
-
-  function hideOnSelection() {
-    editor.state.selection.from === editor.state.selection.to
-      ? setShow(true)
-      : setShow(false)
-  }
-
-  editor.on('update', () => {
+  editor.editor.on('selectionUpdate', () => {
+    console.log('seelection update')
     move({ duration: 0.2, delay: 0 })
   })
 
-  editor.on('destroy', () => {
-    caretRef.remove()
+  editor.editor.on('destroy', () => {
+    document.getElementById('caret')!.remove()
   })
 
-  return (
-    <span
-      id='caret'
-      class={caretStyle()}
-    />
-  )
+  return <></>
 }

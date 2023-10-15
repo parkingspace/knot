@@ -7,14 +7,9 @@ type propType = JSX.HTMLAttributes<HTMLDivElement> & {
 type Component = (props: propType & { ref?: HTMLDivElement }) => JSX.Element
 
 const BaseLayout: Component = (props) => {
-  onMount(() => {
-    console.log('base layout is mounted')
-  })
   return (
     <div
-      class={clsx('grid grid-cols-with-sidebar h-full', {
-        // 'grid-cols-without-sidebar': !props.isSidebarOpen(),
-      })}
+      class={clsx('grid grid-cols-with-sidebar h-full')}
     >
       {props.children}
     </div>

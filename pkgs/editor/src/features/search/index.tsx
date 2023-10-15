@@ -8,9 +8,10 @@ import {
   Show,
 } from 'solid-js'
 import tinykeys from 'tinykeys'
-import { useKnotEditor } from '../..'
-import { useDocumentManager } from '../../documentManager'
+import { useKnotEditor } from '../../Editor'
+import { useDocumentManager } from '../../global/documentManager'
 import searchIndex from '../../search'
+import { getDefaultCaretRect } from '../caret'
 
 function createSearchDocState() {
   const [searchResults, setSearchResults] = createSignal<any[]>([])
@@ -40,22 +41,25 @@ const SearchDocProvider = (props: { children: any; when: boolean }) => {
 }
 
 export function initSearch() {
+  let searchBox: HTMLDivElement
   const [searchResults, setSearchResults] = createSignal<any[]>([])
   const [selectedIndex, setSelectedIndex] = createSignal(0)
   const [matchedDocs, setMatchedDocs] = createSignal<any[]>([])
   const { searchableDocs } = useDocumentManager()
-  const { editor } = useKnotEditor()
+  // const { editor } = useKnotEditor()
 
   const [show, setShow] = createSignal(false)
 
   onMount(() => {
     setShortcuts()
+    console.log('search mounted')
   })
 
   function setToggleShortcut() {
     tinykeys(window, {
-      '$mod+k': (e) => {
+      '$mod+m': (e) => {
         e.preventDefault()
+        console.log('search')
         setShow(!show())
       },
       'Escape': () => {
@@ -92,7 +96,15 @@ export function initSearch() {
 
   createEffect(() => {
     if (show()) {
+      console.log('search show')
+      const caretLocation = getDefaultCaretRect()
       document.getElementById('search-box')?.focus()
+      if (!caretLocation) {
+        console.log('failed to get caret location')
+        return
+      }
+      searchBox.style.top = caretLocation!.y + 'px'
+      searchBox.style.left = caretLocation!.x + 'px'
     } else {
       setMatchedDocs([])
     }
@@ -117,7 +129,7 @@ export function initSearch() {
 
   return (
     <Show when={show()}>
-      <div class='absolute flex items-center justify-start pt-[200px] w-full h-full flex-col bg-white/10 backdrop-blur-sm z-50'>
+      <div ref={searchBox!} class='fixed z-50'>
         <div class='p-4 rounded bg-stone-100 shadow-lg w-1/2 overflow-hidden'>
           <input
             id='search-box'
@@ -126,14 +138,14 @@ export function initSearch() {
               if (e.key === 'Enter') {
                 const searchResult = matchedDocs()[selectedIndex()]
 
-                editor
-                  .chain()
-                  .insertContent(searchResult.title)
-                  .setHeading({ level: 1 })
-                  .enter()
-                  .insertContent(searchResult.content.join(' '))
-                  .run()
-
+                // editor
+                //   .chain()
+                //   .insertContent(searchResult.title)
+                //   .setHeading({ level: 1 })
+                //   .enter()
+                //   .insertContent(searchResult.content.join(' '))
+                //   .run()
+                //
                 setShow(false)
               }
             }}

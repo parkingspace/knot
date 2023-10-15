@@ -90,8 +90,8 @@ export function initSidebar() {
     const foldSidebarKeyframe = new KeyframeEffect(
       sidebarRef,
       [
-        { transform: 'translateX(0)' },
-        { transform: 'translateX(-100%)' },
+        { transform: 'translateX(0)', opacity: 1 },
+        { transform: 'translateX(-100%)', opacity: 0 },
       ],
       foldSidebarTiming,
     )
