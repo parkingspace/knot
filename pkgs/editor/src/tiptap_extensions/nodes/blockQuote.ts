@@ -1,8 +1,8 @@
-import Blockquote from '@tiptap/extension-blockquote'
-import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
+import Blockquote from "@tiptap/extension-blockquote";
+import { applyEditorShortcuts } from "../../features/shortcut/editorShortcuts";
 
 export default Blockquote.extend({
   addKeyboardShortcuts() {
-    return applyEditorShortcuts(this)
+    return applyEditorShortcuts(this);
   },
-})
+});

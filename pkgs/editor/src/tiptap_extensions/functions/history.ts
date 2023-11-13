@@ -1,4 +1,4 @@
-import History from '@tiptap/extension-history'
+import History from "@tiptap/extension-history";
 
 export default History.configure({
   // The amount of history events that are collected
@@ -11,4 +11,4 @@ export default History.configure({
   // When changes aren’t adjacent, a new group is always started.
   // Default: 500
   newGroupDelay: 500,
-})
+});

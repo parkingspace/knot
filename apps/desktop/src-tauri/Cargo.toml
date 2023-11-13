@@ -15,10 +15,10 @@ description = "knot desktop app"
 tauri-build = { version = "2.0.0-alpha.3", features = [] }
 
 [dependencies]
-wry = "0.25.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tauri = { version = "2.0.0-alpha.6", features = ["api-all"] }
+wry = "0.25.0"
 
 [features]
 # by default Tauri runs in production mode

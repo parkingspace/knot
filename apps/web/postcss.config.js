@@ -1,4 +1,4 @@
-module.exports = require('ui/postcss')
+module.exports = require("ui/postcss");
 
 // module.exports = {
 //   plugins: {

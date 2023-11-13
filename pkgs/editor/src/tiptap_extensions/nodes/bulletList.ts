@@ -1,19 +1,19 @@
-import BulletList from '@tiptap/extension-bullet-list'
-import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
+import BulletList from "@tiptap/extension-bullet-list";
+import { applyEditorShortcuts } from "../../features/shortcut/editorShortcuts";
 
 const bulletlist = BulletList
   .extend({
     addKeyboardShortcuts() {
-      return applyEditorShortcuts(this)
+      return applyEditorShortcuts(this);
     },
   })
   .configure({
     HTMLAttributes: {
-      class: 'list-disc',
+      class: "list-disc",
     },
     // Specify the list item name.
     // Default: 'listItem'
-    itemTypeName: 'listItem',
+    itemTypeName: "listItem",
 
     // Decides whether to keep the marks from a previous line
     // after toggling the list either using inputRule or using the button
@@ -24,6 +24,6 @@ const bulletlist = BulletList
     // after toggling the list either using inputRule or using the button
     // Default: false
     keepAttributes: false,
-  })
+  });
 
-export default bulletlist
+export default bulletlist;

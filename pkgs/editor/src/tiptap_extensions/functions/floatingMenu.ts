@@ -1,4 +1,4 @@
-import FloatingMenu from '@tiptap/extension-floating-menu'
+import FloatingMenu from "@tiptap/extension-floating-menu";
 
 // #tippyOptions
 // Under the hood, the FloatingMenu uses tippy.js. You can directly pass options to it.
@@ -23,5 +23,5 @@ export default FloatingMenu.configure({
   // The DOM element that contains your menu.
   // Type: HTMLElement
   // Default: null
-  element: document.querySelector('.floating-menu') as HTMLElement,
-})
+  element: document.querySelector(".floating-menu") as HTMLElement,
+});

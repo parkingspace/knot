@@ -1,1 +1,1 @@
-module.exports = require('./style/tailwind')('web')
+module.exports = require("./style/tailwind")("web");

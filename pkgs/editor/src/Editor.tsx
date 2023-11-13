@@ -14,9 +14,9 @@ import {
   Show,
   useContext,
 } from 'solid-js'
+import { File, useCabinetContext } from './Cabinet'
 import { Caret } from './features/caret'
 import { useDocumentManager } from './global/documentManager'
-import { Note, useNotesContext } from './Note'
 import extensions from './tiptap_extensions'
 
 const KnotEditorContext = createContext<{
@@ -38,22 +38,15 @@ export const KnotEditorProvider = (
     lastId?: number
     focusedIndex?: number
     children?: JSX.Element
-    note?: Note
+    content?: string
     editable?: boolean
   },
 ) => {
-  const merged = mergeProps({ id: 1, lastId: 1 }, props)
-
   let textAreaRef: HTMLDivElement
-  const { getAllHeadings } = useDocumentManager()
-  const notes = useNotesContext()
-
-  const [showCaret, setShowCaret] = createSignal(false)
+  const { getAllHeadings, editors, setEditors } = useDocumentManager()
 
   const editor = createEditor(() => ({
-    content: props.note
-      ? `<h2>${props.note.title}</h2><p>${props.note.content}</p>`
-      : '',
+    content: props.content ?? '',
     element: textAreaRef,
     extensions: extensions,
     editorProps: {
@@ -67,7 +60,7 @@ export const KnotEditorProvider = (
           'focus:outline-none',
           'overflow-y-auto',
           {
-            'prose dark:prose-invert': props.note,
+            'prose dark:prose-invert': props.content,
           },
         ),
       },
@@ -79,8 +72,6 @@ export const KnotEditorProvider = (
     },
   }))
 
-  let editorDom: HTMLElement
-
   createEffect(() => {
     const edt = editor()
     if (!edt) {
@@ -91,70 +82,13 @@ export const KnotEditorProvider = (
   })
 
   onMount(() => {
-    const isMobile = window.matchMedia('(max-width: 640px)').matches
-    if (isMobile) {
-      console.log('is mobile', isMobile)
-    }
-
     const edt = editor()
     if (!edt) {
       return
     }
 
-    edt.on('focus', () => {
-      setShowCaret(true)
-    })
-    edt.on('blur', () => {
-      console.log('blurred')
-      setShowCaret(false)
-    })
-    editorDom = edt.view.dom
+    setEditors([...editors, edt])
 
-    tk(editorDom, {
-      'Tab': (e) => {
-        e.preventDefault()
-
-        const next = merged.id ? merged.id + 1 : 1
-        let nextElement = document.getElementById('editor' + next)
-
-        if (!nextElement) {
-          nextElement = document.getElementById('editor' + 1)
-        }
-
-        nextElement?.focus()
-      },
-      'Shift+Tab': (e) => {
-        e.preventDefault()
-
-        const prev = merged.id > 1 ? merged.id - 1 : merged.lastId
-        let prevElement = document.getElementById('editor' + prev)
-        prevElement?.focus()
-      },
-    })
-
-    if (!props.note) {
-      tk(editorDom, {
-        'Enter': (e) => {
-          e.preventDefault()
-
-          if (!edt.isEmpty) {
-            notes.addNote({
-              id: Date.now(),
-              title: edt.getText(),
-              content: edt.getText() ?? '',
-            })
-            edt.commands.clearContent()
-            edt.commands.blur()
-          }
-        },
-      }, { event: 'keydown' })
-      tk(window, {
-        '$mod+Space': (e) => {
-          e.preventDefault()
-          edt.commands.focus()
-        },
-      }, { event: 'keydown' })
-    }
     edt.chain().focus('end').run()
   })
 
@@ -167,9 +101,6 @@ export const KnotEditorProvider = (
           }}
         >
           {props.children}
-          <Show when={showCaret()}>
-            <Caret editor={editor()!} />
-          </Show>
         </KnotEditorContext.Provider>
       </Show>
       <EditorArea ref={textAreaRef!} editor={editor()} />

@@ -1,4 +1,4 @@
-import CharacterCount from '@tiptap/extension-character-count'
+import CharacterCount from "@tiptap/extension-character-count";
 
 export default CharacterCount.configure({
   // The maximum number of characters that should be allowed.
@@ -11,5 +11,5 @@ export default CharacterCount.configure({
   //
   // Default: 'textSize'
   // Possible values: 'nodeSize', 'textSize'
-  mode: 'textSize',
-})
+  mode: "textSize",
+});

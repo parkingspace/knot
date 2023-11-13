@@ -64,7 +64,7 @@
 
 ## Formatting
 
-`pnpm lint` will format all files recursively. you can find the format rules at `dprint.json`
+install [dprint](https://dprint.dev/install) and run `dprint t` first.
 
 ### Format on save
 

@@ -26,7 +26,7 @@ function InputBar(props: {
   })
 
   return (
-    <div class='p-4 w-full bg-transparent'>
+    <div class='p-4 w-full bg-transparent' onkeydown={(e) => {}}>
       <div class='border w-full flex flex-row bg-editorBg text-editorFg'>
         <KnotEditorProvider />
         <Button size='icon'>

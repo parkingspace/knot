@@ -1,49 +1,13 @@
+import { Editor } from '@tiptap/core'
 import { Node } from '@tiptap/pm/model'
-import type { EditorState, Transaction } from '@tiptap/pm/state'
-import type { EditorView } from '@tiptap/pm/view'
+import type { EditorState } from '@tiptap/pm/state'
 import { createContext, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import searchIndex from '../search'
 import type { HeadingFocusState } from '../types/headingStates'
 
-export function isHeading(node: Element) {
-  return node.nodeName.includes('H')
-}
-
-export function isEmptyHeading(node: Element) {
-  return isHeading(node) && node.textContent === ''
-}
-
-export function isLineAdded(transaction: Transaction) {
-  return transaction.doc.childCount > transaction.before.childCount
-}
-
-export function isLineRemoved(transaction: Transaction) {
-  return transaction.doc.childCount < transaction.before.childCount
-}
-
-export function isLineChanged(transaction: Transaction) {
-  return (
-    (transaction.docChanged && isLineAdded(transaction))
-    || isLineRemoved(transaction)
-  )
-}
-
-export function findCurrentLineDomNode(view: EditorView) {
-  const currentPos = view.posAtDOM(
-    view.domAtPos(view.state.selection.head).node,
-    0,
-  )
-  return view.domAtPos(currentPos).node
-}
-
-export function fillEmptyHeading(dom: Element, content: string) {
-  if (isEmptyHeading(dom)) {
-    dom.textContent = content
-  }
-}
-
 function documentManager() {
+  const [editors, setEditors] = createStore<Editor[]>([])
   const [headingStates, setHeadingStates] = createStore<HeadingFocusState[]>([])
   let searchableDocs: { 'title': string; 'content': string[] }[] = []
 
@@ -128,6 +92,8 @@ function documentManager() {
   }
 
   const chains = {
+    editors,
+    setEditors,
     headingStates,
     searchableDocs,
     getAllHeadings,

@@ -1,1 +1,1 @@
-module.exports = require('ui/tailwind')('editor')
+module.exports = require("ui/tailwind")("editor");

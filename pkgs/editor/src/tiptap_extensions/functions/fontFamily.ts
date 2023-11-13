@@ -1,4 +1,4 @@
-import FontFamily from '@tiptap/extension-font-family'
+import FontFamily from "@tiptap/extension-font-family";
 // This extension enables you to set the font family in the editor.
 // It uses the TextStyle mark, which renders a <span> tag.
 // The font family is applied as inline style,
@@ -8,5 +8,5 @@ export default FontFamily.configure({
   // A list of marks to which the font family attribute should be applied to.
   //
   // Default: ['textStyle']
-  types: ['textStyle'],
-})
+  types: ["textStyle"],
+});

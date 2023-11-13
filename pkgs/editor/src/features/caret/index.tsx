@@ -1,40 +1,35 @@
 import clsx from 'clsx'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
 import { useKnotEditor } from '../../Editor'
+import { useDocumentManager } from '../../global/documentManager'
 
 /**
- * Get the global position of the default caret and return it as an object.
+ * Get position of default caret and return it as an object.
  *
- * @returns the global position of the default caret or undefined
+ * @returns x, y, height
  */
 export function getDefaultCaretRect() {
   let r
-
   const s = document.getSelection()
+
   if (
     s?.anchorNode === document.getElementById('caret')
   ) {
-    console.log('anchorNode is same as default caret')
     return
   }
 
   if (!s || s?.rangeCount === 0) {
-    console.log('caret range is 0 return')
     return
   }
   r = s.getRangeAt(0)
 
   if (!r) {
-    console.log('caret range is null return')
     return
   }
-
-  console.log('Caret Starts move, Is it nessasary? Fix it later')
 
   const node = r.startContainer
   const content = node.textContent
   const offset = r.startOffset
-  const pageOffset = { x: window.pageXOffset, y: window.pageYOffset }
 
   let rect, r2, start, end
   if (offset > 0) {
@@ -54,25 +49,52 @@ export function getDefaultCaretRect() {
   return { x: rect.right, y: rect.y, height: rect.height }
 }
 
-const blinkFrames = {
-  opacity: [0, 1],
-  offset: [0.7, 1],
-  easing: 'ease-out',
+interface CaretElement extends Partial<HTMLElement> {
+  position: {}
+  style: CSSStyleDeclaration
+  animate: (a: any, b: any) => Animation
+  remove: () => void
+  hide: () => void
+  show: () => void
+  move: (opts?: {
+    duration: number
+    delay: number
+  }) => void
+  isTransitioning: boolean
 }
 
-const blinkOptions = {
-  duration: 1200,
-  iterations: Infinity,
-}
+export function Caret() {
+  let blink: Animation
+  const [caret, setCaret] = createSignal<CaretElement>()
+  const [lastMoved, setLastMoved] = createSignal<number>()
 
-export function Caret(props: {
-  editor: any
-}) {
-  let caretBlinkAnimation: Animation
+  const { editors } = useDocumentManager()
+  const rootEl = document.getElementById('root')
 
-  const editor = useKnotEditor()
+  console.log('outside')
 
   onMount(() => {
+    console.log('onMount')
+    const c = createCustomCaret()
+    editors.forEach((e) => {
+      e.on('selectionUpdate', () => c.move({ duration: 200, delay: 0 }))
+      e.on('focus', () => {
+        c.show()
+        c.move()
+      })
+      e.on('blur', () => c.hide())
+    })
+  })
+
+  onCleanup(() => {
+    console.log('onCleanup')
+    caret()?.remove()
+    document.getElementById('caret')?.remove()
+    removeMoveOnScroll()
+  })
+
+  function createCustomCaret() {
+    hideDefaultCaret()
     const span = document.createElement('span')
     span.id = 'caret'
     span.className =
@@ -80,78 +102,167 @@ export function Caret(props: {
     span.style.top = '0px'
     span.style.left = '0px'
     span.style.height = '0px'
-    span.style.transition = 'transform 0.0s cubic-bezier(0.4, 0, 0.2, 1) 0.0s'
 
-    document.getElementById('root')!.appendChild(span)
+    getRootElement().appendChild(span)
+    // initBlinkAnimation(span)
 
-    addScrollListener(document.getElementById('root'))
-    removeDefaultCaret()
-    move()
-    initBlinkAnimation()
-    console.log('caret is mounted', document.getElementById('caret'))
-  })
+    const c = span as CaretElement
+    span.addEventListener('transitionstart', () => {
+      c.isTransitioning = true
+    })
+    span.addEventListener('transitionend', () => {
+      c.isTransitioning = false
+    })
+    span.addEventListener('transitioncancel', () => {
+      c.isTransitioning = false
+    })
 
-  onCleanup(() => {
-    console.log('caret is unmounted')
-    const caret = document.getElementById('caret')!
+    c.hide = () => c.style.visibility = 'hidden'
+    c.show = () => c.style.visibility = 'visible'
+    c.move = (opts?: {
+      duration: number
+      delay: number
+    }) => {
+      const c = caret() as HTMLSpanElement
+      if (!c) {
+        return
+      }
 
-    removeScrollListener(document.getElementById('root'))
-    caret.remove()
-  })
+      let { duration } = opts || { duration: 0.0 }
+      const now = Date.now()
+      const moveDelay = now - lastMoved()
+      if (moveDelay < duration) {
+        duration = 0
+      }
 
-  function initBlinkAnimation() {
-    caretBlinkAnimation = document.getElementById('caret')!.animate(
+      const { x, y, height } = getDefaultCaretRect()
+        || { x: 0, y: 0, height: 0 }
+
+      if (
+        c.offsetLeft === x && c.offsetTop === y && c
+            .offsetHeight === height
+      ) {
+        return
+      }
+
+      const options: KeyframeAnimationOptions = {
+        duration: duration,
+        easing: 'cubic-bezier(0.22, 0.68, 0, 1.21)',
+        fill: 'forwards',
+      }
+      let keyframes: Keyframe[] = []
+
+      const xChanged = c.offsetLeft !== x
+      const yChanged = c.offsetTop !== y
+      const hChanged = c.offsetHeight !== height
+
+      const onlyYChanged = yChanged && !xChanged && !hChanged
+      const onlyXChanged = !yChanged && xChanged && !hChanged
+      const onlyHChanged = !yChanged && !xChanged && hChanged
+
+      if (onlyYChanged) {
+        keyframes = [
+          { top: `${c.offsetTop}px` },
+          { top: `${y}px` },
+        ]
+      } else if (onlyXChanged) {
+        keyframes = [
+          { left: `${c.offsetLeft}px` },
+          { left: `${x}px` },
+        ]
+      } else if (onlyHChanged) {
+        keyframes = [
+          { height: `${c.offsetHeight}px` },
+          { height: `${height}px` },
+        ]
+      } else {
+        keyframes = [
+          {
+            top: `${c.offsetTop}px`,
+            left: `${c.offsetLeft}px`,
+            height: `${c.offsetHeight}px`,
+          },
+          { top: `${y}px`, left: `${x}px`, height: `${height}px` },
+        ]
+      }
+
+      c.animate(keyframes, options)
+
+      return setLastMoved(now)
+
+      // if (blink.playState === 'running') {
+      //   blink.cancel()
+      // }
+
+      // if (!isTransitioning) {
+      //   console.log('--- jumping')
+      //   style.transition =
+      //     `left ${duration}ms cubic-bezier(0.22, 0.68, 0, 1.21) ${delay}ms, height .1s ease-in-out 0s`
+      //   style.top = y + 'px'
+      //   style.left = x + 'px'
+      // } else {
+      //   console.log('--- transitioning')
+      // }
+      // console.log('c is now', )
+
+      // console.log(c.getAnimations())
+
+      // if (blink.playState === 'running' && isTransitioning) {
+      //   blink.currentTime = 0
+      // } else {
+      //   // console.log('currentTime', blink.currentTime)
+      //   // setTimeout(() => blink.play(), duration)
+      // }
+    }
+
+    addMoveOnScroll()
+    setCaret(c)
+    return c
+  }
+
+  function initBlinkAnimation(el: HTMLElement) {
+    // ['ease-in', 'ease-out'],
+    // easing: ['step-start', 'step-end']
+    const blinkFrames = {
+      opacity: [0, 1],
+      scale: [0, 1],
+      offset: [0.5, 1],
+      // easing: ['step-start', 'ease-in'],
+      // easing: 'steps(2, jump-both)',
+      easing: 'ease-out',
+    }
+
+    const blinkOptions = {
+      duration: 2000,
+      iterations: Infinity,
+    }
+
+    blink = el.animate(
       blinkFrames,
       blinkOptions,
     )
   }
 
-  function removeDefaultCaret() {
-    document.getElementById('root')!.style.caretColor = 'transparent'
+  function hideDefaultCaret() {
+    getRootElement().style.caretColor = 'transparent'
   }
 
-  const moveOnScroll = () => move()
-  function addScrollListener(scrollDom: HTMLElement | null) {
-    if (!scrollDom) {
-      throw new Error('Scroll dom not found \n:) inside initCaret function')
+  const moveOnScroll = () => caret()?.move()
+
+  function getRootElement() {
+    if (!rootEl) {
+      throw new Error('Element not found \n:) inside initCaret function')
     }
-    scrollDom.addEventListener('scroll', moveOnScroll)
-  }
-  function removeScrollListener(scrollDom: HTMLElement | null) {
-    if (!scrollDom) {
-      throw new Error('Scroll dom not found \n:) inside initCaret function')
-    }
-    scrollDom.removeEventListener('scroll', moveOnScroll)
+    return rootEl
   }
 
-  function move(opts?: {
-    duration: number
-    delay: number
-  }) {
-    const { duration, delay } = opts || { duration: 0.0, delay: 0.0 }
-    const { x, y, height } = getDefaultCaretRect()
-      || { x: 0, y: 0, height: 0 }
-    const caret = document.getElementById('caret')!
-
-    caret.style.height = height + 'px'
-    caret.style.top = y + 'px'
-    caret.style.left = x + 'px'
-    caret.style.transition =
-      `transform ${duration}s cubic-bezier(0.22, 0.68, 0, 1.21) ${delay}s,
-       height .1s ease-in-out 0s`
-
-    // document.getElementById('caret').style.transform = `translate(${x}px, ${y}px)`
-    console.log('caret is moved to', caret.style.top)
+  function addMoveOnScroll() {
+    getRootElement().addEventListener('scroll', moveOnScroll)
   }
 
-  editor.editor.on('selectionUpdate', () => {
-    console.log('seelection update')
-    move({ duration: 0.2, delay: 0 })
-  })
-
-  editor.editor.on('destroy', () => {
-    document.getElementById('caret')!.remove()
-  })
+  function removeMoveOnScroll() {
+    getRootElement().removeEventListener('scroll', moveOnScroll)
+  }
 
   return <></>
 }

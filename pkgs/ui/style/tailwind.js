@@ -1,12 +1,12 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-const twColors = require('tailwindcss/colors')
+const defaultTheme = require("tailwindcss/defaultTheme");
+const twColors = require("tailwindcss/colors");
 
 module.exports = function(context) {
   const config = {
-    darkMode: 'class',
+    darkMode: "class",
     content: [
-      '../../pkgs/{editor/**/*.{ts,tsx},ui/src/**/*.{ts,tsx}}',
-      '../../apps/web/src/**/*.{ts,tsx}',
+      "../../pkgs/{editor/**/*.{ts,tsx},ui/src/**/*.{ts,tsx}}",
+      "../../apps/web/src/**/*.{ts,tsx}",
     ],
     theme: {
       colors: {
@@ -20,35 +20,35 @@ module.exports = function(context) {
       },
       extend: {
         transitionProperty: {
-          'width': 'width',
+          "width": "width",
         },
         colors: {
-          editorFg: 'var(--editor-fg)',
-          editorBg: 'var(--editor-bg)',
-          sidebarBg: 'var(--sidebar-bg)',
-          iconFg: 'var(--icon-fg)',
-          iconBg: 'var(--icon-bg)',
-          caretColor: 'var(--caret-color)',
+          editorFg: "var(--editor-fg)",
+          editorBg: "var(--editor-bg)",
+          sidebarBg: "var(--sidebar-bg)",
+          iconFg: "var(--icon-fg)",
+          iconBg: "var(--icon-bg)",
+          caretColor: "var(--caret-color)",
         },
         width: {
-          sidebar: 'var(--sidebar-width)',
+          sidebar: "var(--sidebar-width)",
         },
         fontFamily: {
-          sans: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans],
+          sans: ["IBM Plex Sans", ...defaultTheme.fontFamily.sans],
         },
         padding: {
-          editor: 'var(--editor-padding)',
+          editor: "var(--editor-padding)",
         },
         gridTemplateColumns: {
-          'with-sidebar': 'var(--sidebar-width) 1fr',
-          'without-sidebar': '0px 1fr',
+          "with-sidebar": "var(--sidebar-width) 1fr",
+          "without-sidebar": "0px 1fr",
         },
       },
     },
     plugins: [
-      require('@tailwindcss/typography'),
+      require("@tailwindcss/typography"),
     ],
-  }
+  };
 
-  return config
-}
+  return config;
+};

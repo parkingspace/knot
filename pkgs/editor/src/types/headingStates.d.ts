@@ -1,6 +1,6 @@
-import { Node } from '@tiptap/pm/model'
+import { Node } from "@tiptap/pm/model";
 
 export type HeadingFocusState = {
-  node: Node
-  hasFocus: boolean
-}
+  node: Node;
+  hasFocus: boolean;
+};

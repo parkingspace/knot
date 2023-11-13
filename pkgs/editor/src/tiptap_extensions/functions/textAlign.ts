@@ -1,12 +1,12 @@
-import TextAlign from '@tiptap/extension-text-align'
-import { applyEditorShortcuts } from '../../features/shortcut/editorShortcuts'
+import TextAlign from "@tiptap/extension-text-align";
+import { applyEditorShortcuts } from "../../features/shortcut/editorShortcuts";
 
 export default TextAlign
   .extend({
     addKeyboardShortcuts() {
-      return applyEditorShortcuts(this)
+      return applyEditorShortcuts(this);
     },
   })
   .configure({
-    types: ['heading', 'paragraph'],
-  })
+    types: ["heading", "paragraph"],
+  });

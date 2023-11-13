@@ -1,9 +1,9 @@
-import BubbleMenu from '@tiptap/extension-bubble-menu'
+import BubbleMenu from "@tiptap/extension-bubble-menu";
 
 export default BubbleMenu.configure({
   // The DOM element that contains your menu.
   // Default: null
-  element: document.querySelector('.bubble-menu') as HTMLElement,
+  element: document.querySelector(".bubble-menu") as HTMLElement,
 
   // The BubbleMenu debounces the update method to allow the bubble menu
   // to not be updated on every selection update.
@@ -21,5 +21,5 @@ export default BubbleMenu.configure({
   // The key for the underlying ProseMirror plugin.
   // Make sure to use different keys if you add more than one instance.
   // Default: 'bubbleMenu'
-  pluginKey: 'bubbleMenu',
-})
+  pluginKey: "bubbleMenu",
+});

@@ -11,18 +11,17 @@
     "desktop": "pnpm --filter desktop"
   },
   "devDependencies": {
-    "dprint": "^0.37.1",
-    "husky": "^8.0.3",
+    "husky": "latest",
     "turbo": "latest"
   },
   "engines": {
-    "node": ">=14.0.0",
+    "node": ">=16.0.0",
     "pnpm": ">=8",
     "npm": "pnpm",
     "yarn": "pnpm"
   },
   "packageManager": "pnpm@8.0.0",
   "dependencies": {
-    "flexsearch": "^0.7.3"
+    "flexsearch": "^0.7.31"
   }
 }
