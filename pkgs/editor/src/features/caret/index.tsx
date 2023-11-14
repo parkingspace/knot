@@ -1,3 +1,4 @@
+import { EditorEvents } from '@tiptap/core'
 import clsx from 'clsx'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
 import { useKnotEditor } from '../../Editor'
@@ -49,183 +50,153 @@ export function getDefaultCaretRect() {
   return { x: rect.right, y: rect.y, height: rect.height }
 }
 
-interface CaretElement extends Partial<HTMLElement> {
-  position: {}
-  style: CSSStyleDeclaration
-  animate: (a: any, b: any) => Animation
-  remove: () => void
-  hide: () => void
-  show: () => void
-  move: (opts?: {
-    duration: number
-    delay: number
-  }) => void
-  isTransitioning: boolean
-}
-
 export function Caret() {
-  let blink: Animation
-  const [caret, setCaret] = createSignal<CaretElement>()
-  const [lastMoved, setLastMoved] = createSignal<number>()
+  let blinkAnimation: Animation
+  let caret: HTMLDivElement
+  let typingChecker: NodeJS.Timer
+
+  const [lastMoved, setLastMoved] = createSignal<number>(0)
+  const [isTyping, setIsTyping] = createSignal(false)
 
   const { editors } = useDocumentManager()
-  const rootEl = document.getElementById('root')
 
-  console.log('outside')
+  const moveCb = (e: any) => {
+    if (e.event) {
+      if (e.event.type === 'blur') {
+        caret.style.visibility = 'hidden'
+        return
+      }
+      if (e.event.type === 'focus') {
+        caret.style.visibility = 'visible'
+        return move({ duration: 0 })
+      }
+    }
+    move()
+  }
+
+  function addEventListeners() {
+    editors.forEach(e => {
+      e.handler.on('selectionUpdate', moveCb)
+      e.handler.on('focus', moveCb)
+      e.handler.on('blur', moveCb)
+    })
+    getRootElement().addEventListener('scroll', moveCb)
+  }
+
+  function removeEventListeners() {
+    editors.forEach(e => {
+      e.handler.off('selectionUpdate', moveCb)
+      e.handler.off('focus', moveCb)
+      e.handler.off('blur', moveCb)
+    })
+    getRootElement().removeEventListener('scroll', moveCb)
+  }
+
+  function checkTyping() {
+    const diff = Date.now() - lastMoved()
+    setIsTyping(diff < 800)
+  }
+
+  createEffect(() => {
+    if (isTyping()) {
+      console.log('start typing')
+      blinkAnimation.currentTime = 1100
+      blinkAnimation.pause()
+    } else if (blinkAnimation) {
+      console.log('stop typing')
+      if (blinkAnimation.playState === 'paused') {
+        blinkAnimation.play()
+      }
+      // setTimeout(() => blinkAnimation.play(), 100)
+    }
+  }, false)
 
   onMount(() => {
-    console.log('onMount')
-    const c = createCustomCaret()
-    editors.forEach((e) => {
-      e.on('selectionUpdate', () => c.move({ duration: 200, delay: 0 }))
-      e.on('focus', () => {
-        c.show()
-        c.move()
-      })
-      e.on('blur', () => c.hide())
-    })
+    setDefaultCaret('transparent')
+    initBlinkAnimation()
+    addEventListeners()
+
+    typingChecker = setInterval(checkTyping, 100)
   })
 
   onCleanup(() => {
-    console.log('onCleanup')
-    caret()?.remove()
-    document.getElementById('caret')?.remove()
-    removeMoveOnScroll()
+    console.log('cleanup ---------------------')
+    setDefaultCaret('')
+    removeEventListeners()
+    clearInterval(typingChecker)
   })
 
-  function createCustomCaret() {
-    hideDefaultCaret()
-    const span = document.createElement('span')
-    span.id = 'caret'
-    span.className =
-      'absolute w-1 bg-caretColor z-50 rounded-sm pointer-events-none block'
-    span.style.top = '0px'
-    span.style.left = '0px'
-    span.style.height = '0px'
+  function move(opts?: { duration: number }) {
+    if (!caret) {
+      return
+    }
+    let { duration } = opts || { duration: 250 }
+    const now = Date.now()
 
-    getRootElement().appendChild(span)
-    // initBlinkAnimation(span)
-
-    const c = span as CaretElement
-    span.addEventListener('transitionstart', () => {
-      c.isTransitioning = true
-    })
-    span.addEventListener('transitionend', () => {
-      c.isTransitioning = false
-    })
-    span.addEventListener('transitioncancel', () => {
-      c.isTransitioning = false
-    })
-
-    c.hide = () => c.style.visibility = 'hidden'
-    c.show = () => c.style.visibility = 'visible'
-    c.move = (opts?: {
-      duration: number
-      delay: number
-    }) => {
-      const c = caret() as HTMLSpanElement
-      if (!c) {
-        return
-      }
-
-      let { duration } = opts || { duration: 0.0 }
-      const now = Date.now()
-      const moveDelay = now - lastMoved()
-      if (moveDelay < duration) {
-        duration = 0
-      }
-
-      const { x, y, height } = getDefaultCaretRect()
-        || { x: 0, y: 0, height: 0 }
-
-      if (
-        c.offsetLeft === x && c.offsetTop === y && c
-            .offsetHeight === height
-      ) {
-        return
-      }
-
-      const options: KeyframeAnimationOptions = {
-        duration: duration,
-        easing: 'cubic-bezier(0.22, 0.68, 0, 1.21)',
-        fill: 'forwards',
-      }
-      let keyframes: Keyframe[] = []
-
-      const xChanged = c.offsetLeft !== x
-      const yChanged = c.offsetTop !== y
-      const hChanged = c.offsetHeight !== height
-
-      const onlyYChanged = yChanged && !xChanged && !hChanged
-      const onlyXChanged = !yChanged && xChanged && !hChanged
-      const onlyHChanged = !yChanged && !xChanged && hChanged
-
-      if (onlyYChanged) {
-        keyframes = [
-          { top: `${c.offsetTop}px` },
-          { top: `${y}px` },
-        ]
-      } else if (onlyXChanged) {
-        keyframes = [
-          { left: `${c.offsetLeft}px` },
-          { left: `${x}px` },
-        ]
-      } else if (onlyHChanged) {
-        keyframes = [
-          { height: `${c.offsetHeight}px` },
-          { height: `${height}px` },
-        ]
-      } else {
-        keyframes = [
-          {
-            top: `${c.offsetTop}px`,
-            left: `${c.offsetLeft}px`,
-            height: `${c.offsetHeight}px`,
-          },
-          { top: `${y}px`, left: `${x}px`, height: `${height}px` },
-        ]
-      }
-
-      c.animate(keyframes, options)
-
-      return setLastMoved(now)
-
-      // if (blink.playState === 'running') {
-      //   blink.cancel()
-      // }
-
-      // if (!isTransitioning) {
-      //   console.log('--- jumping')
-      //   style.transition =
-      //     `left ${duration}ms cubic-bezier(0.22, 0.68, 0, 1.21) ${delay}ms, height .1s ease-in-out 0s`
-      //   style.top = y + 'px'
-      //   style.left = x + 'px'
-      // } else {
-      //   console.log('--- transitioning')
-      // }
-      // console.log('c is now', )
-
-      // console.log(c.getAnimations())
-
-      // if (blink.playState === 'running' && isTransitioning) {
-      //   blink.currentTime = 0
-      // } else {
-      //   // console.log('currentTime', blink.currentTime)
-      //   // setTimeout(() => blink.play(), duration)
-      // }
+    if (isTyping() && now - lastMoved() < 100) {
+      duration = 0
     }
 
-    addMoveOnScroll()
-    setCaret(c)
-    return c
+    const { x, y, height } = getDefaultCaretRect()
+      || { x: 0, y: 0, height: 0 }
+    const r = caret.getBoundingClientRect()
+
+    const xChanged = r.x !== x
+    const yChanged = r.y !== y
+    const hChanged = r.height !== height
+
+    if (
+      !xChanged && !yChanged && !hChanged
+    ) {
+      return
+    }
+
+    const options: KeyframeAnimationOptions = {
+      duration: duration,
+      easing: 'cubic-bezier(0.22, 0.68, 0, 1.21)',
+      fill: 'forwards',
+    }
+    let keyframes: Keyframe[] = []
+
+    const onlyYChanged = yChanged && !xChanged && !hChanged
+    const onlyXChanged = !yChanged && xChanged && !hChanged
+    const onlyHChanged = !yChanged && !xChanged && hChanged
+
+    if (onlyYChanged) {
+      keyframes = [
+        { top: `${r.y}px` },
+        { top: `${y}px` },
+      ]
+    } else if (onlyXChanged) {
+      keyframes = [
+        { left: `${r.x}px` },
+        { left: `${x}px` },
+      ]
+    } else if (onlyHChanged) {
+      keyframes = [
+        { height: `${r.height}px` },
+        { height: `${height}px` },
+      ]
+    } else {
+      keyframes = [
+        {
+          top: `${r.y}px`,
+          left: `${r.x}px`,
+          height: `${r.height}px`,
+        },
+        { top: `${y}px`, left: `${x}px`, height: `${height}px` },
+      ]
+    }
+
+    caret.animate(keyframes, options)
+
+    return setLastMoved(now)
   }
 
-  function initBlinkAnimation(el: HTMLElement) {
-    // ['ease-in', 'ease-out'],
-    // easing: ['step-start', 'step-end']
+  function initBlinkAnimation() {
     const blinkFrames = {
       opacity: [0, 1],
-      scale: [0, 1],
+      width: ['8px', '1px'],
       offset: [0.5, 1],
       // easing: ['step-start', 'ease-in'],
       // easing: 'steps(2, jump-both)',
@@ -233,36 +204,32 @@ export function Caret() {
     }
 
     const blinkOptions = {
-      duration: 2000,
+      duration: 1200,
       iterations: Infinity,
     }
 
-    blink = el.animate(
+    blinkAnimation = caret.animate(
       blinkFrames,
       blinkOptions,
     )
   }
 
-  function hideDefaultCaret() {
-    getRootElement().style.caretColor = 'transparent'
+  function setDefaultCaret(color: string) {
+    getRootElement().style.caretColor = color
   }
-
-  const moveOnScroll = () => caret()?.move()
 
   function getRootElement() {
-    if (!rootEl) {
+    const r = document.getElementById('root')
+    if (!r) {
       throw new Error('Element not found \n:) inside initCaret function')
     }
-    return rootEl
+    return r
   }
 
-  function addMoveOnScroll() {
-    getRootElement().addEventListener('scroll', moveOnScroll)
-  }
-
-  function removeMoveOnScroll() {
-    getRootElement().removeEventListener('scroll', moveOnScroll)
-  }
-
-  return <></>
+  return (
+    <div
+      ref={caret}
+      class='top-0 left-0 h-0 absolute w-1 bg-caretColor z-50 pointer-events-none'
+    />
+  )
 }

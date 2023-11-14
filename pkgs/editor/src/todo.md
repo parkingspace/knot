@@ -51,3 +51,5 @@ moving animation on caret element but it wasn't.
 I think i should look into DocumentManager.
 Hope i know how to debug these kind of problem.
 Have to find bottleneck before my code goes complete chaos.
+
+## 23.11.14(tue)

@@ -6,8 +6,22 @@ import { createStore } from 'solid-js/store'
 import searchIndex from '../search'
 import type { HeadingFocusState } from '../types/headingStates'
 
+type EditorStore = {
+  id: number
+  handler: Editor
+}
+
 function documentManager() {
-  const [editors, setEditors] = createStore<Editor[]>([])
+  const [editors, setEditors] = createStore<EditorStore[]>([])
+
+  const addEditor = (editor: EditorStore) => {
+    setEditors([...editors, editor])
+  }
+
+  const removeEditor = (id: number) => {
+    setEditors(editors.filter((e) => e.id !== id))
+  }
+
   const [headingStates, setHeadingStates] = createStore<HeadingFocusState[]>([])
   let searchableDocs: { 'title': string; 'content': string[] }[] = []
 
@@ -93,7 +107,8 @@ function documentManager() {
 
   const chains = {
     editors,
-    setEditors,
+    addEditor,
+    removeEditor,
     headingStates,
     searchableDocs,
     getAllHeadings,
