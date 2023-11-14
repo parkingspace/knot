@@ -1,16 +1,14 @@
 import type { Editor } from '@tiptap/core'
+import { JSX, splitProps } from 'solid-js'
 import clsx from 'clsx'
 import { createEditor } from 'solid-tiptap'
 import { TextArea } from 'ui'
 
 import {
+    Component,
   createContext,
-  createEffect,
-  createSignal,
-  JSX,
   onCleanup,
   onMount,
-  Show,
   useContext,
 } from 'solid-js'
 import { useDocumentManager } from './global/documentManager'
@@ -28,19 +26,19 @@ export const useKnotEditor = () => {
   return context
 }
 
-export const KnotEditorProvider = (
-  props: {
-    // id?: number
-    // lastId?: number
-    // focusedIndex?: number
-    // children?: JSX.Element
-    // content?: string
-    // editable?: boolean
-  },
+type PaperProps = {
+  children?: JSX.Element
+  content?: string
+} & JSX.HTMLAttributes<HTMLDivElement>
+
+
+export const KnotEditorProvider: Component<PaperProps> = (
+  props
 ) => {
-  let textAreaRef: HTMLDivElement
   let id: number = 0
+  let textAreaRef: HTMLDivElement
   const { addEditor, removeEditor } = useDocumentManager()
+  const [, rest] = splitProps(props, ['children', 'class'])
 
   const editor = createEditor(() => ({
     content: props.content ?? '',
@@ -48,7 +46,7 @@ export const KnotEditorProvider = (
     extensions: extensions,
     editorProps: {
       attributes: {
-        id: 'editor' + (props.id ? props.id : 0),
+        // id: 'editor' + (props.id ? props.id : 0),
         class: clsx(
           'lg:prose-md',
           'prose-p:m-0',
@@ -94,7 +92,8 @@ export const KnotEditorProvider = (
 
   return (
     <TextArea
-      ref={textAreaRef}
+      ref={textAreaRef!}
+      {...rest}
     />
   )
 }

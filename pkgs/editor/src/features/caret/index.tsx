@@ -1,7 +1,5 @@
-import { EditorEvents } from '@tiptap/core'
 import clsx from 'clsx'
-import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
-import { useKnotEditor } from '../../Editor'
+import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import { useDocumentManager } from '../../global/documentManager'
 
 /**
@@ -52,6 +50,7 @@ export function getDefaultCaretRect() {
 
 export function Caret() {
   let blinkAnimation: Animation
+  const blinkAnimationDuation: number = 1100
   let caret: HTMLDivElement
   let typingChecker: NodeJS.Timer
 
@@ -74,6 +73,11 @@ export function Caret() {
     move()
   }
 
+  createEffect(() => {
+    console.log('editor count is changed', editors.length)
+    addEventListeners()
+  })
+
   function addEventListeners() {
     editors.forEach(e => {
       e.handler.on('selectionUpdate', moveCb)
@@ -94,27 +98,28 @@ export function Caret() {
 
   function checkTyping() {
     const diff = Date.now() - lastMoved()
-    setIsTyping(diff < 800)
+    setIsTyping(diff < 500)
   }
 
   createEffect(() => {
     if (isTyping()) {
       console.log('start typing')
-      blinkAnimation.currentTime = 1100
+      console.log('ani current time', blinkAnimation.currentTime)
+      blinkAnimation.currentTime = blinkAnimationDuation - 50
+      // requestAnimationFrame(() => blinkAnimation.pause())
       blinkAnimation.pause()
     } else if (blinkAnimation) {
       console.log('stop typing')
       if (blinkAnimation.playState === 'paused') {
+        console.log('ani start time', blinkAnimation.currentTime)
         blinkAnimation.play()
       }
-      // setTimeout(() => blinkAnimation.play(), 100)
     }
   }, false)
 
   onMount(() => {
     setDefaultCaret('transparent')
     initBlinkAnimation()
-    addEventListeners()
 
     typingChecker = setInterval(checkTyping, 100)
   })
@@ -130,12 +135,14 @@ export function Caret() {
     if (!caret) {
       return
     }
-    let { duration } = opts || { duration: 250 }
+    let { duration } = opts || { duration: 150 }
     const now = Date.now()
 
     if (isTyping() && now - lastMoved() < 100) {
       duration = 0
     }
+
+    setLastMoved(now)
 
     const { x, y, height } = getDefaultCaretRect()
       || { x: 0, y: 0, height: 0 }
@@ -190,21 +197,22 @@ export function Caret() {
 
     caret.animate(keyframes, options)
 
-    return setLastMoved(now)
+    return
   }
 
   function initBlinkAnimation() {
     const blinkFrames = {
-      opacity: [0, 1],
-      width: ['8px', '1px'],
-      offset: [0.5, 1],
-      // easing: ['step-start', 'ease-in'],
+      // opacity: [0.2, 1],
+      // borderRadius: ['2px', '0px'],
+      width: ['12px', '2px'],
+      offset: [0.01, 0.49, 0.5],
+      easing: ['ease-out', 'step-end'],
       // easing: 'steps(2, jump-both)',
-      easing: 'ease-out',
+      // easing: 'ease-in',
     }
 
     const blinkOptions = {
-      duration: 1200,
+      duration: blinkAnimationDuation,
       iterations: Infinity,
     }
 
@@ -228,8 +236,13 @@ export function Caret() {
 
   return (
     <div
-      ref={caret}
-      class='top-0 left-0 h-0 absolute w-1 bg-caretColor z-50 pointer-events-none'
+      ref={caret!}
+      class={clsx(
+        'top-0 left-0 h-0 absolute w-2 bg-caretColor z-50 pointer-events-none',
+        {
+          'mix-blend-difference': !isTyping(),
+        },
+      )}
     />
   )
 }

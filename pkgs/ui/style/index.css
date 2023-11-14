@@ -25,7 +25,7 @@
     --icon-fg: theme("colors.gray.600");
     --icon-bg: theme("colors.gray.200");
 
-    --caret-color: theme("colors.gray.900");
+    --caret-color: theme("colors.stone.600");
 
     /* layout */
     --editor-padding: 4rem env(safe-area-inset-right) 10rem
@@ -44,7 +44,7 @@
     --icon-fg: theme("colors.gray.300");
     --icon-bg: theme("colors.gray.700");
 
-    --caret-color: theme("colors.gray.200");
+    --caret-color: theme("colors.stone.200");
   }
 
   /* scrollbar styling */

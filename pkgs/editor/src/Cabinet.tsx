@@ -1,6 +1,10 @@
+import clsx from 'clsx'
+import { Component, createSignal, JSX, Show, splitProps } from 'solid-js'
 import { createContext, For, useContext } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
 import { Button, Icon } from 'ui'
+import { KnotEditor } from '.'
+import { KnotEditorProvider } from './Editor'
 
 export type File = {
   id: number
@@ -104,9 +108,62 @@ export const CabinetProvider = (props: { children: any }) => {
             />
           )}
         </For>
+        <CreateFolderCard />
       </div>
       {props.children}
     </CabinetContext.Provider>
+  )
+}
+
+function CreateFolderCard() {
+  const cabinet = useCabinetContext()
+  const [show, setShow] = createSignal(false)
+
+  return (
+    <Card
+      onclick={() => {
+        setShow(true)
+      }}
+      class='bg-black/10'
+    >
+      <Show
+        when={show()}
+        fallback={
+          <Button>
+            create
+          </Button>
+        }
+      >
+        <KnotEditorProvider
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              console.log('add')
+            }
+          }}
+        />
+      </Show>
+    </Card>
+  )
+}
+
+type CardProps = {
+  children: JSX.Element
+} & JSX.HTMLAttributes<HTMLDivElement>
+
+const Card: Component<CardProps> = (props) => {
+  const [, rest] = splitProps(props, ['children', 'class'])
+
+  return (
+    <div
+      class={clsx(
+        'border rounded bg-gray-800 text-white p-2 flex flex-col gap-2',
+        props.class,
+      )}
+      {...rest}
+    >
+      {props.children}
+    </div>
   )
 }
 
@@ -118,7 +175,7 @@ function FolderCard(
   const cabinet = useCabinetContext()
 
   return (
-    <div class='border rounded bg-gray-800 text-white p-2 flex flex-col gap-2'>
+    <Card>
       <div class='flex justify-between'>
         <div class='flex items-center justify-center gap-1'>
           <Icon name='IconFolder' />
@@ -168,6 +225,6 @@ function FolderCard(
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }

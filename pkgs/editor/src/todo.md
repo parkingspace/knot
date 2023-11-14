@@ -39,8 +39,8 @@ bottom-control-bar
 
 Caret cursor should not be contained by editor.
 
-- [] make caret free - and one and only.
-  by create provider that contains all editors state. And use it.
+- [x] make caret free - and one and only.
+      by create provider that contains all editors state. And use it.
 - [] make add-folder-button-box.
 
 ### problem
@@ -53,3 +53,13 @@ Hope i know how to debug these kind of problem.
 Have to find bottleneck before my code goes complete chaos.
 
 ## 23.11.14(tue)
+
+- [] make add-folder-button-box.
+
+cabinet -> createFolderCard Component
+prevent enter key event go down to editor component.
+think i should change name KnotEditorProvider to just Paper
+
+Box -> File -> Paper
+
+Board or Clip -> Papers
