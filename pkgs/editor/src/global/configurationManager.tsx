@@ -3,8 +3,8 @@ import { Accessor, createSignal } from 'solid-js'
 import { createContext, createEffect, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { Button, Icon } from 'ui'
-import { KnotEditorProvider } from '../Editor'
 import { ColorSchemeToggleButton } from '../features/theme/ColorSchemeToggleButton'
+import { Paper } from '../Paper'
 import type { FeatureName, Features } from '../types/configTypes'
 import { useDocumentManager } from './documentManager'
 
@@ -17,18 +17,17 @@ function InputBar(props: {
   type: Accessor<'search' | 'add'>
 }) {
   const [searchResult, setSearchResult] = createSignal<string[]>([])
-  const dm = useDocumentManager()
+  // const dm = useDocumentManager()
 
   createEffect(() => {
-    console.log('searchable docs', dm.searchableDocs)
-
+    // console.log('searchable docs', dm.searchableDocs)
     console.log('type', props.type())
   })
 
   return (
     <div class='p-4 w-full bg-transparent' onkeydown={(e) => {}}>
       <div class='border w-full flex flex-row bg-editorBg text-editorFg'>
-        <KnotEditorProvider />
+        <Paper />
         <Button size='icon'>
           {props.type() === 'add'
             ? <Icon name='IconPlus' />

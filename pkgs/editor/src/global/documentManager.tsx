@@ -7,7 +7,7 @@ import searchIndex from '../search'
 import type { HeadingFocusState } from '../types/headingStates'
 
 type EditorStore = {
-  id: number
+  id: string
   handler: Editor
 }
 
@@ -18,7 +18,7 @@ function documentManager() {
     setEditors([...editors, editor])
   }
 
-  const removeEditor = (id: number) => {
+  const removeEditor = (id: string) => {
     setEditors(editors.filter((e) => e.id !== id))
   }
 

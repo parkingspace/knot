@@ -1,10 +1,10 @@
+import { Editor } from '@tiptap/core'
 import clsx from 'clsx'
 import { Component, createSignal, JSX, Show, splitProps } from 'solid-js'
 import { createContext, For, useContext } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
 import { Button, Icon } from 'ui'
-import { KnotEditor } from '.'
-import { KnotEditorProvider } from './Editor'
+import { Paper } from './Paper'
 
 export type File = {
   id: number
@@ -21,30 +21,6 @@ export type Folder = {
   edited: string
   files: File[] | null
 }
-
-// !TODO
-/* onEnter={(e) => {
-          e.preventDefault()
-          const now = new Date()
-
-          const str = (new Date())
-            .toISOString()
-            .slice(0, 19)
-            .replace(/-/g, '/')
-            .replace('T', ' ')
-
-          if (!edt.isEmpty) {
-            cabinet.addFile({
-              id: Date.now(),
-              name: edt.getText(),
-              content: edt.getText() ?? '',
-              created: str,
-              edited: str,
-            })
-            edt.commands.clearContent()
-            edt.commands.blur()
-          }
-        }} */
 
 const createCabinetContext = () => {
   const key = 'cabinet'
@@ -134,11 +110,40 @@ function CreateFolderCard() {
           </Button>
         }
       >
-        <KnotEditorProvider
+        <Paper
+
           onKeyDown={(e) => {
+            console.log(e.key)
+              const edt = e.target.editor as Editor
+            if (e.key === 'Escape') {
+              edt.chain().clearContent().blur().run()
+              setShow(false)
+              console.log("exit")
+            }
             if (e.key === 'Enter') {
+              edt.commands.blur()
               e.preventDefault()
-              console.log('add')
+              e.stopPropagation()
+
+              const text = edt.getText().trim()
+              if (!text) {
+                setShow(false)
+              } else {
+                const now = (new Date())
+                  .toISOString()
+                  .slice(0, 19)
+                  .replace(/-/g, '/')
+                  .replace('T', ' ')
+
+                cabinet.addFile({
+                  id: Date.now(),
+                  name: text,
+                  contents: text,
+                  created: now,
+                  edited: now,
+                })
+                setShow(false)
+              }
             }
           }}
         />

@@ -63,3 +63,8 @@ think i should change name KnotEditorProvider to just Paper
 Box -> File -> Paper
 
 Board or Clip -> Papers
+
+## 23.11.15(wed)
+
+- [x] make add-folder-button-box.
+- [] hide caret when editor destroy
