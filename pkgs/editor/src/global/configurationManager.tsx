@@ -14,30 +14,38 @@ import { initTypewriter } from '../features/typewriter'
 import { initWhichkey } from '../features/whichkey'
 
 function AddFileInput(props: {
-  type: Accessor<'search' | 'add'>
   setShow: Setter
 }) {
   const [searchResult, setSearchResult] = createSignal([])
+  const [selectedResult, setSelectedResult] = createSignal()
   const cabinet = useCabinetContext()
 
   return (
-    <div class='fixed z-50 bottom-0 w-full bg-editorBg'>
+    <div class='fixed z-50 bottom-0 w-full bg-editorBg text-editorFg'>
       <Show when={searchResult()}>
-        <For each={searchResult()}>
-          {(res, i) => (
-            <div class='p-4 border border-transparent border-t-gray-500 text-editorFg'>
-              {res.name}
-            </div>
-          )}
-        </For>
+        <div class='max-h-52 overflow-y-scroll'>
+          <For each={searchResult()}>
+            {(res, i) => (
+              <div
+                onClick={(e) => {
+                  setSelectedResult(res)
+                }}
+                class='p-4 border border-transparent border-t-gray-500 hover:bg-black cursor-pointer select-none'
+              >
+                {res.name}
+              </div>
+            )}
+          </For>
+        </div>
       </Show>
 
       <div class='w-full flex flex-row border border-transparent border-t-gray-500'>
         <Paper
           search={setSearchResult}
-          onBlur={(e) => {
-            props.setShow(false)
-          }}
+          selected={selectedResult}
+          // onBlur={(e) => {
+          //   props.setShow(false)
+          // }}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               props.setShow(false)
@@ -67,7 +75,7 @@ function AddFileInput(props: {
           }}
         />
         <Button size='icon'>
-          {props.type() === 'add'
+          {searchResult().length === 0
             ? <Icon name='IconPlus' />
             : <Icon name='IconSearch' />}
         </Button>
@@ -78,7 +86,6 @@ function AddFileInput(props: {
 
 export function ToolBelt() {
   const [showModal, setShowModal] = createSignal(false)
-  const [inputType, setInputType] = createSignal<'search' | 'add'>('search')
   const [showAdd, setShowAdd] = createSignal(false)
   const toggle = () => setShowModal(!showModal())
 
@@ -89,7 +96,7 @@ export function ToolBelt() {
         toggle={() => toggle()}
       />
       <Show when={showAdd()}>
-        <AddFileInput type={inputType} setShow={setShowAdd} />
+        <AddFileInput setShow={setShowAdd} />
       </Show>
       <div class='flex flex-col fixed z-20 bottom-0 w-full border border-t-gray-500 border-x-transparent border-b-transparent'>
         <div class='flex flex-row gap-8 bg-editorBg justify-center w-full'>

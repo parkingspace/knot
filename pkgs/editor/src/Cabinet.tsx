@@ -41,7 +41,7 @@ const createCabinetContext = () => {
       const res = searchIndex.search(text) as SearchResult
       const titleIds = res.filter((s) => s.field === 'title')[0]?.result
       if (!titleIds) {
-        return
+        return []
       }
 
       const found = []
@@ -116,6 +116,11 @@ export const useCabinetContext = () => {
 export const CabinetProvider = (props: { children: any }) => {
   const cabinet = createCabinetContext()
 
+  // TODO: overflow has scroll problem on mobile :
+  //  to regenerate problem:
+  //  1. add lots of boxes
+  //  2. click plus button to open input box
+  //  3. scroll to top
   return (
     <CabinetContext.Provider value={cabinet}>
       <div class='flex flex-col w-full h-full bg-editorBg p-4 gap-2 pb-32 overflow-y-auto'>
@@ -129,62 +134,6 @@ export const CabinetProvider = (props: { children: any }) => {
       </div>
       {props.children}
     </CabinetContext.Provider>
-  )
-}
-
-function CreateFolderCard() {
-  const cabinet = useCabinetContext()
-  const [show, setShow] = createSignal(false)
-
-  return (
-    <Card
-      onclick={() => {
-        setShow(true)
-      }}
-    >
-      <Show
-        when={show()}
-        fallback={
-          <Button>
-            create
-          </Button>
-        }
-      >
-        <Paper
-          onBlur={() => {
-            setShow(false)
-          }}
-          onKeyDown={(e) => {
-            console.log(e.key)
-            const edt = e.target.editor as Editor
-            if (e.key === 'Escape') {
-              setShow(false)
-            }
-            if (e.key === 'Enter') {
-              const text = edt.getText().trim()
-              if (!text) {
-                setShow(false)
-              } else {
-                const now = (new Date())
-                  .toISOString()
-                  .slice(0, 19)
-                  .replace(/-/g, '/')
-                  .replace('T', ' ')
-
-                cabinet.addFile({
-                  id: Date.now(),
-                  name: text,
-                  contents: text,
-                  created: now,
-                  edited: now,
-                })
-                setShow(false)
-              }
-            }
-          }}
-        />
-      </Show>
-    </Card>
   )
 }
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { JSX, Setter, splitProps } from 'solid-js'
+import { Accessor, createEffect, JSX, Setter, splitProps } from 'solid-js'
 import { createEditor } from 'solid-tiptap'
 import { TextArea } from 'ui'
 import { v4 as uuid } from 'uuid'
@@ -13,7 +13,9 @@ import extensions from './tiptap_extensions'
 type PaperProps = {
   children?: JSX.Element
   content?: string
+  class?: string
   search?: Setter
+  selected?: Accessor
 } & JSX.HTMLAttributes<HTMLDivElement>
 
 export const Paper: Component<PaperProps> = (
@@ -26,12 +28,19 @@ export const Paper: Component<PaperProps> = (
   const [, rest] = splitProps(props, [
     'children',
     'class',
-    'onKeyUp',
-    'onKeyDown',
-    'onBlur',
+    'search',
+    'selected',
   ])
 
-  createEditor(() => ({
+  createEffect(() => {
+    const selected = props.selected()
+    console.log('selected is', selected)
+    if (selected) {
+      edt()?.chain().setContent(selected.name).focus('end').run()
+    }
+  })
+
+  const edt = createEditor(() => ({
     content: props.content ?? '',
     element: textAreaRef,
     extensions: extensions,
@@ -80,19 +89,31 @@ export const Paper: Component<PaperProps> = (
       }
       caret.hide()
     },
-    onUpdate({ editor }) {
-      if (!props.search) {
-        return
-      }
+    onTransaction(props) {
+      searchOnTransaction(props)
+
+      // getAllHeadings(editor.state)
+      //   .toggleLastHeadingFocus()
+      //   .setSearchIndex()
+    },
+  }))
+
+  function searchOnTransaction({ editor, transaction }) {
+    // TODO: make it Search function
+    if (!props.search) {
+      return
+    }
+
+    if (
+      transaction.docChanged
+      && transaction.before.textContent !== transaction.doc.textContent
+    ) {
+      console.log('doc is changed! let\'s search')
       const t = editor.getText().trim()
       props.search(cabinet.searchFile(t))
-    },
-    // onTransaction({ editor }) {
-    //   getAllHeadings(editor.state)
-    //     .toggleLastHeadingFocus()
-    //     .setSearchIndex()
-    // },
-  }))
+    }
+    // ------------ Sear
+  }
 
   return (
     <TextArea
