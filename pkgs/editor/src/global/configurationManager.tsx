@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Accessor, createSignal } from 'solid-js'
+import { Accessor, createSignal, Setter, Show } from 'solid-js'
 import { createContext, createEffect, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { Button, Icon } from 'ui'
@@ -13,8 +13,9 @@ import { initSearch } from '../features/search'
 import { initTypewriter } from '../features/typewriter'
 import { initWhichkey } from '../features/whichkey'
 
-function InputBar(props: {
+function AddFileInput(props: {
   type: Accessor<'search' | 'add'>
+  setShow: Setter<boolean>
 }) {
   const [searchResult, setSearchResult] = createSignal<string[]>([])
   // const dm = useDocumentManager()
@@ -25,9 +26,18 @@ function InputBar(props: {
   })
 
   return (
-    <div class='p-4 w-full bg-transparent' onkeydown={(e) => {}}>
-      <div class='border w-full flex flex-row bg-editorBg text-editorFg'>
-        <Paper />
+    <div class='absolute z-50 bottom-0 p-4 w-full bg-transparent'>
+      <div class='border w-full flex flex-row'>
+        <Paper
+          onBlur={(e) => {
+            props.setShow(false)
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              props.setShow(false)
+            }
+          }}
+        />
         <Button size='icon'>
           {props.type() === 'add'
             ? <Icon name='IconPlus' />
@@ -41,6 +51,7 @@ function InputBar(props: {
 export function ToolBelt() {
   const [showModal, setShowModal] = createSignal(false)
   const [inputType, setInputType] = createSignal<'search' | 'add'>('search')
+  const [showAdd, setShowAdd] = createSignal(false)
   const toggle = () => setShowModal(!showModal())
 
   return (
@@ -49,14 +60,22 @@ export function ToolBelt() {
         show={showModal()}
         toggle={() => toggle()}
       />
+      <Show when={showAdd()}>
+        <AddFileInput type={inputType} setShow={setShowAdd} />
+      </Show>
       <div class='flex flex-col fixed z-20 bottom-0 w-full'>
-        <InputBar type={inputType} />
         <div class='flex flex-row gap-8 bg-editorBg justify-center w-full'>
           <Button
             size='icon'
             onclick={() => console.log('clicked')}
           >
             <Icon name='IconWorld' />
+          </Button>
+          <Button
+            size='icon'
+            onclick={() => setShowAdd(true)}
+          >
+            <Icon name='IconPlus' />
           </Button>
           <SettingsButton toggle={toggle} />
         </div>

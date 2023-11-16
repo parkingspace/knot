@@ -20,9 +20,14 @@ export const Paper: Component<PaperProps> = (
   let textAreaRef: HTMLDivElement
   let id = uuid()
   const { addEditor, removeEditor } = useDocumentManager()
-  const [, rest] = splitProps(props, ['children', 'class', 'onKeyDown'])
+  const [, rest] = splitProps(props, [
+    'children',
+    'class',
+    'onKeyDown',
+    'onBlur',
+  ])
 
-  const editor = createEditor(() => ({
+  createEditor(() => ({
     content: props.content ?? '',
     element: textAreaRef,
     extensions: extensions,
@@ -53,8 +58,10 @@ export const Paper: Component<PaperProps> = (
     },
     onCreate({ editor }) {
       addEditor({ id: id, handler: editor })
+      editor.commands.focus('end')
     },
     onDestroy() {
+      caret.hide()
       removeEditor(id)
     },
     onSelectionUpdate() {
@@ -64,6 +71,9 @@ export const Paper: Component<PaperProps> = (
       caret.move()
     },
     onBlur() {
+      if (props.onBlur) {
+        props.onBlur()
+      }
       caret.hide()
     },
     // onTransaction({ editor }) {
@@ -72,15 +82,6 @@ export const Paper: Component<PaperProps> = (
     //     .setSearchIndex()
     // },
   }))
-
-  onMount(() => {
-    const edt = editor()
-    if (!edt) {
-      return
-    }
-    console.log('++++++ Mount editor : ', id)
-    edt.chain().focus('end').run()
-  })
 
   return (
     <TextArea

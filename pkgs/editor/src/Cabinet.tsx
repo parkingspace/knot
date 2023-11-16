@@ -111,20 +111,16 @@ function CreateFolderCard() {
         }
       >
         <Paper
-
+          onBlur={() => {
+            setShow(false)
+          }}
           onKeyDown={(e) => {
             console.log(e.key)
-              const edt = e.target.editor as Editor
+            const edt = e.target.editor as Editor
             if (e.key === 'Escape') {
-              edt.chain().clearContent().blur().run()
               setShow(false)
-              console.log("exit")
             }
             if (e.key === 'Enter') {
-              edt.commands.blur()
-              e.preventDefault()
-              e.stopPropagation()
-
               const text = edt.getText().trim()
               if (!text) {
                 setShow(false)
