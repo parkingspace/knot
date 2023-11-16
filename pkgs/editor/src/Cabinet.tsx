@@ -5,6 +5,7 @@ import { createContext, For, useContext } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
 import { Button, Icon } from 'ui'
 import { Paper } from './Paper'
+import searchIndex from './search'
 
 export type File = {
   id: number
@@ -22,14 +23,49 @@ export type Folder = {
   files: File[] | null
 }
 
+type SearchResult = {
+  field: string
+  result: number[]
+}[]
+
 const createCabinetContext = () => {
   const key = 'cabinet'
   const localCabinet = localStorage.getItem(key)
 
   const [cabinet, setCabinet] = createStore({
     files: [] as File[],
+    searchFile: (text: string) => {
+      if (!text) {
+        return []
+      }
+      const res = searchIndex.search(text) as SearchResult
+      const titleIds = res.filter((s) => s.field === 'title')[0]?.result
+      if (!titleIds) {
+        return
+      }
+
+      const found = []
+
+      titleIds.forEach((id) => {
+        const file = cabinet.files.find((f) => f.id === id)
+        if (file) {
+          found.push(file)
+        }
+      })
+
+      if (found.length > 0) {
+        return found.reverse()
+      }
+      return []
+    },
     addFile: (file: File) => {
-      setCabinet('files', (files) => [...files, file])
+      setCabinet('files', (files) => [...files, {
+        ...file,
+      }])
+      searchIndex.add(file.id, {
+        title: file.name,
+        content: file.contents,
+      })
       localStorage.setItem(key, JSON.stringify(cabinet.files))
     },
     editFile: (id: number, change: string) => {
@@ -56,6 +92,12 @@ const createCabinetContext = () => {
 
   if (localCabinet) {
     setCabinet('files', JSON.parse(localCabinet))
+    cabinet.files.forEach((f) => {
+      searchIndex.add(f.id, {
+        title: f.name,
+        content: f.contents,
+      })
+    })
   }
 
   return cabinet
@@ -76,7 +118,7 @@ export const CabinetProvider = (props: { children: any }) => {
 
   return (
     <CabinetContext.Provider value={cabinet}>
-      <div class='flex flex-col w-full h-full p-4 gap-4 bg-editorBg relative pb-32'>
+      <div class='flex flex-col w-full h-full bg-editorBg p-4 gap-2 pb-32 overflow-y-auto'>
         <For each={cabinet.files}>
           {(file) => (
             <FolderCard
@@ -84,7 +126,6 @@ export const CabinetProvider = (props: { children: any }) => {
             />
           )}
         </For>
-        <CreateFolderCard />
       </div>
       {props.children}
     </CabinetContext.Provider>
@@ -100,7 +141,6 @@ function CreateFolderCard() {
       onclick={() => {
         setShow(true)
       }}
-      class='bg-black/10'
     >
       <Show
         when={show()}
@@ -158,7 +198,7 @@ const Card: Component<CardProps> = (props) => {
   return (
     <div
       class={clsx(
-        'border rounded bg-gray-800 text-white p-2 flex flex-col gap-2',
+        'border border-gray-400 bg-editorBg text-editorFg p-2 flex flex-col gap-2',
         props.class,
       )}
       {...rest}
@@ -179,10 +219,12 @@ function FolderCard(
     <Card>
       <div class='flex justify-between'>
         <div class='flex items-center justify-center gap-1'>
-          <Icon name='IconFolder' />
+          <div class='pl-1 text-gray-500'>
+            <Icon name='IconFolder' />
+          </div>
           <div
             contenteditable={true}
-            class='text-xl font-bold p-1'
+            class='text-lg font-bold p-1'
             onkeydown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
@@ -204,14 +246,16 @@ function FolderCard(
             cabinet.removeFile(props.file.id)
           }}
         >
-          <Icon name='IconTrash' />
+          <div class='text-gray-500'>
+            <Icon name='IconTrash' />
+          </div>
         </Button>
       </div>
       <div class='flex justify-between'>
-        <div class='text-xs text-gray-500'>
+        <div class='p-2 text-xs text-gray-500'>
           {props.file.id}
         </div>
-        <div class='flex flex-col justify-center'>
+        <div class='flex flex-col justify-center text-gray-400'>
           <div class='text-xs flex justify-between gap-1'>
             <span>
               created:

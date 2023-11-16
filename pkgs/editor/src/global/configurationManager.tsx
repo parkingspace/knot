@@ -1,13 +1,13 @@
 import clsx from 'clsx'
-import { Accessor, createSignal, Setter, Show } from 'solid-js'
+import { Accessor, createSignal, For, Setter, Show } from 'solid-js'
 import { createContext, createEffect, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { Button, Icon } from 'ui'
 import { ColorSchemeToggleButton } from '../features/theme/ColorSchemeToggleButton'
 import { Paper } from '../Paper'
 import type { FeatureName, Features } from '../types/configTypes'
-import { useDocumentManager } from './documentManager'
 
+import { useCabinetContext } from '../Cabinet'
 import { initHeader } from '../features/header'
 import { initSearch } from '../features/search'
 import { initTypewriter } from '../features/typewriter'
@@ -15,26 +15,54 @@ import { initWhichkey } from '../features/whichkey'
 
 function AddFileInput(props: {
   type: Accessor<'search' | 'add'>
-  setShow: Setter<boolean>
+  setShow: Setter
 }) {
-  const [searchResult, setSearchResult] = createSignal<string[]>([])
-  // const dm = useDocumentManager()
-
-  createEffect(() => {
-    // console.log('searchable docs', dm.searchableDocs)
-    console.log('type', props.type())
-  })
+  const [searchResult, setSearchResult] = createSignal([])
+  const cabinet = useCabinetContext()
 
   return (
-    <div class='absolute z-50 bottom-0 p-4 w-full bg-transparent'>
-      <div class='border w-full flex flex-row'>
+    <div class='fixed z-50 bottom-0 w-full bg-editorBg'>
+      <Show when={searchResult()}>
+        <For each={searchResult()}>
+          {(res, i) => (
+            <div class='p-4 border border-transparent border-t-gray-500 text-editorFg'>
+              {res.name}
+            </div>
+          )}
+        </For>
+      </Show>
+
+      <div class='w-full flex flex-row border border-transparent border-t-gray-500'>
         <Paper
+          search={setSearchResult}
           onBlur={(e) => {
             props.setShow(false)
           }}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               props.setShow(false)
+            }
+            if (e.key === 'Enter') {
+              const edt = e.target.editor as Editor
+              const text = edt.getText().trim()
+              if (!text) {
+                props.setShow(false)
+              } else {
+                const now = (new Date())
+                  .toISOString()
+                  .slice(0, 19)
+                  .replace(/-/g, '/')
+                  .replace('T', ' ')
+
+                cabinet.addFile({
+                  id: Date.now(),
+                  name: text,
+                  contents: text,
+                  created: now,
+                  edited: now,
+                })
+                props.setShow(false)
+              }
             }
           }}
         />
@@ -63,20 +91,24 @@ export function ToolBelt() {
       <Show when={showAdd()}>
         <AddFileInput type={inputType} setShow={setShowAdd} />
       </Show>
-      <div class='flex flex-col fixed z-20 bottom-0 w-full'>
+      <div class='flex flex-col fixed z-20 bottom-0 w-full border border-t-gray-500 border-x-transparent border-b-transparent'>
         <div class='flex flex-row gap-8 bg-editorBg justify-center w-full'>
-          <Button
-            size='icon'
-            onclick={() => console.log('clicked')}
-          >
-            <Icon name='IconWorld' />
-          </Button>
-          <Button
-            size='icon'
-            onclick={() => setShowAdd(true)}
-          >
-            <Icon name='IconPlus' />
-          </Button>
+          <div class='p-2'>
+            <Button
+              size='icon'
+              onclick={() => console.log('clicked')}
+            >
+              <Icon name='IconWorld' />
+            </Button>
+          </div>
+          <div class='p-2'>
+            <Button
+              size='icon'
+              onclick={() => setShowAdd(true)}
+            >
+              <Icon name='IconPlus' />
+            </Button>
+          </div>
           <SettingsButton toggle={toggle} />
         </div>
       </div>

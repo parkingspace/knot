@@ -6,12 +6,12 @@
   html,
   body {
     overflow: hidden;
-    height: 100vh;
+    height: 100%;
   }
 
   #root {
-    height: 100vh;
     overflow-y: auto;
+    height: 100%;
   }
 
   :root {

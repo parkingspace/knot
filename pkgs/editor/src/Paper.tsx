@@ -1,28 +1,32 @@
 import clsx from 'clsx'
-import { JSX, splitProps } from 'solid-js'
+import { JSX, Setter, splitProps } from 'solid-js'
 import { createEditor } from 'solid-tiptap'
 import { TextArea } from 'ui'
 import { v4 as uuid } from 'uuid'
 import caret from './features/caret/caretState'
 
 import { Component, createContext, onCleanup, onMount } from 'solid-js'
+import { useCabinetContext } from './Cabinet'
 import { useDocumentManager } from './global/documentManager'
 import extensions from './tiptap_extensions'
 
 type PaperProps = {
   children?: JSX.Element
   content?: string
+  search?: Setter
 } & JSX.HTMLAttributes<HTMLDivElement>
 
 export const Paper: Component<PaperProps> = (
   props,
 ) => {
-  let textAreaRef: HTMLDivElement
   let id = uuid()
+  let textAreaRef: HTMLDivElement
   const { addEditor, removeEditor } = useDocumentManager()
+  const cabinet = useCabinetContext()
   const [, rest] = splitProps(props, [
     'children',
     'class',
+    'onKeyUp',
     'onKeyDown',
     'onBlur',
   ])
@@ -76,6 +80,13 @@ export const Paper: Component<PaperProps> = (
       }
       caret.hide()
     },
+    onUpdate({ editor }) {
+      if (!props.search) {
+        return
+      }
+      const t = editor.getText().trim()
+      props.search(cabinet.searchFile(t))
+    },
     // onTransaction({ editor }) {
     //   getAllHeadings(editor.state)
     //     .toggleLastHeadingFocus()
@@ -86,7 +97,8 @@ export const Paper: Component<PaperProps> = (
   return (
     <TextArea
       ref={textAreaRef!}
-      onkeydown={props.onKeyDown}
+      onKeyUp={props.onKeyUp}
+      onKeyDown={props.onKeyDown}
       {...rest}
     />
   )
