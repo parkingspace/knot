@@ -1,18 +1,9 @@
-import { Editor } from '@tiptap/core'
 import clsx from 'clsx'
-import {
-  Component,
-  createSignal,
-  JSX,
-  onMount,
-  Show,
-  splitProps,
-} from 'solid-js'
+import { Component, JSX, onMount, splitProps } from 'solid-js'
 import { createContext, For, useContext } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
-import Sortable from 'sortablejs'
+// import Sortable from 'sortablejs'
 import { Button, Icon } from 'ui'
-import { Paper } from './Paper'
 import searchIndex from './search'
 
 export type File = {
@@ -21,6 +12,7 @@ export type File = {
   created: string
   edited: string
   contents: string
+  links: File[]
 }
 
 export type Folder = {
@@ -42,6 +34,9 @@ const createCabinetContext = () => {
 
   const [cabinet, setCabinet] = createStore({
     files: [] as File[],
+    putFile: (parent: File, child: File) => {
+      parent.links.push(child)
+    },
     searchFile: (text: string) => {
       if (!text) {
         return []
@@ -124,14 +119,17 @@ export const useCabinetContext = () => {
 export const CabinetProvider = (props: { children: any }) => {
   const cabinet = createCabinetContext()
 
-  onMount(() => {
-    const el = document.getElementById('sortable-files')
-    console.log('on mount')
-    if (el) {
-      console.log(el)
-      Sortable.create(el)
-    }
-  })
+  // onMount(() => {
+  //   const el = document.getElementById('sortable-files')
+  //   console.log('on mount')
+  //   if (el) {
+  //     console.log(el)
+  //     Sortable.create(el, {
+  //       animation: 150,
+  //       ghostClass: 'bg-gray-700',
+  //     })
+  //   }
+  // })
 
   // TODO: overflow has scroll problem on mobile :
   //  to regenerate problem:
@@ -145,8 +143,9 @@ export const CabinetProvider = (props: { children: any }) => {
         class='flex flex-col bg-editorBg p-4 gap-2 pb-32 overflow-y-auto'
       >
         <For each={cabinet.files}>
-          {(file) => (
-            <FolderCard
+          {(file, i) => (
+            <FileCard
+              id={i()}
               file={file}
             />
           )}
@@ -167,7 +166,7 @@ const Card: Component<CardProps> = (props) => {
   return (
     <li
       class={clsx(
-        'hover:bg-black hover:border-gray-600',
+        'hover:border-gray-700',
         'cursor-pointer select-none',
         'border border-gray-400 bg-editorBg text-editorFg',
         'p-2 flex flex-col gap-2',
@@ -180,15 +179,78 @@ const Card: Component<CardProps> = (props) => {
   )
 }
 
-function FolderCard(
+function FileCard(
   props: {
+    id: number
     file: File
   },
 ) {
   const cabinet = useCabinetContext()
+  let cardRef: HTMLLIElement
+
+  function dragstart_handler(ev: DragEvent) {
+    const dt = ev.dataTransfer
+    if (!dt) {
+      return
+    }
+    console.log(
+      `dragStart: dropEffect = ${ev.dataTransfer.dropEffect} ; effectAllowed = ${ev.dataTransfer.effectAllowed}`,
+    )
+
+    // Add this element's id to the drag payload so the drop handler will
+    // know which element to add to its tree
+    ev.dataTransfer.setData('id', ev.target.id)
+    ev.dataTransfer.effectAllowed = 'move'
+  }
+
+  function drop_handler(ev: DragEvent) {
+    ev.preventDefault()
+    ev.stopPropagation()
+    const dt = ev.dataTransfer
+    if (!dt) {
+      return
+    }
+    console.log(
+      `drop: dropEffect = ${ev.dataTransfer.dropEffect} ; effectAllowed = ${ev.dataTransfer.effectAllowed}`,
+    )
+
+    // Get the id of the target and add the moved element to the target's DOM
+    const id = ev.dataTransfer.getData('id')
+    console.log('drop: target', ev)
+    console.log('drop: current target', ev.currentTarget)
+    ev.currentTarget.appendChild(document.getElementById(id))
+    return
+  }
+
+  function dragover_handler(ev: DragEvent) {
+    const dt = ev.dataTransfer
+    if (!dt) {
+      return
+    }
+    console.log(
+      `dragOver: dropEffect = ${ev.dataTransfer?.dropEffect} ; effectAllowed = ${ev.dataTransfer.effectAllowed}`,
+    )
+    ev.preventDefault()
+    // Set the dropEffect to move
+    //
+
+    if (ev.target.getAttribute('draggable') == 'true') {
+      ev.dataTransfer.dropEffect = 'none' // dropping is not allowed
+    } else {
+      ev.dataTransfer.dropEffect = 'move' // drop it like it's hot
+    }
+    // ev.dataTransfer.dropEffect = 'move'
+  }
 
   return (
-    <Card>
+    <Card
+      id={'card-' + props.id}
+      draggable='true'
+      ondrop={drop_handler}
+      ondragstart={dragstart_handler}
+      ondragover={dragover_handler}
+      ref={cardRef!}
+    >
       <div class='flex justify-between'>
         <div class='flex items-center justify-center gap-1'>
           <div class='pl-1 text-gray-500'>
