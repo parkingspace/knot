@@ -1,8 +1,15 @@
+import type {
+  DraggableEventNames,
+  DragOverEvent,
+  DragStartEvent,
+  DragStopEvent,
+} from '@shopify/draggable'
+import { Draggable, Droppable } from '@shopify/draggable'
 import clsx from 'clsx'
-import { Component, JSX, onMount, splitProps } from 'solid-js'
+import { Component, JSX, onCleanup, onMount, splitProps } from 'solid-js'
 import { createContext, For, useContext } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
-// import Sortable from 'sortablejs'
+
 import { Button, Icon } from 'ui'
 import searchIndex from './search'
 
@@ -116,20 +123,55 @@ export const useCabinetContext = () => {
   return context
 }
 
+let draggable: Draggable<DraggableEventNames>
+let droppable: Droppable
+
 export const CabinetProvider = (props: { children: any }) => {
   const cabinet = createCabinetContext()
 
-  // onMount(() => {
-  //   const el = document.getElementById('sortable-files')
-  //   console.log('on mount')
-  //   if (el) {
-  //     console.log(el)
-  //     Sortable.create(el, {
-  //       animation: 150,
-  //       ghostClass: 'bg-gray-700',
-  //     })
-  //   }
-  // })
+  onMount(() => {
+    droppable = new Droppable(document.querySelectorAll('ul'), {
+      draggable: 'li',
+      dropzone: 'li',
+    })
+
+    // draggable = new Draggable(document.querySelectorAll('ul'), {
+    //   draggable: 'li',
+    //   classes: {
+    //     'draggable:over': ['bg-black/50', 'text-gray-500'],
+    //   },
+    // })
+
+    // droppable.on('drag:start', dragstart_handler)
+    // function dragstart_handler(ev: DragStartEvent) {
+    //   console.log('drag start', ev)
+    // }
+    //
+    // droppable.on('drag:over', dragover_handler)
+    // function dragover_handler(ev: DragOverEvent) {
+    //   console.log('dragover: ', ev)
+    //   // ev.preventDefault()
+    //   //
+    //   // if (ev.target.getAttribute('draggable') == 'true') {
+    //   //   ev.dataTransfer.dropEffect = 'none' // dropping is not allowed
+    //   // } else {
+    //   //   ev.dataTransfer.dropEffect = 'move' // drop it like it's hot
+    //   // }
+    // }
+    //
+    // droppable.on('drag:stop', drop_handler)
+    // function drop_handler(ev: DragStopEvent) {
+    //   console.log('drag stop: ', ev)
+    //
+    //   // ev.preventDefault()
+    //   // ev.stopPropagation()
+    //
+    //   // Get the id of the target and add the moved element to the target's DOM
+    //   // const id = ev.dataTransfer.getData('id')
+    //   // ev.currentTarget.appendChild(document.getElementById(id))
+    //   return
+    // }
+  })
 
   // TODO: overflow has scroll problem on mobile :
   //  to regenerate problem:
@@ -187,68 +229,11 @@ function FileCard(
 ) {
   const cabinet = useCabinetContext()
   let cardRef: HTMLLIElement
-
-  function dragstart_handler(ev: DragEvent) {
-    const dt = ev.dataTransfer
-    if (!dt) {
-      return
-    }
-    console.log(
-      `dragStart: dropEffect = ${ev.dataTransfer.dropEffect} ; effectAllowed = ${ev.dataTransfer.effectAllowed}`,
-    )
-
-    // Add this element's id to the drag payload so the drop handler will
-    // know which element to add to its tree
-    ev.dataTransfer.setData('id', ev.target.id)
-    ev.dataTransfer.effectAllowed = 'move'
-  }
-
-  function drop_handler(ev: DragEvent) {
-    ev.preventDefault()
-    ev.stopPropagation()
-    const dt = ev.dataTransfer
-    if (!dt) {
-      return
-    }
-    console.log(
-      `drop: dropEffect = ${ev.dataTransfer.dropEffect} ; effectAllowed = ${ev.dataTransfer.effectAllowed}`,
-    )
-
-    // Get the id of the target and add the moved element to the target's DOM
-    const id = ev.dataTransfer.getData('id')
-    console.log('drop: target', ev)
-    console.log('drop: current target', ev.currentTarget)
-    ev.currentTarget.appendChild(document.getElementById(id))
-    return
-  }
-
-  function dragover_handler(ev: DragEvent) {
-    const dt = ev.dataTransfer
-    if (!dt) {
-      return
-    }
-    console.log(
-      `dragOver: dropEffect = ${ev.dataTransfer?.dropEffect} ; effectAllowed = ${ev.dataTransfer.effectAllowed}`,
-    )
-    ev.preventDefault()
-    // Set the dropEffect to move
-    //
-
-    if (ev.target.getAttribute('draggable') == 'true') {
-      ev.dataTransfer.dropEffect = 'none' // dropping is not allowed
-    } else {
-      ev.dataTransfer.dropEffect = 'move' // drop it like it's hot
-    }
-    // ev.dataTransfer.dropEffect = 'move'
-  }
+  const id = 'card-' + props.id
 
   return (
     <Card
-      id={'card-' + props.id}
-      draggable='true'
-      ondrop={drop_handler}
-      ondragstart={dragstart_handler}
-      ondragover={dragover_handler}
+      id={id}
       ref={cardRef!}
     >
       <div class='flex justify-between'>
@@ -270,6 +255,7 @@ function FileCard(
           </div>
         </Button>
       </div>
+      <div class='dropzone' />
       <div class='flex justify-between'>
         <div class='p-2 text-xs text-gray-500'>
           {props.file.id}
