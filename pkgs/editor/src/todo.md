@@ -68,3 +68,12 @@ Board or Clip -> Papers
 
 - [x] make add-folder-button-box.
 - [] hide caret when editor destroy
+
+## 23.11.16(thu)
+
+- [x] hide caret when editor destroid
+
+todo tomorrow
+
+- [] put dot after selected doc to make sub doc.
+- [] tidy up codes. so...dirty.

@@ -1,8 +1,16 @@
 import { Editor } from '@tiptap/core'
 import clsx from 'clsx'
-import { Component, createSignal, JSX, Show, splitProps } from 'solid-js'
+import {
+  Component,
+  createSignal,
+  JSX,
+  onMount,
+  Show,
+  splitProps,
+} from 'solid-js'
 import { createContext, For, useContext } from 'solid-js'
 import { createStore, produce } from 'solid-js/store'
+import Sortable from 'sortablejs'
 import { Button, Icon } from 'ui'
 import { Paper } from './Paper'
 import searchIndex from './search'
@@ -44,7 +52,7 @@ const createCabinetContext = () => {
         return []
       }
 
-      const found = []
+      const found: File[] = []
 
       titleIds.forEach((id) => {
         const file = cabinet.files.find((f) => f.id === id)
@@ -116,6 +124,15 @@ export const useCabinetContext = () => {
 export const CabinetProvider = (props: { children: any }) => {
   const cabinet = createCabinetContext()
 
+  onMount(() => {
+    const el = document.getElementById('sortable-files')
+    console.log('on mount')
+    if (el) {
+      console.log(el)
+      Sortable.create(el)
+    }
+  })
+
   // TODO: overflow has scroll problem on mobile :
   //  to regenerate problem:
   //  1. add lots of boxes
@@ -123,7 +140,10 @@ export const CabinetProvider = (props: { children: any }) => {
   //  3. scroll to top
   return (
     <CabinetContext.Provider value={cabinet}>
-      <div class='flex flex-col w-full h-full bg-editorBg p-4 gap-2 pb-32 overflow-y-auto'>
+      <ul
+        id='sortable-files'
+        class='flex flex-col bg-editorBg p-4 gap-2 pb-32 overflow-y-auto'
+      >
         <For each={cabinet.files}>
           {(file) => (
             <FolderCard
@@ -131,7 +151,7 @@ export const CabinetProvider = (props: { children: any }) => {
             />
           )}
         </For>
-      </div>
+      </ul>
       {props.children}
     </CabinetContext.Provider>
   )
@@ -139,21 +159,24 @@ export const CabinetProvider = (props: { children: any }) => {
 
 type CardProps = {
   children: JSX.Element
-} & JSX.HTMLAttributes<HTMLDivElement>
+} & JSX.HTMLAttributes<HTMLLIElement>
 
 const Card: Component<CardProps> = (props) => {
   const [, rest] = splitProps(props, ['children', 'class'])
 
   return (
-    <div
+    <li
       class={clsx(
-        'border border-gray-400 bg-editorBg text-editorFg p-2 flex flex-col gap-2',
+        'hover:bg-black hover:border-gray-600',
+        'cursor-pointer select-none',
+        'border border-gray-400 bg-editorBg text-editorFg',
+        'p-2 flex flex-col gap-2',
         props.class,
       )}
       {...rest}
     >
       {props.children}
-    </div>
+    </li>
   )
 }
 
@@ -169,24 +192,9 @@ function FolderCard(
       <div class='flex justify-between'>
         <div class='flex items-center justify-center gap-1'>
           <div class='pl-1 text-gray-500'>
-            <Icon name='IconFolder' />
+            <Icon name='IconFile' />
           </div>
-          <div
-            contenteditable={true}
-            class='text-lg font-bold p-1'
-            onkeydown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault()
-                console.log(e.target.textContent)
-                cabinet.editFile(
-                  props
-                    .file
-                    .id,
-                  e.target.textContent || props.file.name,
-                )
-              }
-            }}
-          >
+          <div class='text-lg font-bold p-1'>
             {props.file.name}
           </div>
         </div>
